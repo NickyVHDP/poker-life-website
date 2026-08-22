@@ -1,0 +1,23 @@
+.stats-bar { position: relative; padding-top: 11px; padding-bottom: 11px; background: linear-gradient(90deg, #030c1c, #0c346a 50%, #030c1c); box-shadow: inset 0 1px 0 rgba(86, 153, 243, .55), inset 0 -1px 0 rgba(86, 153, 243, .42); }
+.stats-bar div { grid-template-columns: 54px 1fr; gap: 0 10px; min-height: 58px; border-right-color: rgba(112, 173, 242, .22); }
+.stats-bar .stat-icon { display: grid; place-items: center; width: 45px; height: 45px; grid-row: auto; border: 1px solid rgba(223, 178, 80, .6); border-radius: 8px; color: #f2c55d; font-size: 25px; line-height: 1; background: radial-gradient(circle at 50% 35%, rgba(229, 184, 82, .2), transparent 66%); box-shadow: 0 0 18px rgba(75, 142, 232, .18); }
+.stats-bar p { margin: 0; align-self: center; display: grid; gap: 3px; }
+.stats-bar strong { font-size: 20px; letter-spacing: -.02em; }
+.stats-bar small { max-width: 128px; font-size: 10px; line-height: 1.25; }
+.benefit-panel { position: relative; overflow: hidden; padding: 12px 16px; background: linear-gradient(135deg, rgba(5, 22, 48, .98), rgba(12, 34, 69, .98)); box-shadow: inset 0 1px 0 rgba(103, 163, 236, .33), 0 10px 26px rgba(0, 0, 0, .22); }
+.benefit-panel::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(31, 102, 196, .14), transparent); pointer-events: none; }
+.benefit-panel span { position: relative; min-height: 75px; align-content: center; gap: 6px; font-size: 20px; }
+.benefit-panel i { color: #e8ba56; font: 30px/1 Cinzel, serif; text-shadow: 0 0 12px rgba(222, 170, 57, .24); }
+.benefit-panel b { font-size: 10px; line-height: 1.25; letter-spacing: .01em; }
+.merch { align-items: stretch; }
+.merch-copy { display: flex; flex-direction: column; justify-content: center; }
+.merch-strip { width: 100%; min-height: 200px; object-fit: cover; border: 1px solid rgba(62, 126, 205, .65); border-radius: 11px; box-shadow: 0 14px 30px rgba(0, 0, 0, .3), inset 0 0 30px rgba(32, 99, 190, .18); }
+.newsletter { min-height: 120px; padding-top: 22px; padding-bottom: 22px; background: radial-gradient(ellipse at 50% 0, rgba(34, 104, 202, .52), transparent 66%), linear-gradient(90deg, #030e20, #0b356f 50%, #030e20); box-shadow: inset 0 1px 0 rgba(91, 158, 237, .6), inset 0 -1px 0 rgba(91, 158, 237, .44); }
+.newsletter .mail-icon { display: grid; place-items: center; width: 59px; height: 59px; border: 1px solid rgba(235, 187, 80, .7); border-radius: 50%; background: rgba(4, 17, 37, .65); color: #efc661; font-size: 29px; box-shadow: 0 0 20px rgba(224, 172, 55, .18); }
+.newsletter h2 { font-size: clamp(24px, 2.5vw, 34px); text-shadow: 0 3px 13px #02050b; }
+.newsletter p { max-width: 480px; line-height: 1.5; }
+.signup-form { align-items: center; }
+.signup-form input { height: 44px; border: 1px solid rgba(255, 255, 255, .3); border-radius: 7px; box-shadow: 0 4px 14px rgba(0, 0, 0, .18); }
+.signup-form .button { min-height: 44px; border-radius: 7px; }
+@media (max-width: 980px) { .merch-strip { min-height: 0; } }
+@media (max-width: 620px) { .stats-bar .stat-icon { width: 38px; height: 38px; font-size: 21px; } .stats-bar div { grid-template-columns: 45px 1fr; padding: 7px; } .benefit-panel { grid-template-columns: repeat(2, 1fr); } .merch-strip { border-radius: 8px; } .newsletter .mail-icon { margin: auto; } }
