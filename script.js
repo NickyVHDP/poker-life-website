@@ -16,23 +16,44 @@ const covers = {
   'The Only Poker Book You’ll Ever Need': 'assets/covers/the-only-poker-book.jpg',
   'The Patient Poker Player: Win More by Playing Less': 'assets/covers/patient-poker-player-win-more.jpg'
 };
-const grid = document.querySelector('#book-grid');
-const viewAllBooks = document.querySelector('#view-all-books');
-const note = document.querySelector('.form-note');
-const form = document.querySelector('.signup-form');
-function makeBook(book, index) {
+function makeBook(book) {
   const [title, type, blurb, price, checkoutUrl] = book;
-  const purchaseUrl = checkoutUrl || '#contact';
-  const externalLink = checkoutUrl ? ' target="_blank" rel="noopener"' : '';
-  return `<article class="book-card"><div class="book-cover"><span class="type">${index === 0 ? 'Best seller' : index === 1 ? 'New release' : type}</span><img src="${covers[title]}" alt="Cover of ${title}" loading="lazy" /></div><div class="book-copy"><h4>${title}</h4><p>${blurb}</p><div class="price">${price}</div><a class="button gold" href="${purchaseUrl}"${externalLink} aria-label="Buy ${title}">Buy now</a><a class="amazon" href="#contact">Buy on Amazon</a></div></article>`;
+  // Stripe URLs are real external checkout; anything without one routes to contact.
+  const purchaseUrl = checkoutUrl || 'contact.html';
+  const linkAttrs = checkoutUrl ? ' target="_blank" rel="noopener noreferrer"' : '';
+  const action = checkoutUrl ? 'Buy now' : 'Ask about this book';
+  return `<article class="book-card"><div class="book-cover"><span class="type">${type}</span><img src="${covers[title]}" alt="Cover of ${title}" loading="lazy" /></div><div class="book-copy"><h4>${title}</h4><p>${blurb}</p><div class="price">${price}</div><a class="button gold" href="${purchaseUrl}"${linkAttrs} aria-label="${action}: ${title}">${action}</a></div></article>`;
 }
-grid.innerHTML = books.slice(0, 5).map(makeBook).join('');
-viewAllBooks?.addEventListener('click', () => {
-  grid.innerHTML = books.map(makeBook).join('');
-  viewAllBooks.hidden = true;
-});
-form?.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const email = new FormData(form).get('email');
-  note.textContent = email ? `Thank you — ${email} is ready for newsletter connection.` : 'Please enter your email address.';
+
+// Any page can host the grid. `data-book-limit` decides how many show;
+// omit it (books.html) to render the full catalog from this single dataset.
+const grid = document.querySelector('#book-grid');
+if (grid) {
+  const limit = Number(grid.dataset.bookLimit) || books.length;
+  grid.innerHTML = books.slice(0, limit).map(makeBook).join('');
+}
+
+const bookCount = document.querySelector('#book-count');
+if (bookCount) bookCount.textContent = String(books.length);
+
+// Forms are local-only: confirm the input was captured in the browser,
+// never claim anything was sent or subscribed.
+document.querySelectorAll('form[data-local-form]').forEach((form) => {
+  const status = form.querySelector('.form-status, .form-note');
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (!status) return;
+    const data = new FormData(form);
+    const email = (data.get('email') || '').toString().trim();
+    const message = (data.get('message') || '').toString().trim();
+    if (form.dataset.localForm === 'contact') {
+      status.textContent = !email || !message
+        ? 'Please add your email address and a message.'
+        : 'Preview only — nothing has been delivered. The contact service is not connected yet, so your details stay in this browser tab.';
+      return;
+    }
+    status.textContent = email
+      ? `${email} is ready for newsletter connection. No subscription has been created yet — this form is not connected to a mailing list.`
+      : 'Please enter your email address.';
+  });
 });

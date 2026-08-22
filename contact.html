@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Contact Poker Life — enquiries about books, gear, coaching, and courses. This form runs locally in your browser and is not connected to a mail service yet." />
+    <title>Contact | Poker Life</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="cover-styles.css" />
+    <link rel="stylesheet" href="section-polish.css" />
+    <link rel="stylesheet" href="reference-lower-sections.css" />
+    <link rel="stylesheet" href="logo-art.css" />
+    <link rel="stylesheet" href="pages.css" />
+    <script defer src="script.js?v=2"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="Poker Life home"><img class="brand-mark" src="assets/poker-life-mark-transparent.png" alt="" /><img class="brand-wordmark" src="assets/poker-life-wordmark.png" alt="Poker Life — Focus, Patience, Profit" /></a>
+      <nav class="main-nav" aria-label="Main navigation"><a href="index.html">Home</a><a href="shop.html">Shop</a><a href="books.html">Books</a><a href="about.html">About Larry</a><a href="articles.html">Poker Articles</a><a href="faq.html">FAQ</a><a class="is-current" href="contact.html" aria-current="page">Contact</a></nav>
+      <div class="header-actions"><a href="books.html" aria-label="Browse the book catalog">⌕</a><a href="contact.html" aria-label="Contact Poker Life">♙</a><a href="shop.html" aria-label="Go to the shop">🛒</a></div>
+    </header>
+    <main id="main">
+      <section class="page-hero">
+        <p class="kicker">Get in touch</p>
+        <h1>Contact <span>Poker Life</span></h1>
+        <p>Questions about a book, the gear line, coaching, or courses. Check the <a href="faq.html">FAQ</a> first — it covers most of what comes up about buying and delivery.</p>
+      </section>
+
+      <section class="section section-left">
+        <p class="notice"><strong>Contact service coming soon:</strong> the form is prepared for a future mail-service connection. Until that connection is active, entries remain in your browser and are not delivered or stored.</p>
+
+        <div class="contact-grid">
+          <div>
+            <h2>Send a Message</h2>
+            <p class="section-subtitle">All fields stay on this page. Nothing leaves your browser.</p>
+            <form class="contact-form" data-local-form="contact" novalidate>
+              <div class="field">
+                <label for="contact-name">Your name</label>
+                <input id="contact-name" name="name" type="text" autocomplete="name" placeholder="Name" />
+              </div>
+              <div class="field">
+                <label for="contact-email">Email address</label>
+                <input id="contact-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" />
+              </div>
+              <div class="field">
+                <label for="contact-topic">What is this about?</label>
+                <select id="contact-topic" name="topic">
+                  <option value="books">A book or an order</option>
+                  <option value="gear">Poker Life gear</option>
+                  <option value="coaching">Coaching</option>
+                  <option value="courses">Courses</option>
+                  <option value="newsletter">Newsletter</option>
+                  <option value="other">Something else</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="contact-message">Message</label>
+                <textarea id="contact-message" name="message" placeholder="What would you like to ask?"></textarea>
+              </div>
+              <button class="button gold" type="submit">Preview message &nbsp; →</button>
+              <p class="form-status" role="status" aria-live="polite">Preview mode: messages are not delivered until the contact service is connected.</p>
+            </form>
+          </div>
+
+          <aside>
+            <article class="panel" id="books-help">
+              <span class="eyebrow">Books &amp; orders</span>
+              <h3>Questions About a Book</h3>
+              <p>Formats, delivery, refunds, and anything specific to an order are decided at Stripe checkout, not on this site. The <a href="faq.html#buying">FAQ</a> explains what is and is not published here.</p>
+              <a class="button outline" href="books.html">See the catalogue</a>
+            </article>
+
+            <article class="panel" id="gear">
+              <span class="eyebrow">Gear enquiry</span>
+              <h3>Poker Life Gear</h3>
+              <p>Apparel and accessories are not set up for checkout on this site, so there is no price list or shipping process to quote. Use the form and choose “Poker Life gear” to register an enquiry.</p>
+              <a class="button outline" href="shop.html#merch">View the gear</a>
+            </article>
+
+            <article class="panel" id="coaching">
+              <span class="eyebrow">Coming soon</span>
+              <h3>Coaching</h3>
+              <p>Coaching is not open for booking. There are no sessions, rates, or waitlist behind this page — choosing “Coaching” in the form is a way to note your interest, nothing more.</p>
+            </article>
+
+            <article class="panel" id="courses">
+              <span class="eyebrow">Coming soon</span>
+              <h3>Courses</h3>
+              <p>No courses are available to enrol in, and no launch date has been announced on this site. Interest can be noted through the form in the same way.</p>
+            </article>
+          </aside>
+        </div>
+      </section>
+
+      <section class="newsletter" id="newsletter">
+        <span class="mail-icon">✉</span>
+        <div>
+          <h2>Newsletter</h2>
+          <p>Poker strategy, new articles, and book releases — planned for the Poker Life newsletter. The list is not live yet.</p>
+        </div>
+        <form class="signup-form" data-local-form="newsletter">
+          <input type="email" name="email" placeholder="Enter your email address" aria-label="Email address" />
+          <button class="button gold" type="submit">Join Poker Life &nbsp; →</button>
+          <small class="form-note form-status" role="status" aria-live="polite">This form is not connected to a mailing list yet — nothing is submitted or stored.</small>
+        </form>
+      </section>
+    </main>
+    <footer>
+      <div class="footer-brand"><img class="footer-mark" src="assets/poker-life-mark-transparent.png" alt="" /><img class="footer-wordmark" src="assets/poker-life-wordmark.png" alt="Poker Life — Focus, Patience, Profit" /></div>
+      <div><h3>Shop</h3><a href="shop.html">All Products</a><a href="books.html">Books</a><a href="shop.html#merch">Apparel</a><a href="shop.html#merch">Accessories</a></div>
+      <div><h3>Learn</h3><a href="articles.html">Poker Articles</a><a href="about.html">About Larry</a><a href="faq.html">FAQ</a><a href="contact.html#newsletter">Newsletter</a></div>
+      <div><h3>Connect</h3><a href="contact.html">Contact</a><a href="contact.html#coaching">Coaching (Coming Soon)</a><a href="contact.html#courses">Courses (Coming Soon)</a></div>
+      <blockquote>POKER EDUCATION<br />FOR REAL PLAYERS<small>“It’s not about the cards you’re dealt. It’s about the decisions you make.”<br />— Larry McCracken</small></blockquote>
+      <p class="copyright">© 2025 Poker Life. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
