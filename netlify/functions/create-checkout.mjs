@@ -62,6 +62,7 @@ export default async (request) => {
     form.set(`line_items[${index}][price_data][currency]`, 'usd');
     form.set(`line_items[${index}][price_data][unit_amount]`, String(catalog[slug].amount));
     form.set(`line_items[${index}][price_data][product_data][name]`, catalog[slug].name);
+    form.set(`line_items[${index}][price_data][product_data][tax_code]`, 'txcd_99999999');
     form.set(`line_items[${index}][quantity]`, String(quantity));
   });
 
