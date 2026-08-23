@@ -49,6 +49,7 @@
 .stats-bar div:nth-child(3) .stat-icon { content: url("assets/hands-studied-icon.svg"); display: block; background: none; }
 
 .stats-bar div:nth-child(3) .stat-icon { content: normal; display: grid; background: transparent url("assets/hands-studied-icon.svg?v=2") center / 88% no-repeat; }
+.stats-bar img.hands-studied-icon { display: block; content: normal; background: none; object-fit: contain; }
 .merch { align-items: stretch; }
 .merch-copy { display: flex; flex-direction: column; justify-content: center; }
 .merch-strip { width: 100%; min-height: 200px; object-fit: cover; border: 1px solid rgba(62, 126, 205, .65); border-radius: 11px; box-shadow: 0 14px 30px rgba(0, 0, 0, .3), inset 0 0 30px rgba(32, 99, 190, .18); }
