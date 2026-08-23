@@ -52,6 +52,11 @@
 .stats-bar img.hands-studied-icon { display: block; content: normal; background: none; object-fit: contain; }
 .stats-bar img.hands-studied-icon { width: 50px; height: 50px; max-width: none; filter: drop-shadow(0 0 5px rgba(217, 171, 73, .28)); }
 .stats-bar div:nth-child(3) img.hands-studied-icon { content: normal; background: none; }
+
+/* Exact direct-purchase artwork supplied by the client. */
+.benefit-panel { aspect-ratio: 1840 / 354; min-height: 0; padding: 0; border: 0; border-radius: 0; background: url("assets/direct-benefits-reference.jpg") center / 100% 100% no-repeat; box-shadow: none; }
+.benefit-panel::before { display: none; }
+.benefit-panel span { opacity: 0; pointer-events: none; }
 .stats-bar span.hands-studied-icon { position: relative; display: grid; place-items: center; width: 31px; height: 42px; margin: 0 auto; border: 3px solid #d9ab49; border-radius: 4px; background: transparent; box-shadow: none; }
 .stats-bar span.hands-studied-icon::before { content: '♠'; color: #d9ab49; font: 27px/1 Georgia, serif; transform: translateY(1px); }
 .stats-bar span.hands-studied-icon::after { content: 'A'; position: absolute; top: 3px; left: 4px; color: #d9ab49; font: 700 7px/1 Arial, sans-serif; }
