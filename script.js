@@ -14,19 +14,19 @@ const books = [
   { slug: 'patient-poker-player-win-more', title: 'The Patient Poker Player: Win More by Playing Less', category: 'mindset', blurb: 'Outlast and outplay.', price: '$9.99', stripeUrl: 'https://buy.stripe.com/28EaEXgB0bQQaCu3CT2Nq08', description: 'A concise case for selective, intentional poker. It challenges the impulse to force action and shows how fewer marginal decisions can lead to a more focused, sustainable approach to the game.' }
 ];
 const covers = {
-  'Texas Hold’em in Texas': 'assets/covers/texas-holdem-in-texas.jpg',
-  'Winning Tournament Poker': 'assets/covers/winning-tournament-poker.jpg',
-  'Poker Math Made Easy': 'assets/covers/poker-math-made-easy.jpg',
-  'Is He Bluffing?': 'assets/covers/is-he-bluffing.jpg',
-  'The Complete Guide to Poker for Women': 'assets/covers/complete-guide-to-poker-for-women.jpg',
-  'The Patient Poker Player: Advanced Tactics to Outlast and Outplay': 'assets/covers/patient-poker-player-advanced-tactics.jpg',
-  'I Just Ran Bad and Other Lies Poker Players Tell Themselves': 'assets/covers/i-just-ran-bad.jpg',
-  'Final Table Secrets': 'assets/covers/final-table-secrets.jpg',
-  'Poker Tricks, Traps, and Mind Games': 'assets/covers/poker-tricks-traps-and-mind-games.jpg',
-  'The Poker Player’s Joke Book': 'assets/covers/poker-players-joke-book.jpg',
-  'Poker Life: The Complete Guide to Poker Culture': 'assets/covers/poker-life-culture.jpg',
-  'The Only Poker Book You’ll Ever Need': 'assets/covers/the-only-poker-book.jpg',
-  'The Patient Poker Player: Win More by Playing Less': 'assets/covers/patient-poker-player-win-more.jpg'
+  'Texas Hold’em in Texas': 'assets/covers/clean/texas-holdem-in-texas.jpg',
+  'Winning Tournament Poker': 'assets/covers/clean/winning-tournament-poker.jpg',
+  'Poker Math Made Easy': 'assets/covers/clean/poker-math-made-easy.jpg',
+  'Is He Bluffing?': 'assets/covers/clean/is-he-bluffing.jpg',
+  'The Complete Guide to Poker for Women': 'assets/covers/clean/complete-guide-to-poker-for-women.jpg',
+  'The Patient Poker Player: Advanced Tactics to Outlast and Outplay': 'assets/covers/clean/patient-poker-player-advanced-tactics.jpg',
+  'I Just Ran Bad and Other Lies Poker Players Tell Themselves': 'assets/covers/clean/i-just-ran-bad.jpg',
+  'Final Table Secrets': 'assets/covers/clean/final-table-secrets.jpg',
+  'Poker Tricks, Traps, and Mind Games': 'assets/covers/clean/poker-tricks-traps-and-mind-games.jpg',
+  'The Poker Player’s Joke Book': 'assets/covers/clean/poker-players-joke-book.jpg',
+  'Poker Life: The Complete Guide to Poker Culture': 'assets/covers/clean/poker-life-culture.jpg',
+  'The Only Poker Book You’ll Ever Need': 'assets/covers/clean/the-only-poker-book.jpg',
+  'The Patient Poker Player: Win More by Playing Less': 'assets/covers/clean/patient-poker-player-win-more.jpg'
 };
 
 // Apparel will join this exact cart once its real products, prices, and images
