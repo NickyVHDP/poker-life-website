@@ -1,21 +1,21 @@
 const maxQuantity = 10;
 
-// The browser submits only a slug and quantity. Product IDs and prices stay
-// here so a customer cannot alter an amount before Stripe Checkout is created.
+// The browser submits only a slug and quantity. Names and prices stay here so
+// a customer cannot alter an amount before Stripe Checkout is created.
 const catalog = {
-  'texas-holdem-in-texas': { product: 'prod_V5M6S47uh2OTDj', amount: 999 },
-  'winning-tournament-poker': { product: 'prod_V5M36LwWoLfcll', amount: 999 },
-  'poker-math-made-easy': { product: 'prod_V5M5SXZsMsm0UH', amount: 999 },
-  'is-he-bluffing': { product: 'prod_V5M4xs6NLcJeMv', amount: 999 },
-  'complete-guide-to-poker-for-women': { product: 'prod_V5Ls63twEpzvcO', amount: 999 },
-  'patient-poker-player-advanced-tactics': { product: 'prod_V5M7eUl26s4Eor', amount: 999 },
-  'i-just-ran-bad': { product: 'prod_V5Lu613QFh02tS', amount: 999 },
-  'final-table-secrets': { product: 'prod_V5MKGW33Jeaelc', amount: 999 },
-  'poker-tricks-traps-and-mind-games': { product: 'prod_V5MJmm1s0atwAU', amount: 999 },
-  'poker-players-joke-book': { product: 'prod_V5M9R49HBZ96mz', amount: 999 },
-  'poker-life-culture': { product: 'prod_V5MMT3old0zpn7', amount: 1299 },
-  'only-poker-book-youll-ever-need': { product: 'prod_V5MI1d8ScevuKz', amount: 999 },
-  'patient-poker-player-win-more': { product: 'prod_V5M8ZouRjmNweD', amount: 999 }
+  'texas-holdem-in-texas': { name: 'Texas Hold’em in Texas', amount: 999 },
+  'winning-tournament-poker': { name: 'Winning Tournament Poker', amount: 999 },
+  'poker-math-made-easy': { name: 'Poker Math Made Easy', amount: 999 },
+  'is-he-bluffing': { name: 'Is He Bluffing?', amount: 999 },
+  'complete-guide-to-poker-for-women': { name: 'The Complete Guide to Poker for Women', amount: 999 },
+  'patient-poker-player-advanced-tactics': { name: 'The Patient Poker Player: Advanced Tactics to Outlast and Outplay', amount: 999 },
+  'i-just-ran-bad': { name: 'I Just Ran Bad and Other Lies Poker Players Tell Themselves', amount: 999 },
+  'final-table-secrets': { name: 'Final Table Secrets', amount: 999 },
+  'poker-tricks-traps-and-mind-games': { name: 'Poker Tricks, Traps, and Mind Games', amount: 999 },
+  'poker-players-joke-book': { name: 'The Poker Player’s Joke Book', amount: 999 },
+  'poker-life-culture': { name: 'Poker Life: The Complete Guide to Poker Culture', amount: 1299 },
+  'only-poker-book-youll-ever-need': { name: 'The Only Poker Book You’ll Ever Need', amount: 999 },
+  'patient-poker-player-win-more': { name: 'The Patient Poker Player: Win More by Playing Less', amount: 999 }
 };
 
 function response(body, status = 200) {
@@ -61,7 +61,7 @@ export default async (request) => {
   [...quantities.entries()].forEach(([slug, quantity], index) => {
     form.set(`line_items[${index}][price_data][currency]`, 'usd');
     form.set(`line_items[${index}][price_data][unit_amount]`, String(catalog[slug].amount));
-    form.set(`line_items[${index}][price_data][product]`, catalog[slug].product);
+    form.set(`line_items[${index}][price_data][product_data][name]`, catalog[slug].name);
     form.set(`line_items[${index}][quantity]`, String(quantity));
   });
 
