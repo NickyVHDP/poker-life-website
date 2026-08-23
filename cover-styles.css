@@ -5,6 +5,7 @@
   overflow: hidden;
   padding: 0;
   background: #020712;
+  border: 0;
 }
 
 .book-cover img {
@@ -26,10 +27,10 @@
   z-index: 1;
   top: 0;
   bottom: 0;
-  left: 50%;
-  width: 78%;
-  transform: translateX(-50%);
-  box-shadow: inset 0 0 0 4px #020712;
+  inset: 0;
+  width: auto;
+  transform: none;
+  box-shadow: inset 0 0 0 10px #020712;
   pointer-events: none;
 }
 
