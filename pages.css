@@ -420,6 +420,8 @@ summary:focus-visible {
 .book-details:hover,
 .book-details:focus-visible { border-color: #e7b434; color: #ffd76b; }
 
+.book-details + .button { margin-top: 8px; }
+
 .book-modal {
   width: min(860px, calc(100vw - 32px));
   max-height: min(760px, calc(100vh - 32px));
