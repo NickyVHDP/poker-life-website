@@ -40,6 +40,9 @@
 .stats-bar strong { color: #e1b552; font: 700 clamp(18px, 1.7vw, 25px)/1 Cinzel, serif; letter-spacing: -.02em; }
 .stats-bar small { max-width: 150px; color: #e3e8f1; font-size: 10px; font-weight: 600; line-height: 1.25; }
 .stats-bar div:nth-child(3) .stat-icon { background-color: transparent; background-size: 86%; }
+
+/* Keep the hands-study mark unmistakably poker: three clean, fanned cards. */
+.stats-bar div:nth-child(3) .stat-icon { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23d9ab49' stroke-width='2.5' stroke-linejoin='round'%3E%3Crect x='5' y='12' width='18' height='27' rx='2' transform='rotate(-14 14 25.5)'/%3E%3Crect x='15' y='7' width='18' height='27' rx='2'/%3E%3Crect x='25' y='12' width='18' height='27' rx='2' transform='rotate(14 34 25.5)'/%3E%3Cpath d='m24 16 3 4-3 4-3-4 3-4Zm0 10c1.6 2 2.4 3.2 2.4 4.4 0 1.5-1.1 2.6-2.4 2.6s-2.4-1.1-2.4-2.6c0-1.2.8-2.4 2.4-4.4Z'/%3E%3C/g%3E%3C/svg%3E"); background-position: center; background-repeat: no-repeat; background-size: 88%; }
 .merch { align-items: stretch; }
 .merch-copy { display: flex; flex-direction: column; justify-content: center; }
 .merch-strip { width: 100%; min-height: 200px; object-fit: cover; border: 1px solid rgba(62, 126, 205, .65); border-radius: 11px; box-shadow: 0 14px 30px rgba(0, 0, 0, .3), inset 0 0 30px rgba(32, 99, 190, .18); }
