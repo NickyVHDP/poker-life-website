@@ -615,7 +615,7 @@ summary:focus-visible {
 
 .header-actions [data-cart-link] { position: relative; }
 .header-actions [data-cart-count] { display: grid; place-items: center; }
-.header-actions > button[data-search-toggle] { display: grid; place-items: center; width: 26px; height: 26px; padding: 0; color: #e7eef9; font-size: 30px; line-height: 1; }
+.header-actions > button[data-search-toggle] { display: grid; place-items: center; width: 26px; height: 26px; padding: 0; color: #e7eef9; font-size: 36px; line-height: 1; }
 
 .merch-product-grid {
   display: grid;

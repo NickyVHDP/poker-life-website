@@ -6,7 +6,7 @@
   height: 26px;
   padding: 0;
   color: #e7eef9;
-  font-size: 30px;
+  font-size: 36px;
   line-height: 1;
 }
 
@@ -30,6 +30,7 @@
   padding: 6px 8px !important;
   opacity: 1 !important;
   text-align: center;
+  transform: translateX(-4px);
 }
 
 .benefit-panel span + span { border-left: 1px solid rgba(111, 171, 237, .26) !important; }
@@ -59,7 +60,8 @@
 .benefit-panel i::after { content: none !important; }
 
 .benefit-panel span:nth-child(1) i { background-image: url("assets/benefit-icon-lower-pricing.png") !important; }
-.benefit-panel span:nth-child(2) i { background-image: url("assets/benefit-icon-signed-copies.png") !important; }
+.benefit-panel span:nth-child(2) i { background-image: url("assets/benefit-icon-signed-copies.png?v=2") !important; }
+.benefit-panel span:nth-child(2) i { width: 88px; }
 .benefit-panel span:nth-child(3) i { background-image: url("assets/benefit-icon-bonus-pdfs.png") !important; }
 .benefit-panel span:nth-child(4) i { background-image: url("assets/benefit-icon-bundle-discounts.png") !important; }
 .benefit-panel span:nth-child(5) i { background-image: url("assets/benefit-icon-support-author.png") !important; }
@@ -83,5 +85,5 @@
 }
 
 @media (max-width: 620px) {
-  .header-actions > button[data-search-toggle] { width: 28px; height: 28px; font-size: 29px; }
+  .header-actions > button[data-search-toggle] { width: 28px; height: 28px; font-size: 34px; }
 }
