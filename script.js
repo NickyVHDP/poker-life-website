@@ -273,6 +273,15 @@ if (handsStudiedIcon) {
   handsStudiedIcon.replaceWith(icon);
 }
 
+const directBenefitsPanel = document.querySelector('.benefit-panel');
+if (directBenefitsPanel) {
+  const referenceArtwork = document.createElement('img');
+  referenceArtwork.className = 'benefit-reference-artwork';
+  referenceArtwork.src = 'assets/direct-benefits-reference.jpg?v=1';
+  referenceArtwork.alt = 'Lower pricing, signed copies, exclusive bonus PDFs, bundle discounts, and support the author directly.';
+  directBenefitsPanel.replaceChildren(referenceArtwork);
+}
+
 // Forms are local-only: confirm the input was captured in the browser,
 // never claim anything was sent or subscribed.
 document.querySelectorAll('form[data-local-form]').forEach((form) => {
