@@ -562,6 +562,29 @@ summary:focus-visible {
 /* Keep the search panel closed until the header search icon opens it. */
 .site-search[hidden] { display: none; }
 
+.header-actions {
+  align-items: center;
+}
+
+.header-actions > a[data-cart-link] {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 21px;
+  height: 25px;
+  color: #fff;
+}
+
+.header-actions > a[data-cart-link] svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
 .site-search label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .site-search input,
 .catalog-search input {
