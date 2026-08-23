@@ -277,7 +277,7 @@ const directBenefitsPanel = document.querySelector('.benefit-panel');
 if (directBenefitsPanel) {
   const referenceArtwork = document.createElement('img');
   referenceArtwork.className = 'benefit-reference-artwork';
-  referenceArtwork.src = 'assets/direct-benefits-icons-only.png?v=1';
+  referenceArtwork.src = 'assets/direct-benefits-icons-only.png?v=2';
   referenceArtwork.alt = 'Lower pricing, signed copies, exclusive bonus PDFs, bundle discounts, and support the author directly.';
   directBenefitsPanel.replaceChildren(referenceArtwork);
 }
