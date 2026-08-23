@@ -55,6 +55,7 @@ export default async (request) => {
   const siteUrl = (process.env.SITE_URL || new URL(request.url).origin).replace(/\/$/, '');
   const form = new URLSearchParams({
     mode: 'payment',
+    'managed_payments[enabled]': 'false',
     success_url: `${siteUrl}/order-confirmed.html?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${siteUrl}/checkout.html`
   });
