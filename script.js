@@ -266,9 +266,10 @@ document.querySelectorAll('[data-site-search]').forEach((form) => form.addEventL
 // Use a real image element for the hands-studied mark so it is not affected by SVG/CSS icon styling.
 const handsStudiedIcon = document.querySelector('.stats-bar div:nth-child(3) .stat-icon');
 if (handsStudiedIcon) {
-  const icon = document.createElement('span');
+  const icon = document.createElement('img');
   icon.className = 'stat-icon hands-studied-icon';
-  icon.setAttribute('aria-hidden', 'true');
+  icon.src = 'assets/hands-studied-card-fan.png?v=1';
+  icon.alt = '';
   handsStudiedIcon.replaceWith(icon);
 }
 
