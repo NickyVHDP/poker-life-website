@@ -1,0 +1,87 @@
+/* Final homepage benefits treatment: supplied icons with live, crisp labels. */
+.header-actions > button[data-search-toggle] {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  color: #e7eef9;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.benefit-panel {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  align-items: stretch;
+  gap: 0 !important;
+  min-height: 128px;
+  padding: 10px 12px !important;
+}
+
+.benefit-panel span {
+  position: relative;
+  display: grid !important;
+  grid-template-rows: 58px auto !important;
+  align-content: center;
+  justify-items: center;
+  min-height: 104px !important;
+  gap: 7px !important;
+  padding: 6px 8px !important;
+  opacity: 1 !important;
+  text-align: center;
+}
+
+.benefit-panel span + span { border-left: 1px solid rgba(111, 171, 237, .26) !important; }
+
+.benefit-panel i,
+.benefit-panel i::before,
+.benefit-panel i::after {
+  display: block;
+  width: 78px;
+  height: 58px;
+  margin: 0;
+  padding: 0;
+  color: transparent !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+  filter: none !important;
+  -webkit-mask: none !important;
+  -webkit-mask-image: none !important;
+  mask: none !important;
+  mask-image: none !important;
+}
+
+.benefit-panel i::before,
+.benefit-panel i::after { content: none !important; }
+
+.benefit-panel span:nth-child(1) i { background-image: url("assets/benefit-icon-lower-pricing.png") !important; }
+.benefit-panel span:nth-child(2) i { background-image: url("assets/benefit-icon-signed-copies.png") !important; }
+.benefit-panel span:nth-child(3) i { background-image: url("assets/benefit-icon-bonus-pdfs.png") !important; }
+.benefit-panel span:nth-child(4) i { background-image: url("assets/benefit-icon-bundle-discounts.png") !important; }
+.benefit-panel span:nth-child(5) i { background-image: url("assets/benefit-icon-support-author.png") !important; }
+
+.benefit-panel b {
+  display: block;
+  color: #f5f7fb !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  line-height: 1.18 !important;
+  text-align: center;
+  text-shadow: none !important;
+}
+
+.benefit-panel small {
+  display: block;
+  margin-top: 2px;
+  color: #c2cddd !important;
+  font-size: 9px !important;
+  font-weight: 500 !important;
+}
+
+@media (max-width: 620px) {
+  .header-actions > button[data-search-toggle] { width: 28px; height: 28px; font-size: 29px; }
+}
