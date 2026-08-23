@@ -14,14 +14,15 @@
     <link rel="stylesheet" href="reference-lower-sections.css" />
     <link rel="stylesheet" href="logo-art.css" />
     <link rel="stylesheet" href="pages.css" />
-    <script defer src="script.js?v=2"></script>
+    <script defer src="script.js?v=5"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="Poker Life home"><img class="brand-mark" src="assets/poker-life-mark-transparent.png" alt="" /><img class="brand-wordmark" src="assets/poker-life-wordmark.png" alt="Poker Life — Focus, Patience, Profit" /></a>
       <nav class="main-nav" aria-label="Main navigation"><a href="index.html">Home</a><a href="shop.html">Shop</a><a href="books.html">Books</a><a href="about.html">About Larry</a><a href="articles.html">Poker Articles</a><a href="faq.html">FAQ</a><a class="is-current" href="contact.html" aria-current="page">Contact</a></nav>
-      <div class="header-actions"><a href="books.html" aria-label="Browse the book catalog">⌕</a><a href="contact.html" aria-label="Contact Poker Life">♙</a><a href="shop.html" aria-label="Go to the shop">🛒</a></div>
+      <div class="header-actions"><button type="button" data-search-toggle aria-label="Search books">⌕</button><a href="contact.html" aria-label="Contact Poker Life">♙</a><a href="checkout.html" data-cart-link aria-label="0 items in cart">🛒<i data-cart-count hidden>0</i></a></div>
+      <form class="site-search" data-site-search hidden role="search"><label for="site-search-contact">Search the Poker Life library</label><input id="site-search-contact" name="q" type="search" placeholder="Search books, strategy, mindset…" /><button class="button gold" type="submit">Search</button></form>
     </header>
     <main id="main">
       <section class="page-hero">
@@ -70,14 +71,14 @@
             <article class="panel" id="books-help">
               <span class="eyebrow">Books &amp; orders</span>
               <h3>Questions About a Book</h3>
-              <p>Formats, delivery, refunds, and anything specific to an order are decided at Stripe checkout, not on this site. The <a href="faq.html#buying">FAQ</a> explains what is and is not published here.</p>
+              <p>Formats, delivery, refunds, and anything specific to an order are confirmed during secure checkout. The <a href="faq.html#buying">FAQ</a> explains what is and is not published here.</p>
               <a class="button outline" href="books.html">See the catalogue</a>
             </article>
 
             <article class="panel" id="gear">
               <span class="eyebrow">Gear enquiry</span>
               <h3>Poker Life Gear</h3>
-              <p>Apparel and accessories are not set up for checkout on this site, so there is no price list or shipping process to quote. Use the form and choose “Poker Life gear” to register an enquiry.</p>
+              <p>Apparel and accessories can be added to the cart, but their official prices and secure checkout products still need to be connected. Use the form and choose “Poker Life gear” if you would like availability information.</p>
               <a class="button outline" href="shop.html#merch">View the gear</a>
             </article>
 

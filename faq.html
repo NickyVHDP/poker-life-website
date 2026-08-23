@@ -14,14 +14,15 @@
     <link rel="stylesheet" href="reference-lower-sections.css" />
     <link rel="stylesheet" href="logo-art.css" />
     <link rel="stylesheet" href="pages.css" />
-    <script defer src="script.js?v=2"></script>
+    <script defer src="script.js?v=5"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="Poker Life home"><img class="brand-mark" src="assets/poker-life-mark-transparent.png" alt="" /><img class="brand-wordmark" src="assets/poker-life-wordmark.png" alt="Poker Life — Focus, Patience, Profit" /></a>
       <nav class="main-nav" aria-label="Main navigation"><a href="index.html">Home</a><a href="shop.html">Shop</a><a href="books.html">Books</a><a href="about.html">About Larry</a><a href="articles.html">Poker Articles</a><a class="is-current" href="faq.html" aria-current="page">FAQ</a><a href="contact.html">Contact</a></nav>
-      <div class="header-actions"><a href="books.html" aria-label="Browse the book catalog">⌕</a><a href="contact.html" aria-label="Contact Poker Life">♙</a><a href="shop.html" aria-label="Go to the shop">🛒</a></div>
+      <div class="header-actions"><button type="button" data-search-toggle aria-label="Search books">⌕</button><a href="contact.html" aria-label="Contact Poker Life">♙</a><a href="checkout.html" data-cart-link aria-label="0 items in cart">🛒<i data-cart-count hidden>0</i></a></div>
+      <form class="site-search" data-site-search hidden role="search"><label for="site-search-faq">Search the Poker Life library</label><input id="site-search-faq" name="q" type="search" placeholder="Search books, strategy, mindset…" /><button class="button gold" type="submit">Search</button></form>
     </header>
     <main id="main">
       <section class="page-hero">
@@ -38,19 +39,19 @@
           <details>
             <summary>How do I buy a Poker Life book?</summary>
             <div class="answer">
-              <p>Open the <a href="books.html">books page</a> and use the “Buy now” button on the title you want. That button opens the book’s Stripe checkout page in a new tab, where you complete the purchase.</p>
+              <p>Open the <a href="books.html">books page</a>, use “View details” to learn more, then add the title to your cart. The cart icon at the top of the page takes you to one shared order review for all selected books.</p>
             </div>
           </details>
           <details>
             <summary>What does a book cost?</summary>
             <div class="answer">
-              <p>The listed price appears on each book card in the catalogue. The Stripe checkout page is the authoritative source — whatever it shows at the moment of purchase, including any taxes or fees it applies, is what governs the transaction.</p>
+              <p>The listed price appears on each book card and in the cart. Shipping, taxes, and any applicable fees are confirmed during secure checkout once the combined Stripe cart connection is active.</p>
             </div>
           </details>
           <details>
             <summary>What format is the book — print, ebook, or audio?</summary>
             <div class="answer">
-              <p>This site does not publish format details, so it would be a guess to state them here. The Stripe checkout page for each title carries the product description for that specific book. If it still is not clear after you have looked, ask through the <a href="contact.html">contact page</a> before buying.</p>
+              <p>Each book’s Poker Life details view includes its current overview. If anything is not clear after you have looked, ask through the <a href="contact.html">contact page</a> before buying.</p>
             </div>
           </details>
           <details>
@@ -63,7 +64,7 @@
           <details>
             <summary>Is checkout secure? What happens to my card details?</summary>
             <div class="answer">
-              <p>Payment is handled entirely by Stripe on Stripe’s own pages. This website is a set of static pages — it has no payment processing, no accounts, and no server collecting or storing card details.</p>
+              <p>The cart is handled on Poker Life; final card payment will be handled by Stripe on Stripe’s own pages once the combined cart connection is configured. This website does not collect or store card details.</p>
             </div>
           </details>
           <details>
@@ -76,13 +77,13 @@
           <details>
             <summary>Are the books sold anywhere else, like Amazon?</summary>
             <div class="answer">
-              <p>The only checkout links on this site are the Stripe links on the <a href="books.html">books page</a>. This site cannot speak for listings on other retailers, so it does not point you at any. If you want to know about availability elsewhere, ask through the <a href="contact.html">contact page</a>.</p>
+              <p>Each book’s details and direct-checkout pages include an optional Amazon search link as an alternative. Poker Life direct checkout remains the primary option; availability, pricing, and delivery on other retailers are controlled by those retailers.</p>
             </div>
           </details>
           <details>
             <summary>Do you offer bundles or discounts on multiple books?</summary>
             <div class="answer">
-              <p>Each title currently has its own individual checkout link, and there is no bundle checkout on this site. If you are interested in more than one book, ask through the <a href="contact.html">contact page</a> rather than assuming a bundle price exists.</p>
+              <p>Use the shared cart to collect more than one book. The cart creates one secure Stripe payment for all selected titles once the site’s Stripe connection is configured.</p>
             </div>
           </details>
         </div>
@@ -95,7 +96,7 @@
           <details>
             <summary>Can I buy the hoodies, shirts, caps, and tumblers?</summary>
             <div class="answer">
-              <p>Online gear ordering is coming soon. The <a href="shop.html#merch">gear section</a> previews the branded line, while the <a href="contact.html#gear">contact page</a> carries the current availability status.</p>
+              <p>Gear is currently a preview of the upcoming Poker Life collection. It will be added to the cart once its official prices, product details, and secure payment setup are ready.</p>
             </div>
           </details>
           <details>
@@ -175,7 +176,7 @@
             </div>
           </details>
         </div>
-        <p class="notice"><strong>At a glance:</strong> book checkout is active through Stripe. Gear ordering, newsletter delivery, coaching, and courses are marked as coming soon. Visit the <a href="contact.html">contact page</a> for their current status.</p>
+        <p class="notice"><strong>At a glance:</strong> the shared cart is ready for books and will use Stripe for combined secure checkout once it is configured. Gear, newsletter delivery, coaching, and courses remain coming soon.</p>
       </section>
     </main>
     <footer>
