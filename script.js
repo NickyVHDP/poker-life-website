@@ -266,11 +266,10 @@ document.querySelectorAll('[data-site-search]').forEach((form) => form.addEventL
 // Use a real image element for the hands-studied mark so it is not affected by SVG/CSS icon styling.
 const handsStudiedIcon = document.querySelector('.stats-bar div:nth-child(3) .stat-icon');
 if (handsStudiedIcon) {
-  const image = document.createElement('img');
-  image.className = 'stat-icon hands-studied-icon';
-  image.src = 'assets/hands-studied-icon.svg?v=3';
-  image.alt = '';
-  handsStudiedIcon.replaceWith(image);
+  const icon = document.createElement('span');
+  icon.className = 'stat-icon hands-studied-icon';
+  icon.setAttribute('aria-hidden', 'true');
+  handsStudiedIcon.replaceWith(icon);
 }
 
 // Forms are local-only: confirm the input was captured in the browser,
