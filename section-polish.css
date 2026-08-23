@@ -54,7 +54,7 @@
 .stats-bar div:nth-child(3) img.hands-studied-icon { content: normal; background: none; }
 
 /* Exact direct-purchase artwork supplied by the client. */
-.benefit-panel { aspect-ratio: 1840 / 354; min-height: 0; padding: 0; border: 0; border-radius: 0; background: url("assets/direct-benefits-reference.jpg") center / 100% 100% no-repeat; box-shadow: none; }
+.benefit-panel { display: block; aspect-ratio: 1840 / 354; min-height: 0; padding: 0; border: 0; border-radius: 0; background: url("assets/direct-benefits-reference.jpg") center / 100% 100% no-repeat; box-shadow: none; }
 .benefit-panel::before { display: none; }
 .benefit-panel span { opacity: 0; pointer-events: none; }
 .benefit-panel .benefit-reference-artwork { display: block; width: 100%; height: auto; }
