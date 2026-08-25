@@ -3,19 +3,20 @@ const maxQuantity = 10;
 // The browser submits only a slug and quantity. Names and prices stay here so
 // a customer cannot alter an amount before Stripe Checkout is created.
 const catalog = {
-  'texas-holdem-in-texas': { name: 'Texas Hold’em in Texas', amount: 999 },
-  'winning-tournament-poker': { name: 'Winning Tournament Poker', amount: 999 },
-  'poker-math-made-easy': { name: 'Poker Math Made Easy', amount: 999 },
-  'is-he-bluffing': { name: 'Is He Bluffing?', amount: 999 },
-  'complete-guide-to-poker-for-women': { name: 'The Complete Guide to Poker for Women', amount: 999 },
-  'patient-poker-player-advanced-tactics': { name: 'The Patient Poker Player: Advanced Tactics to Outlast and Outplay', amount: 999 },
-  'i-just-ran-bad': { name: 'I Just Ran Bad and Other Lies Poker Players Tell Themselves', amount: 999 },
-  'final-table-secrets': { name: 'Final Table Secrets', amount: 999 },
-  'poker-tricks-traps-and-mind-games': { name: 'Poker Tricks, Traps, and Mind Games', amount: 999 },
+  'texas-holdem-in-texas': { name: 'Texas Hold’em in Texas', amount: 1499 },
+  'winning-tournament-poker': { name: 'Winning Tournament Poker', amount: 1499 },
+  'poker-math-made-easy': { name: 'Poker Math Made Easy', amount: 1299 },
+  'is-he-bluffing': { name: 'Is He Bluffing?', amount: 1499 },
+  'complete-guide-to-poker-for-women': { name: 'The Complete Guide to Poker for Women', amount: 1499 },
+  'patient-poker-player-advanced-tactics': { name: 'The Patient Poker Player: Advanced Tactics to Outlast and Outplay', amount: 1499 },
+  'i-just-ran-bad': { name: 'I Just Ran Bad and Other Lies Poker Players Tell Themselves', amount: 1499 },
+  'final-table-secrets': { name: 'Final Table Secrets', amount: 1499 },
+  'poker-tricks-traps-and-mind-games': { name: 'Poker Tricks, Traps, and Mind Games', amount: 1999 },
+  'poker-what-the-pros-dont-want-you-to-know': { name: 'Poker: What the Pros Don’t Want You to Know', amount: 1999 },
   'poker-players-joke-book': { name: 'The Poker Player’s Joke Book', amount: 999 },
-  'poker-life-culture': { name: 'Poker Life: The Complete Guide to Poker Culture', amount: 1299 },
-  'only-poker-book-youll-ever-need': { name: 'The Only Poker Book You’ll Ever Need', amount: 999 },
-  'patient-poker-player-win-more': { name: 'The Patient Poker Player: Win More by Playing Less', amount: 999 }
+  'poker-life-culture': { name: 'Poker Life: The Complete Guide to Poker Culture', amount: 1999 },
+  'only-poker-book-youll-ever-need': { name: 'The Only Poker Book You’ll Ever Need', amount: 1999 },
+  'patient-poker-player-win-more': { name: 'The Patient Poker Player: Win More by Playing Less', amount: 1499 }
 };
 
 function response(body, status = 200) {
