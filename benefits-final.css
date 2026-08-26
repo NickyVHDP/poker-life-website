@@ -86,4 +86,31 @@
 
 @media (max-width: 620px) {
   .header-actions > button[data-search-toggle] { width: 28px; height: 28px; font-size: 34px; }
+
+  /* A five-column strip is too narrow for readable benefit labels on phones. */
+  .benefit-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    min-height: 0;
+    padding: 8px !important;
+  }
+
+  .benefit-panel span {
+    grid-template-rows: 48px auto !important;
+    min-height: 104px !important;
+    gap: 6px !important;
+    padding: 7px 6px !important;
+    transform: none;
+  }
+
+  .benefit-panel span:nth-child(2n + 1) { border-left: 0 !important; }
+  .benefit-panel span:nth-child(5) { grid-column: 1 / -1; }
+
+  .benefit-panel i,
+  .benefit-panel span:nth-child(2) i {
+    width: 64px;
+    height: 48px;
+  }
+
+  .benefit-panel b { font-size: 11px !important; }
+  .benefit-panel small { font-size: 9px !important; }
 }
