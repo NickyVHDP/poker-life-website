@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { createCheckoutHandler } from './create-checkout.mjs';
+import { createCheckoutHandler } from '../netlify/functions/create-checkout.mjs';
 
 function shippingEnv(overrides = {}) {
   return {
