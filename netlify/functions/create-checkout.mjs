@@ -12,7 +12,7 @@ const catalog = {
   'i-just-ran-bad': { name: 'I Just Ran Bad and Other Lies Poker Players Tell Themselves', amount: 1499 },
   'final-table-secrets': { name: 'Final Table Secrets', amount: 1499 },
   'poker-tricks-traps-and-mind-games': { name: 'Poker Tricks, Traps, and Mind Games', amount: 1999 },
-  'poker-what-the-pros-dont-want-you-to-know': { name: 'Poker: What the Pros Don’t Want You to Know', amount: 1999 },
+  'poker-what-the-pros-dont-want-you-to-know': { name: 'Poker: What the Pros Don’t Want You to Know', amount: 1499 },
   'poker-life-culture': { name: 'Poker Life: The Complete Guide to Poker Culture', amount: 1999 },
   'only-poker-book-youll-ever-need': { name: 'The Only Poker Book You’ll Ever Need', amount: 1999 },
   'patient-poker-player-win-more': { name: 'The Patient Poker Player: Win More by Playing Less', amount: 1499 }
