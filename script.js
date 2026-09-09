@@ -11,22 +11,24 @@ const books = [
   { slug: 'poker-what-the-pros-dont-want-you-to-know', title: 'Poker: What the Pros Don’t Want You to Know', category: 'strategy', blurb: 'See beyond the obvious.', price: '$14.99', description: 'A practical guide to recognizing the decisions and patterns that experienced players notice first, so you can build a sharper, more deliberate approach at the table.' },
   { slug: 'poker-life-culture', title: 'Poker Life: The Complete Guide to Poker Culture', category: 'mindset', blurb: 'The poker world, from the inside out.', price: '$19.99', stripeUrl: 'https://buy.stripe.com/4gMaEXacC2gg3a2b5l2Nq0a', description: 'A look at the people, routines, language, and unwritten rules that shape the poker world. It is written for readers who want to understand the culture around the cards as well as the game itself.' },
   { slug: 'only-poker-book-youll-ever-need', title: 'The Only Poker Book You’ll Ever Need', category: 'strategy', blurb: 'One strong reference.', price: '$19.99', stripeUrl: 'https://buy.stripe.com/28E5kDdoO8EE7qi1uL2Nq07', description: 'A broad, practical reference for players who want the core ideas in one place. It brings together strategy, table awareness, basic math, and mindset into an approachable guide for ongoing study.' },
-  { slug: 'patient-poker-player-win-more', title: 'The Patient Poker Player: Win More by Playing Less', category: 'mindset', blurb: 'Outlast and outplay.', price: '$14.99', stripeUrl: 'https://buy.stripe.com/28EaEXgB0bQQaCu3CT2Nq08', description: 'A concise case for selective, intentional poker. It challenges the impulse to force action and shows how fewer marginal decisions can lead to a more focused, sustainable approach to the game.' }
+  { slug: 'patient-poker-player-win-more', title: 'The Patient Poker Player: Win More by Playing Less', category: 'mindset', blurb: 'Outlast and outplay.', price: '$14.99', stripeUrl: 'https://buy.stripe.com/28EaEXgB0bQQaCu3CT2Nq08', description: 'A concise case for selective, intentional poker. It challenges the impulse to force action and shows how fewer marginal decisions can lead to a more focused, sustainable approach to the game.' },
+  { slug: 'f-ked-on-the-river', title: 'F#@KED on the River', category: 'stories', blurb: 'Bad beats. Brutal suckouts. Unbelievable stories.', price: '$10.99', description: 'Poker’s craziest bad beats, brutal suckouts, and unbelievable river stories—same players, same dreams, different disasters.' }
 ];
 const covers = {
   'Texas Hold’em in Texas': 'assets/covers/clean/texas-holdem-in-texas.jpg',
   'Winning Tournament Poker': 'assets/covers/clean/winning-tournament-poker.jpg',
   'Poker Math Made Easy': 'assets/covers/clean/poker-math-made-easy.jpg',
-  'Is He Bluffing?': 'assets/covers/clean/is-he-bluffing.jpg',
+  'Is He Bluffing?': 'assets/covers/clean/is-he-bluffing.jpg?v=20260909',
   'The Complete Guide to Poker for Women': 'assets/covers/clean/complete-guide-to-poker-for-women.jpg',
   'The Patient Poker Player: Advanced Tactics to Outlast and Outplay': 'assets/covers/clean/patient-poker-player-advanced-tactics.jpg',
   'I Just Ran Bad and Other Lies Poker Players Tell Themselves': 'assets/covers/clean/i-just-ran-bad.jpg',
   'Final Table Secrets': 'assets/covers/clean/final-table-secrets.jpg',
   'Poker Tricks, Traps, and Mind Games': 'assets/covers/clean/poker-tricks-traps-and-mind-games.jpg',
-  'Poker: What the Pros Don’t Want You to Know': 'assets/covers/clean/poker-what-the-pros-dont-want-you-to-know.jpg',
+  'Poker: What the Pros Don’t Want You to Know': 'assets/covers/clean/poker-what-the-pros-dont-want-you-to-know.jpg?v=20260909',
   'Poker Life: The Complete Guide to Poker Culture': 'assets/covers/clean/poker-life-culture.jpg',
-  'The Only Poker Book You’ll Ever Need': 'assets/covers/clean/the-only-poker-book.jpg',
-  'The Patient Poker Player: Win More by Playing Less': 'assets/covers/clean/patient-poker-player-win-more.jpg'
+  'The Only Poker Book You’ll Ever Need': 'assets/covers/clean/the-only-poker-book.jpg?v=20260909',
+  'The Patient Poker Player: Win More by Playing Less': 'assets/covers/clean/patient-poker-player-win-more.jpg',
+  'F#@KED on the River': 'assets/covers/clean/f-ked-on-the-river.jpg'
 };
 
 // Apparel will join this exact cart once its real products, prices, and images

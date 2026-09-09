@@ -5,7 +5,7 @@ Initial static storefront for the Poker Life book collection.
 ## What is included
 
 - Premium dark/gold homepage design
-- 13-book catalog sourced from the existing Stripe context
+- 14-book catalog sourced from the existing Stripe context
 - Local-only newsletter form behavior
 - Responsive layout with accessible controls
 

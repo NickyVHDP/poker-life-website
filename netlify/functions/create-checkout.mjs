@@ -15,7 +15,8 @@ const catalog = {
   'poker-what-the-pros-dont-want-you-to-know': { name: 'Poker: What the Pros Don’t Want You to Know', amount: 1499 },
   'poker-life-culture': { name: 'Poker Life: The Complete Guide to Poker Culture', amount: 1999 },
   'only-poker-book-youll-ever-need': { name: 'The Only Poker Book You’ll Ever Need', amount: 1999 },
-  'patient-poker-player-win-more': { name: 'The Patient Poker Player: Win More by Playing Less', amount: 1499 }
+  'patient-poker-player-win-more': { name: 'The Patient Poker Player: Win More by Playing Less', amount: 1499 },
+  'f-ked-on-the-river': { name: 'F#@KED on the River', amount: 1099 }
 };
 
 function response(body, status = 200) {

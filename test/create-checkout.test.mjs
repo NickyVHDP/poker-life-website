@@ -51,6 +51,14 @@ test('uses the one-book shipping rate for one book', async () => {
   assert.equal(form.get('line_items[0][quantity]'), '1');
 });
 
+test('sends the new river book to Stripe at $10.99', async () => {
+  const form = await submittedShippingRate([{ slug: 'f-ked-on-the-river', quantity: 2 }]);
+
+  assert.equal(form.get('line_items[0][price_data][product_data][name]'), 'F#@KED on the River');
+  assert.equal(form.get('line_items[0][price_data][unit_amount]'), '1099');
+  assert.equal(form.get('line_items[0][quantity]'), '2');
+});
+
 test('uses the multiple-book rate for orders of $100 or less', async () => {
   for (const quantity of [2, 3, 4, 5]) {
     const form = await submittedShippingRate([{ slug: 'poker-math-made-easy', quantity }]);
