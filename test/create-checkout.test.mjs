@@ -27,7 +27,7 @@ async function submittedShippingRate(items, envOverrides = {}) {
     env: shippingEnv(envOverrides),
     fetchImpl: async (url, options) => {
       stripeRequest = { url, options };
-      return new Response(JSON.stringify({ url: 'https://checkout.stripe.com/example' }), { status: 200 });
+      return new Response(JSON.stringify({ id: 'cs_live_example', url: 'https://checkout.stripe.com/example' }), { status: 200 });
     }
   });
 
@@ -36,6 +36,9 @@ async function submittedShippingRate(items, envOverrides = {}) {
 
   assert.equal(response.status, 200);
   assert.equal(stripeRequest.url, 'https://api.stripe.com/v1/checkout/sessions');
+  assert.match(form.get('client_reference_id'), /^pokerlife_/);
+  assert.equal(form.get('metadata[site]'), 'pokerlifeusa.com');
+  assert.equal(form.get('payment_intent_data[metadata][order_id]'), form.get('metadata[order_id]'));
   return form;
 }
 
@@ -103,7 +106,7 @@ test('defaults shipping-address collection to the US', async () => {
     env: shippingEnv(),
     fetchImpl: async (_url, options) => {
       stripeForm = new URLSearchParams(options.body);
-      return new Response(JSON.stringify({ url: 'https://checkout.stripe.com/example' }), { status: 200 });
+      return new Response(JSON.stringify({ id: 'cs_live_example', url: 'https://checkout.stripe.com/example' }), { status: 200 });
     }
   });
 

@@ -61,6 +61,37 @@ function saveCart() {
   renderCartCount();
 }
 
+const pendingCheckoutStorageKey = 'pokerLifePendingCheckouts';
+
+function pendingCheckouts() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(pendingCheckoutStorageKey) || '{}');
+    return saved && typeof saved === 'object' && !Array.isArray(saved) ? saved : {};
+  } catch {
+    return {};
+  }
+}
+
+function rememberCheckout(sessionId) {
+  const saved = pendingCheckouts();
+  saved[sessionId] = cart.map(({ slug, quantity }) => ({ slug, quantity }));
+  localStorage.setItem(pendingCheckoutStorageKey, JSON.stringify(saved));
+}
+
+function removePaidItems(sessionId) {
+  const saved = pendingCheckouts();
+  const purchased = saved[sessionId];
+  if (!Array.isArray(purchased)) return;
+  for (const item of purchased) {
+    const line = cart.find((entry) => entry.slug === item.slug);
+    if (line) line.quantity = Math.max(0, line.quantity - item.quantity);
+  }
+  cart = cart.filter((line) => line.quantity > 0);
+  delete saved[sessionId];
+  localStorage.setItem(pendingCheckoutStorageKey, JSON.stringify(saved));
+  saveCart();
+}
+
 function cartQuantity() {
   return cart.reduce((total, line) => total + line.quantity, 0);
 }
@@ -229,7 +260,8 @@ async function startStripeCheckout(button) {
       body: JSON.stringify({ items: cart })
     });
     const payload = await response.json().catch(() => ({}));
-    if (!response.ok || !payload.url) throw new Error(payload.error || 'Secure checkout is not available yet.');
+    if (!response.ok || !payload.url || !payload.sessionId) throw new Error(payload.error || 'Secure checkout is not available yet.');
+    rememberCheckout(payload.sessionId);
     window.location.assign(payload.url);
   } catch (error) {
     button.disabled = false;
@@ -246,9 +278,51 @@ if (checkoutAdd && getProduct(checkoutAdd)) {
 renderCartCount();
 renderCheckoutPage();
 
-if (document.querySelector('[data-order-confirmed]') && new URLSearchParams(window.location.search).get('session_id')) {
-  cart = [];
-  saveCart();
+const orderPage = document.querySelector('[data-order-confirmed]');
+if (orderPage) {
+  const sessionId = new URLSearchParams(window.location.search).get('session_id');
+  const heading = orderPage.querySelector('[data-order-heading]');
+  const message = orderPage.querySelector('[data-order-message]');
+  const detail = orderPage.querySelector('[data-order-detail]');
+  const setStatus = (title, copy, extra = '') => {
+    heading.textContent = title;
+    message.textContent = copy;
+    detail.textContent = extra;
+  };
+  if (!sessionId) {
+    setStatus('No payment to verify.', 'We could not find a checkout session. Your cart has not been changed.');
+  } else {
+    let checks = 0;
+    const verifyOrder = async () => {
+      try {
+        const response = await fetch(`/.netlify/functions/order-status?session_id=${encodeURIComponent(sessionId)}`, { cache: 'no-store' });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(result.error || 'Verification is temporarily unavailable.');
+        if (result.status === 'paid') {
+          removePaidItems(sessionId);
+          setStatus(
+            'Payment confirmed.',
+            result.recorded
+              ? 'Thank you. Stripe has confirmed your payment and your order has been recorded.'
+              : 'Stripe has confirmed your payment. We are finishing the order record; please do not pay again. Your Stripe receipt confirms payment.',
+            `Order reference: ${result.orderId}`
+          );
+        } else if (result.status === 'processing') {
+          setStatus('Payment processing.', 'Stripe is still processing your payment. Please do not place another order yet.', 'This page will check again automatically.');
+          if (++checks < 12) window.setTimeout(verifyOrder, 5000);
+        } else if (result.status === 'failed') {
+          setStatus('Payment was not completed.', 'Stripe reported that the payment failed. Your cart is still here so you can try another method.');
+        } else if (result.status === 'expired') {
+          setStatus('Checkout expired.', 'No payment was confirmed. Your cart is still here if you would like to try again.');
+        } else {
+          setStatus('Checkout not complete.', 'Stripe has not confirmed a payment. Your cart has not been changed.');
+        }
+      } catch {
+        setStatus('Could not verify payment yet.', 'Please do not retry payment until you check your Stripe receipt or contact us. Your cart has not been changed.');
+      }
+    };
+    verifyOrder();
+  }
 }
 
 function applyBookSearch(query) {

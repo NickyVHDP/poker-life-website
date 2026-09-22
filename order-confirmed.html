@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Poker Life order confirmation." />
-    <title>Thank You | Poker Life</title>
+    <title>Order Status | Poker Life</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="reference-lower-sections.css" />
     <link rel="stylesheet" href="logo-art.css" />
     <link rel="stylesheet" href="pages.css" />
-    <script defer src="script.js?v=10"></script>
+    <script defer src="script.js?v=11"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -26,10 +26,13 @@
     </header>
     <main id="main" data-order-confirmed>
       <section class="page-hero">
-        <p class="kicker">Thank you</p>
-        <h1>Keep making <span>better decisions.</span></h1>
-        <p>Stripe has returned you to Poker Life. Your checkout details and receipt are provided by Stripe.</p>
-        <div class="hero-actions"><a class="button gold" href="books.html">Explore more books &nbsp; →</a><a class="button outline" href="articles.html">Read poker articles</a></div>
+        <p class="kicker">Order status</p>
+        <h1 data-order-heading>Checking your payment…</h1>
+        <div role="status" aria-live="polite">
+          <p data-order-message>We are confirming the result with Stripe.</p>
+          <p data-order-detail></p>
+        </div>
+        <div class="hero-actions"><a class="button gold" href="checkout.html">Return to cart &nbsp; →</a><a class="button outline" href="contact.html">Contact us</a></div>
       </section>
     </main>
     <footer>

@@ -1,3 +1,5 @@
+import { randomUUID } from 'node:crypto';
+
 const maxQuantity = 10;
 
 // The browser submits only a slug and quantity. Names and prices stay here so
@@ -89,9 +91,15 @@ export function createCheckoutHandler({ env = process.env, fetchImpl = fetch } =
     const subtotal = [...quantities.entries()].reduce((total, [slug, quantity]) => total + catalog[slug].amount * quantity, 0);
 
     const siteUrl = (env.SITE_URL || new URL(request.url).origin).replace(/\/$/, '');
+    const orderId = randomUUID();
     const form = new URLSearchParams({
       mode: 'payment',
       'managed_payments[enabled]': 'false',
+      client_reference_id: `pokerlife_${orderId}`,
+      'metadata[site]': 'pokerlifeusa.com',
+      'metadata[order_id]': orderId,
+      'payment_intent_data[metadata][site]': 'pokerlifeusa.com',
+      'payment_intent_data[metadata][order_id]': orderId,
       'shipping_options[0][shipping_rate]': shippingRateForOrder(shipping.rates, totalQuantity, subtotal),
       success_url: `${siteUrl}/order-confirmed.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/checkout.html`
@@ -116,10 +124,10 @@ export function createCheckoutHandler({ env = process.env, fetchImpl = fetch } =
       body: form
     });
     const stripe = await stripeResponse.json();
-    if (!stripeResponse.ok || !stripe.url) {
+    if (!stripeResponse.ok || !stripe.url || !stripe.id) {
       return response({ error: 'Stripe could not start checkout. Please try again.' }, 502);
     }
-    return response({ url: stripe.url });
+    return response({ url: stripe.url, sessionId: stripe.id });
   };
 }
 
