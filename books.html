@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="logo-art.css" />
     <link rel="stylesheet" href="pages.css" />
     <link rel="stylesheet" href="theme-shared.css" />
-    <script defer src="script.js?v=11"></script>
+    <script defer src="script.js?v=12"></script>
     <script defer src="theme-ui.js"></script>
   </head>
   <body class="pl-inner">
@@ -26,7 +26,7 @@
           </a>
           <button class="pl-menu-toggle" type="button" aria-controls="pl-main-nav" aria-expanded="false" aria-label="Open navigation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" /></svg></button>
           <nav class="pl-nav" id="pl-main-nav" aria-label="Main navigation">
-            <a href="index.html">Home</a><a href="books.html">Books</a><a href="shop.html#merch">Merch</a><a href="index.html#resources">Resources</a><a href="index.html#community">Community</a><a href="about.html">My Story</a>
+            <a href="index.html">Home</a><a href="books.html">Books</a><a href="apparel.html">Merch</a><a href="resources.html">Resources</a><a href="community.html">Community</a><a href="about.html">My Story</a>
           </nav>
           <div class="pl-header-actions">
             <button type="button" data-search-toggle aria-controls="pl-site-search" aria-expanded="false" aria-label="Search books"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m15.5 15.5 5 5" /></svg></button>
@@ -37,6 +37,11 @@
           </form>
         </header>
     <main id="main">
+      <nav class="pl-collection-nav" aria-label="Shop collections">
+        <a href="books.html" aria-current="page">Books</a>
+        <a href="apparel.html">Apparel</a>
+        <a href="card-protectors.html">Card Protectors</a>
+      </nav>
       <section class="page-hero">
         <p class="kicker">The complete library</p>
         <h1>Every <span>Poker Life</span> Book.</h1>
@@ -52,7 +57,7 @@
           <div><strong>Personally signed by Larry McCracken</strong><p>Every book purchased directly through Poker Life is personally signed by the author. Amazon orders are fulfilled separately.</p></div>
         </aside>
         <div class="catalog-search"><label for="catalog-search">Search all books</label><input id="catalog-search" data-catalog-search type="search" placeholder="Search by title, topic, or category" /><span data-search-result-count aria-live="polite"></span></div>
-        <p class="catalog-note">Open a book’s details, then add it to your Poker Life cart. Use the cart at the top of the page to review multiple books and gear selections together.</p>
+        <p class="catalog-note">Open a book’s details, then add it to your Poker Life cart. Use the cart at the top of the page to review your selected books before checkout.</p>
         <div class="book-grid" id="book-grid"></div>
         <p class="notice"><strong>Not sure which one to start with?</strong> The titles are grouped loosely by theme — strategy, tournament, mindset, and one for the long session. If you would like a recommendation for the games you actually play, ask through the <a href="contact.html">contact page</a>.</p>
       </section>
@@ -75,7 +80,7 @@
           </div>
           <div class="pl-footer-brand-area">
             <a class="pl-footer-brand" href="index.html" aria-label="Poker Life — home"><img class="pl-brand-mark" src="assets/poker-life-mark-transparent.png" alt="" width="1326" height="1187" /><img class="pl-brand-wordmark" src="assets/poker-life-wordmark-detailed-transparent.png" alt="Poker Life — Focus. Patience. Profit." width="1120" height="340" /></a>
-            <nav class="pl-footer-nav" aria-label="Footer navigation"><a href="index.html">Home</a><a href="books.html">Books</a><a href="shop.html#merch">Merch</a><a href="index.html#resources">Resources</a><a href="index.html#community">Community</a><a href="about.html">My Story</a><a href="contact.html">Contact</a></nav>
+            <nav class="pl-footer-nav" aria-label="Footer navigation"><a href="index.html">Home</a><a href="books.html">Books</a><a href="apparel.html">Apparel</a><a href="card-protectors.html">Card Protectors</a><a href="resources.html">Resources</a><a href="community.html">Community</a><a href="about.html">My Story</a><a href="contact.html">Contact</a></nav>
             <div class="pl-footer-meta"><a href="faq.html">Ordering &amp; FAQ</a><a href="articles.html">Poker Articles</a><span>© <span data-pl-year>2026</span> Poker Life</span></div>
           </div>
         </footer>

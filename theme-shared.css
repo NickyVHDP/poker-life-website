@@ -44,6 +44,13 @@ footer.pl-footer { display: grid; grid-template-columns: 1fr 1.1fr; gap: 35px; a
 .pl-footer .pl-footer-nav a:hover, .pl-footer .pl-footer-meta a:hover { color: var(--pl-gold-light); }
 .pl-footer-meta { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px 18px; margin-top: 10px; color: #8e8c83; font-size: 8px; }
 
+/* Collections are real destinations, not filters over one mixed shop page. */
+.pl-collection-nav { display: flex; justify-content: center; gap: clamp(16px, 4vw, 48px); padding: 0 16px; border-bottom: 1px solid #80612c60; background: #090806; }
+.pl-collection-nav a { position: relative; display: flex; align-items: center; justify-content: center; min-height: 60px; color: #bcb8ae; text-align: center; text-decoration: none; font-size: 12px; font-weight: 500; }
+.pl-collection-nav a[aria-current="page"] { color: #f1d58f; }
+.pl-collection-nav a[aria-current="page"]::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: #d9b35d; }
+.pl-collection-nav a:hover { color: #f1d58f; }
+
 /* Keep the catalog, checkout and article pages functional in the same identity. */
 .pl-inner .page-hero { padding-block: clamp(38px, 5vw, 72px); border-color: var(--pl-line); background: radial-gradient(ellipse at 50% -60%, #7050265e, transparent 70%), #050505; }
 .pl-inner .page-hero h1, .pl-inner .section h2, .pl-inner .newsletter h2, .pl-inner .shop-block h2, .pl-inner .shop-intro h2 { color: #eed195; font-family: Georgia, 'Times New Roman', serif; font-weight: 400; letter-spacing: .01em; }

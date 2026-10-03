@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Poker Life order confirmation." />
-    <title>Order Status | Poker Life</title>
+    <meta name="description" content="Explore Poker Life apparel — hoodies, caps, and accessories designed for the poker lifestyle. Preview the upcoming collection." />
+    <title>Apparel | Poker Life</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="logo-art.css" />
     <link rel="stylesheet" href="pages.css" />
     <link rel="stylesheet" href="theme-shared.css" />
+    <link rel="stylesheet" href="collection-pages.css" />
     <script defer src="script.js?v=12"></script>
     <script defer src="theme-ui.js"></script>
   </head>
@@ -36,15 +37,28 @@
             <label class="pl-sr-only" for="pl-search-input">Search the Poker Life library</label><input id="pl-search-input" name="q" type="search" placeholder="Search books, strategy, mindset…" autocomplete="off" /><button class="pl-button" type="submit">Search <span aria-hidden="true">→</span></button>
           </form>
         </header>
-    <main id="main" data-order-confirmed>
+    <main id="main" class="pl-collection-page">
+      <nav class="pl-collection-nav" aria-label="Shop collections">
+        <a href="books.html">Books</a>
+        <a href="apparel.html" aria-current="page">Apparel</a>
+        <a href="card-protectors.html">Card Protectors</a>
+      </nav>
       <section class="page-hero">
-        <p class="kicker">Order status</p>
-        <h1 data-order-heading>Checking your payment…</h1>
-        <div role="status" aria-live="polite">
-          <p data-order-message>We are confirming the result with Stripe.</p>
-          <p data-order-detail></p>
+        <p class="kicker">Poker Life apparel</p>
+        <h1>Wear the <span>Life.</span></h1>
+        <p>Rep the brand on and off the felt. Clothing and accessories inspired by focus, patience, and profit.</p>
+      </section>
+      <section class="pl-collection-feature" aria-labelledby="apparel-collection-title" id="merch">
+        <div class="pl-collection-art">
+          <svg viewBox="239 760 531 230" role="img" aria-label="Poker Life apparel: black and white logo hoodies, a black cap, and coordinated accessories." preserveAspectRatio="xMidYMid meet"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg>
         </div>
-        <div class="hero-actions"><a class="button gold" href="checkout.html">Return to cart &nbsp; →</a><a class="button outline" href="contact.html">Contact us</a></div>
+        <div class="pl-collection-copy">
+          <p class="pl-collection-status">Collection preview</p>
+          <h2 id="apparel-collection-title">Poker Life apparel</h2>
+          <p>The signature Poker Life look, from the poker table to everyday life.</p>
+          <ul class="pl-collection-details"><li>Hoodies</li><li>Caps</li><li>Accessories</li></ul>
+          <div class="pl-collection-notice"><strong>Coming soon</strong><p>Apparel is not available to order yet. Official products, sizes, and prices will appear here when the collection launches.</p></div>
+        </div>
       </section>
     </main>
     <footer class="pl-footer">

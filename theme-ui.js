@@ -1,4 +1,12 @@
 (() => {
+  // Keep previously shared shop links useful without retaining a mixed catalog.
+  const route = location.pathname.replace(/\/$/, '').split('/').pop().replace(/\.html$/, '');
+  if (route === 'shop') {
+    const target = location.hash === '#coins' ? 'card-protectors.html'
+      : location.hash === '#books' ? 'books.html' : 'apparel.html';
+    location.replace(new URL(target + location.search, location.href));
+    return;
+  }
   const header = document.querySelector('.pl-site-header');
   if (!header) return;
   const menuButton = header.querySelector('.pl-menu-toggle');
@@ -53,9 +61,9 @@
     link.classList.toggle('is-current', current);
     if (current) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');
-    if (currentPage === 'shop' && page === 'shop') {
+    if (currentPage === 'card-protectors' && page === 'apparel') {
       link.classList.add('is-current');
-      link.setAttribute('aria-current', 'page');
+      link.setAttribute('aria-current', 'location');
     }
   });
   document.querySelectorAll('[data-pl-year]').forEach((year) => {

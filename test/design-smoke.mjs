@@ -46,8 +46,8 @@ try {
   await page.locator('#book-details-modal [data-add-to-cart]').click();
   assert.equal(await page.locator('[data-cart-count]').textContent(), '1');
   await page.keyboard.press('Escape');
-  await page.locator('[data-preview="coins"]').click();
-  assert.match(await page.locator('#pl-preview-dialog').textContent(), /not available yet/);
+  await page.locator('[data-preview="behind-the-felt"]').click();
+  assert.match(await page.locator('#pl-preview-dialog').textContent(), /not currently available/);
   await page.keyboard.press('Escape');
   await page.locator('[data-search-toggle]').click();
   await page.locator('[data-site-search] input').fill('math');

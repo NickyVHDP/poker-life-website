@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Poker Life order confirmation." />
-    <title>Order Status | Poker Life</title>
+    <meta name="description" content="Explore the existing Poker Life resource links to World Poker Tour, PokerAtlas, ACR Poker, and PokerStars." />
+    <title>Resources | Poker Life</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -15,10 +15,11 @@
     <link rel="stylesheet" href="logo-art.css" />
     <link rel="stylesheet" href="pages.css" />
     <link rel="stylesheet" href="theme-shared.css" />
+    <link rel="stylesheet" href="destination-pages.css" />
     <script defer src="script.js?v=12"></script>
     <script defer src="theme-ui.js"></script>
   </head>
-  <body class="pl-inner">
+  <body class="pl-inner pl-destination">
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="pl-site-header">
           <a class="pl-brand" href="index.html" aria-label="Poker Life — home">
@@ -36,15 +37,38 @@
             <label class="pl-sr-only" for="pl-search-input">Search the Poker Life library</label><input id="pl-search-input" name="q" type="search" placeholder="Search books, strategy, mindset…" autocomplete="off" /><button class="pl-button" type="submit">Search <span aria-hidden="true">→</span></button>
           </form>
         </header>
-    <main id="main" data-order-confirmed>
-      <section class="page-hero">
-        <p class="kicker">Order status</p>
-        <h1 data-order-heading>Checking your payment…</h1>
-        <div role="status" aria-live="polite">
-          <p data-order-message>We are confirming the result with Stripe.</p>
-          <p data-order-detail></p>
+    <main id="main" class="pl-destination-main">
+      <section class="pl-destination-hero" aria-labelledby="resources-title">
+        <p class="pl-destination-eyebrow">Explore the poker world</p>
+        <h1 id="resources-title">Poker <span>Resources</span></h1>
+        <p>Check out poker sites, tools, and resources to help you play better, stay informed, and get more out of the game.</p>
+      </section>
+
+      <section class="pl-destination-content" aria-labelledby="resource-links-title">
+        <div class="pl-destination-heading">
+          <p class="pl-destination-eyebrow">Around the game</p>
+          <h2 id="resource-links-title">Sites &amp; Resources</h2>
+          <p>Visit these independent sites for poker information and resources.</p>
         </div>
-        <div class="hero-actions"><a class="button gold" href="checkout.html">Return to cart &nbsp; →</a><a class="button outline" href="contact.html">Contact us</a></div>
+        <div class="pl-resource-directory">
+          <a class="pl-resource-card" href="https://www.worldpokertour.com/" target="_blank" rel="noopener noreferrer" aria-label="World Poker Tour — opens a new tab">
+            <div class="pl-resource-card-art"><svg viewBox="283 1283 113 86" aria-hidden="true" preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg></div>
+            <div class="pl-resource-card-copy"><h3>World Poker Tour</h3><p>Events, results, and poker coverage.</p><span class="pl-resource-visit">Visit World Poker Tour <span aria-hidden="true">↗</span></span></div>
+          </a>
+          <a class="pl-resource-card" href="https://www.pokeratlas.com/" target="_blank" rel="noopener noreferrer" aria-label="PokerAtlas — opens a new tab">
+            <div class="pl-resource-card-art"><svg viewBox="406 1283 110 86" aria-hidden="true" preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg></div>
+            <div class="pl-resource-card-copy"><h3>PokerAtlas</h3><p>Poker rooms and tournament listings.</p><span class="pl-resource-visit">Visit PokerAtlas <span aria-hidden="true">↗</span></span></div>
+          </a>
+          <a class="pl-resource-card" href="https://www.acrpoker.eu/" target="_blank" rel="noopener noreferrer" aria-label="ACR Poker, formerly Americas Cardroom — opens a new tab">
+            <div class="pl-resource-card-art"><svg viewBox="525 1283 111 86" aria-hidden="true" preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg></div>
+            <div class="pl-resource-card-copy"><h3>ACR Poker</h3><p>Americas Cardroom.</p><span class="pl-resource-visit">Visit ACR Poker <span aria-hidden="true">↗</span></span></div>
+          </a>
+          <a class="pl-resource-card" href="https://www.pokerstars.com/" target="_blank" rel="noopener noreferrer" aria-label="PokerStars — opens a new tab">
+            <div class="pl-resource-card-art"><svg viewBox="645 1283 110 86" aria-hidden="true" preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg></div>
+            <div class="pl-resource-card-copy"><h3>PokerStars</h3><p>Visit the PokerStars website.</p><span class="pl-resource-visit">Visit PokerStars <span aria-hidden="true">↗</span></span></div>
+          </a>
+        </div>
+        <p class="pl-resource-note">Links open third-party sites in a new tab. Availability and age requirements vary by location. These links do not imply a partnership or endorsement by those brands.</p>
       </section>
     </main>
     <footer class="pl-footer">

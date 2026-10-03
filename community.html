@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Poker Life order confirmation." />
-    <title>Order Status | Poker Life</title>
+    <meta name="description" content="More than just a game. Explore the Poker Life community, find poker articles, and learn about community signup availability." />
+    <title>Community | Poker Life</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -15,10 +15,11 @@
     <link rel="stylesheet" href="logo-art.css" />
     <link rel="stylesheet" href="pages.css" />
     <link rel="stylesheet" href="theme-shared.css" />
+    <link rel="stylesheet" href="destination-pages.css" />
     <script defer src="script.js?v=12"></script>
     <script defer src="theme-ui.js"></script>
   </head>
-  <body class="pl-inner">
+  <body class="pl-inner pl-destination">
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="pl-site-header">
           <a class="pl-brand" href="index.html" aria-label="Poker Life — home">
@@ -36,15 +37,32 @@
             <label class="pl-sr-only" for="pl-search-input">Search the Poker Life library</label><input id="pl-search-input" name="q" type="search" placeholder="Search books, strategy, mindset…" autocomplete="off" /><button class="pl-button" type="submit">Search <span aria-hidden="true">→</span></button>
           </form>
         </header>
-    <main id="main" data-order-confirmed>
-      <section class="page-hero">
-        <p class="kicker">Order status</p>
-        <h1 data-order-heading>Checking your payment…</h1>
-        <div role="status" aria-live="polite">
-          <p data-order-message>We are confirming the result with Stripe.</p>
-          <p data-order-detail></p>
+    <main id="main" class="pl-destination-main">
+      <section class="pl-destination-hero pl-community-hero" aria-labelledby="community-title">
+        <div class="pl-community-hero-copy">
+          <p class="pl-destination-eyebrow">More than just a game</p>
+          <h1 id="community-title">Poker Life<br /><span>Community</span></h1>
+          <p>Poker is a lifestyle — a community of players, dreamers, and grinders who love the game and everything that comes with it.</p>
         </div>
-        <div class="hero-actions"><a class="button gold" href="checkout.html">Return to cart &nbsp; →</a><a class="button outline" href="contact.html">Contact us</a></div>
+        <svg class="pl-community-hero-art" viewBox="0 1453 487 203" role="img" aria-label="Larry at a poker table wearing a black Poker Life hoodie, photographed from behind." preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg>
+      </section>
+
+      <section class="pl-destination-content pl-community-content" aria-labelledby="community-signup-title">
+        <div class="pl-community-status">
+          <p class="pl-destination-eyebrow">Coming soon</p>
+          <h2 id="community-signup-title">A Place for the Poker Life</h2>
+          <p>The community and email list are not open for sign-ups yet.</p>
+          <p>In the meantime, explore Larry’s books and poker articles. There’s no membership or payment required to read the articles.</p>
+          <div class="pl-destination-actions">
+            <a class="pl-button" href="articles.html">Explore poker articles <span aria-hidden="true">→</span></a>
+            <a class="pl-destination-text-link" href="books.html">Browse the books <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+        <aside class="pl-community-contact" aria-labelledby="community-contact-title">
+          <h2 id="community-contact-title">Have a Question?</h2>
+          <p>For questions about Poker Life, visit the contact page.</p>
+          <a class="pl-destination-text-link" href="contact.html">Contact Poker Life <span aria-hidden="true">→</span></a>
+        </aside>
       </section>
     </main>
     <footer class="pl-footer">

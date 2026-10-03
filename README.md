@@ -21,6 +21,14 @@ Use the original full-resolution individual photos for a future asset upgrade.
 - Newsletter, community sign-up, and social destinations are not configured.
   The UI reports this honestly instead of claiming a subscription succeeded.
 - Resource links are ordinary third-party links, not configured affiliate links.
+- Books, apparel, and card protectors have separate collection pages with a shared
+  collection navigation. The homepage alone presents the combined overview.
+- `apparel.html` and `card-protectors.html` use `collection-pages.css`; `resources.html`
+  and `community.html` use `destination-pages.css`. All top-level links open pages.
+- Legacy `shop.html` links redirect to the matching collection (including `#books`
+  and `#coins`); its no-JavaScript fallback contains apparel only.
+- `node test/collection-pages.mjs` checks dedicated destinations, category isolation,
+  desktop/mobile layouts, legacy links, shared navigation, search, and cart state.
 
 Browser regression check: serve the site locally, install Playwright in your
 development environment, and run `node test/design-smoke.mjs`.

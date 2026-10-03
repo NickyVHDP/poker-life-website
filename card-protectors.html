@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Poker Life order confirmation." />
-    <title>Order Status | Poker Life</title>
+    <meta name="description" content="Explore custom Poker Life card protector coins featuring the signature spade emblem. Preview the upcoming coin collection." />
+    <title>Card Protectors | Poker Life</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="logo-art.css" />
     <link rel="stylesheet" href="pages.css" />
     <link rel="stylesheet" href="theme-shared.css" />
+    <link rel="stylesheet" href="collection-pages.css" />
     <script defer src="script.js?v=12"></script>
     <script defer src="theme-ui.js"></script>
   </head>
@@ -36,15 +37,28 @@
             <label class="pl-sr-only" for="pl-search-input">Search the Poker Life library</label><input id="pl-search-input" name="q" type="search" placeholder="Search books, strategy, mindset…" autocomplete="off" /><button class="pl-button" type="submit">Search <span aria-hidden="true">→</span></button>
           </form>
         </header>
-    <main id="main" data-order-confirmed>
+    <main id="main" class="pl-collection-page">
+      <nav class="pl-collection-nav" aria-label="Shop collections">
+        <a href="books.html">Books</a>
+        <a href="apparel.html">Apparel</a>
+        <a href="card-protectors.html" aria-current="page">Card Protectors</a>
+      </nav>
       <section class="page-hero">
-        <p class="kicker">Order status</p>
-        <h1 data-order-heading>Checking your payment…</h1>
-        <div role="status" aria-live="polite">
-          <p data-order-message>We are confirming the result with Stripe.</p>
-          <p data-order-detail></p>
+        <p class="kicker">Custom Poker Life coins</p>
+        <h1>Card <span>Protectors.</span></h1>
+        <p>A statement piece for the table. A keepsake for the poker life.</p>
+      </section>
+      <section class="pl-collection-feature" aria-labelledby="coin-collection-title" id="coins">
+        <div class="pl-collection-art pl-coin-art">
+          <svg viewBox="266 992 504 235" role="img" aria-label="Gold-edged Poker Life card protector coins with the PL spade emblem and playing-card artwork." preserveAspectRatio="xMidYMid meet"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg>
         </div>
-        <div class="hero-actions"><a class="button gold" href="checkout.html">Return to cart &nbsp; →</a><a class="button outline" href="contact.html">Contact us</a></div>
+        <div class="pl-collection-copy">
+          <p class="pl-collection-status">Collection preview</p>
+          <h2 id="coin-collection-title">The signature coin</h2>
+          <p>Custom card protector coins featuring the Poker Life emblem and the spirit of the game.</p>
+          <p>More than just a game. It’s a lifestyle.</p>
+          <div class="pl-collection-notice"><strong>Coming soon</strong><p>Card protectors are not available to order yet. Product details and pricing will be added here when the collection is ready.</p></div>
+        </div>
       </section>
     </main>
     <footer class="pl-footer">

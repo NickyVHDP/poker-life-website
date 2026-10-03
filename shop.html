@@ -3,8 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Shop Poker Life — the full book library plus the Poker Life gear line built around focus, patience, and profit." />
-    <title>Shop | Poker Life</title>
+    <meta name="description" content="Explore Poker Life apparel — hoodies, caps, and accessories designed for the poker lifestyle. Preview the upcoming collection." />
+    <title>Apparel | Poker Life</title>
+    <link rel="canonical" href="https://pokerlifeusa.com/apparel" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -15,7 +16,8 @@
     <link rel="stylesheet" href="logo-art.css" />
     <link rel="stylesheet" href="pages.css" />
     <link rel="stylesheet" href="theme-shared.css" />
-    <script defer src="script.js?v=11"></script>
+    <link rel="stylesheet" href="collection-pages.css" />
+    <script defer src="script.js?v=12"></script>
     <script defer src="theme-ui.js"></script>
   </head>
   <body class="pl-inner">
@@ -26,7 +28,7 @@
           </a>
           <button class="pl-menu-toggle" type="button" aria-controls="pl-main-nav" aria-expanded="false" aria-label="Open navigation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" /></svg></button>
           <nav class="pl-nav" id="pl-main-nav" aria-label="Main navigation">
-            <a href="index.html">Home</a><a href="books.html">Books</a><a href="shop.html#merch">Merch</a><a href="index.html#resources">Resources</a><a href="index.html#community">Community</a><a href="about.html">My Story</a>
+            <a href="index.html">Home</a><a href="books.html">Books</a><a href="apparel.html">Merch</a><a href="resources.html">Resources</a><a href="community.html">Community</a><a href="about.html">My Story</a>
           </nav>
           <div class="pl-header-actions">
             <button type="button" data-search-toggle aria-controls="pl-site-search" aria-expanded="false" aria-label="Search books"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m15.5 15.5 5 5" /></svg></button>
@@ -36,56 +38,27 @@
             <label class="pl-sr-only" for="pl-search-input">Search the Poker Life library</label><input id="pl-search-input" name="q" type="search" placeholder="Search books, strategy, mindset…" autocomplete="off" /><button class="pl-button" type="submit">Search <span aria-hidden="true">→</span></button>
           </form>
         </header>
-    <main id="main">
+    <main id="main" class="pl-collection-page">
+      <nav class="pl-collection-nav" aria-label="Shop collections">
+        <a href="books.html">Books</a>
+        <a href="apparel.html" aria-current="page">Apparel</a>
+        <a href="card-protectors.html">Card Protectors</a>
+      </nav>
       <section class="page-hero">
-        <p class="kicker">The Poker Life shop</p>
-        <h1>Books and <span>Gear</span> for Players Who Study.</h1>
-        <p>Two sides to the shop: the written work — a library of poker strategy, tournament play, and mindset titles — and the Poker Life gear line that carries the same three words to the table.</p>
-        <div class="hero-actions"><a class="button gold" href="#books">Browse the books</a><a class="button outline" href="#merch">See the gear</a></div>
+        <p class="kicker">Poker Life apparel</p>
+        <h1>Wear the <span>Life.</span></h1>
+        <p>Rep the brand on and off the felt. Clothing and accessories inspired by focus, patience, and profit.</p>
       </section>
-
-      <section class="section section-left" id="books">
-        <div class="shop-intro">
-          <p class="section-kicker">Section one</p>
-          <h2>Books</h2>
-          <p>Every Poker Life title is written for players who want to make better decisions rather than chase better cards. Strategy, tournament play, poker math, reads, and mindset — <span id="book-count">14</span> books in the catalog.</p>
-          <p>Add any book to your cart and keep browsing. Your cart follows you across the site, so you can review multiple selections in one place.</p>
-          <a class="button gold" href="books.html">View the full catalog &nbsp; →</a>
+      <section class="pl-collection-feature" aria-labelledby="apparel-collection-title" id="merch">
+        <div class="pl-collection-art">
+          <svg viewBox="239 760 531 230" role="img" aria-label="Poker Life apparel: black and white logo hoodies, a black cap, and coordinated accessories." preserveAspectRatio="xMidYMid meet"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg>
         </div>
-        <div class="book-grid" id="book-grid" data-book-limit="5"></div>
-      </section>
-
-      <section class="section section-left shop-divider" id="merch">
-        <div class="shop-block">
-          <div>
-            <p class="section-kicker">Section two</p>
-            <h2>Wear the Life</h2>
-            <p>Rep the brand on and off the felt with clothing and gear designed for the poker lifestyle. Preview the black-and-gold Poker Life collection below.</p>
-            <ul class="gear-list">
-              <li>Hoodies</li>
-              <li>Caps</li>
-              <li>Accessories</li>
-            </ul>
-            <p>Apparel and accessories will join the store after their official products, prices, and images are ready.</p>
-          </div>
-          <div class="gear-gallery">
-            <svg viewBox="239 760 531 230" role="img" aria-label="The Poker Life apparel collection: black and white hoodies, a black cap, and coordinated accessories." preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg>
-          </div>
-        </div>
-
-        <p class="notice"><strong>Coming soon:</strong> this preview shows the direction of the Poker Life gear line. Books are available through the live cart first; apparel and accessories will be added once the official collection is ready.</p>
-      </section>
-      <section class="section section-left shop-divider" id="coins">
-        <div class="shop-block">
-          <div>
-            <p class="section-kicker">The collection</p>
-            <h2>Card Protectors</h2>
-            <p>Custom Poker Life coins featuring the Poker Life emblem. A statement piece for the table and a keepsake for collectors.</p>
-            <p class="notice"><strong>Coming soon.</strong> This is a collection preview. Ordering will open when the official products and prices are ready.</p>
-          </div>
-          <div class="gear-gallery pl-coins-gallery">
-            <svg viewBox="266 992 504 235" role="img" aria-label="Gold-edged Poker Life card protector coins with the spade emblem and playing-card artwork." preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg>
-          </div>
+        <div class="pl-collection-copy">
+          <p class="pl-collection-status">Collection preview</p>
+          <h2 id="apparel-collection-title">Poker Life apparel</h2>
+          <p>The signature Poker Life look, from the poker table to everyday life.</p>
+          <ul class="pl-collection-details"><li>Hoodies</li><li>Caps</li><li>Accessories</li></ul>
+          <div class="pl-collection-notice"><strong>Coming soon</strong><p>Apparel is not available to order yet. Official products, sizes, and prices will appear here when the collection launches.</p></div>
         </div>
       </section>
     </main>
@@ -107,7 +80,7 @@
           </div>
           <div class="pl-footer-brand-area">
             <a class="pl-footer-brand" href="index.html" aria-label="Poker Life — home"><img class="pl-brand-mark" src="assets/poker-life-mark-transparent.png" alt="" width="1326" height="1187" /><img class="pl-brand-wordmark" src="assets/poker-life-wordmark-detailed-transparent.png" alt="Poker Life — Focus. Patience. Profit." width="1120" height="340" /></a>
-            <nav class="pl-footer-nav" aria-label="Footer navigation"><a href="index.html">Home</a><a href="books.html">Books</a><a href="shop.html#merch">Merch</a><a href="index.html#resources">Resources</a><a href="index.html#community">Community</a><a href="about.html">My Story</a><a href="contact.html">Contact</a></nav>
+            <nav class="pl-footer-nav" aria-label="Footer navigation"><a href="index.html">Home</a><a href="books.html">Books</a><a href="apparel.html">Apparel</a><a href="card-protectors.html">Card Protectors</a><a href="resources.html">Resources</a><a href="community.html">Community</a><a href="about.html">My Story</a><a href="contact.html">Contact</a></nav>
             <div class="pl-footer-meta"><a href="faq.html">Ordering &amp; FAQ</a><a href="articles.html">Poker Articles</a><span>© <span data-pl-year>2026</span> Poker Life</span></div>
           </div>
         </footer>
