@@ -1,6 +1,32 @@
 # Poker Life Website
 
-Initial static storefront for the Poker Life book collection.
+Poker Life's responsive storefront and lifestyle-brand website.
+
+## Reference redesign
+
+The homepage follows Larry's supplied black/gold design. The original 770 × 2043
+artwork is preserved unchanged at `assets/poker-life-design-reference.png`.
+Inline SVG viewports reuse its exact portraits, apparel, coins, and brand art;
+section copy, navigation, buttons, search, and carousel controls are real HTML.
+The artwork's original resolution is the limit on photographic sharpness.
+Use the original full-resolution individual photos for a future asset upgrade.
+
+- `theme-home.css` and `theme-home.js` own the responsive homepage and carousel.
+- `theme-shared.css` and `theme-ui.js` own the shared black/gold theme and mobile navigation.
+- `design/theme-header.html` and `design/theme-footer.html` are maintenance snippets;
+  production pages contain their markup directly and work without client-side injection.
+- The original 14-book catalog, prices, cart storage, and server checkout are unchanged.
+- The mockup's first two featured covers open the existing paperback editions.
+  “Behind the Felt,” apparel, and coins remain non-purchasable collection previews.
+- Newsletter, community sign-up, and social destinations are not configured.
+  The UI reports this honestly instead of claiming a subscription succeeded.
+- Resource links are ordinary third-party links, not configured affiliate links.
+
+Browser regression check: serve the site locally, install Playwright in your
+development environment, and run `node test/design-smoke.mjs`.
+Optional environment overrides: `PREVIEW_URL`, `PLAYWRIGHT_MODULE`, `CHROME_BIN`,
+and `SCREENSHOT_DIR`. This tests layout at 320–1540px, search, book dialogs,
+carousel, cart persistence, and the mobile menu without initiating a payment.
 
 ## What is included
 
