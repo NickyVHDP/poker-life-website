@@ -9,14 +9,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="preload" href="assets/poker-life-portraits-retouched.png" as="image" />
+  <link rel="preload" href="assets/home-reference-october.png" as="image" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="pages.css" />
   <link rel="stylesheet" href="theme-shared.css" />
-  <link rel="stylesheet" href="theme-home.css" />
+  <link rel="stylesheet" href="theme-home.css?v=reference-2" />
   <script defer src="script.js?v=13"></script>
   <script defer src="theme-ui.js"></script>
-  <script defer src="theme-home.js"></script>
+  <script defer src="theme-home.js?v=reference-2"></script>
 </head>
 <body class="pl-homepage">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -37,130 +37,59 @@
       </form>
     </header>
   <main id="main" class="pl-home">
-    <section class="pl-hero" aria-labelledby="hero-title">
-      <svg class="pl-hero-image" viewBox="0 58 770 408" role="img" aria-label="Larry McCracken at the poker table in a white Poker Life hoodie, beside the Poker Life spade emblem." preserveAspectRatio="xMidYMid slice"><defs><mask id="hero-copy-mask" maskUnits="userSpaceOnUse" x="0" y="58" width="770" height="408"><rect x="0" y="58" width="770" height="408" fill="white" /><rect x="424" y="339" width="302" height="35" fill="black" /><rect x="487" y="385" width="172" height="36" fill="black" /></mask></defs><image href="assets/poker-life-portraits-retouched.png" width="770" height="2043" mask="url(#hero-copy-mask)" /></svg>
-      <svg class="pl-hero-image-mobile" viewBox="0 58 770 274" role="img" aria-label="Larry McCracken and the Poker Life spade emblem." preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-portraits-retouched.png" width="770" height="2043" /></svg>
-      <div class="pl-hero-copy">
-        <h1 id="hero-title">Poker Life</h1>
-        <p class="pl-hero-categories">Books <span>•</span> Apparel <span>•</span> Accessories <span>•</span> Resources</p>
-        <p class="pl-hero-tagline">A poker lifestyle brand</p>
-        <a class="pl-cta pl-cta-outline" href="#books">Explore Poker Life <span aria-hidden="true">→</span></a>
-      </div>
+    <!-- Intact supplied artwork is framed with SVG viewports, never stretched.
+         Real headings, links and dialogs keep every pictured section accessible. -->
+    <section class="pl-hero pl-reference-section" aria-labelledby="hero-title">
+      <h1 id="hero-title" class="pl-sr-only">Poker Life — Focus. Patience. Profit.</h1>
+      <svg class="pl-reference-art" viewBox="0 108 1024 282" role="img" aria-label="Larry McCracken in a white Poker Life hoodie, beside the Poker Life emblem, gold poker cards and chips."><image href="assets/home-reference-october.png" width="1024" height="1536" /></svg>
     </section>
 
-    <section id="books" class="pl-feature pl-books" aria-labelledby="books-title">
-      <div class="pl-feature-copy">
-        <h2 id="books-title">The <span class="pl-big-word">Books</span></h2>
-        <p class="pl-eyebrow">Real strategy. Real stories.<br />Real poker life.</p>
-        <p>From strategy and mindset to the inside stories of the poker world, my books give you the knowledge, experience, and mindset to take your game — and your life — to the next level.</p>
-        <a href="books.html" class="pl-cta">View all books <span aria-hidden="true">→</span></a>
-      </div>
-      <div class="pl-book-showcase" role="region" aria-roledescription="carousel" aria-label="Featured books">
-        <div class="pl-book-slide" data-book-slide="0" role="group" aria-roledescription="slide" aria-label="1 of 4: The Poker Life collection">
-          <button class="pl-featured-book" type="button" data-book-details="patient-poker-player-win-more" aria-label="View The Patient Poker Player, available paperback edition">
-            <svg class="pl-book-art" viewBox="270 494 149 234" role="img" aria-label="The Patient Poker Player cover from the Poker Life collection." preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg>
-          </button>
-          <button class="pl-featured-book" type="button" data-book-details="patient-poker-player-advanced-tactics" aria-label="View The Patient Poker Player 2, available paperback edition">
-            <svg class="pl-book-art" viewBox="429 495 139 234" role="img" aria-label="The Patient Poker Player 2: Advanced Tactics to Outlast and Outplay." preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg>
-          </button>
-          <button class="pl-featured-book" type="button" data-preview="behind-the-felt" aria-label="Behind the Felt: view availability">
-            <svg class="pl-book-art" viewBox="578 495 144 234" role="img" aria-label="Behind the Felt: Real Stories from Inside the Poker World." preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg>
-          </button>
-        </div>
-        <div class="pl-book-slide" data-book-slide="1" hidden role="group" aria-roledescription="slide" aria-label="2 of 4: Poker strategy">
-          <button type="button" class="pl-featured-book" data-book-details="poker-math-made-easy" aria-label="View Poker Math Made Easy"><img src="assets/covers/clean/poker-math-made-easy.jpg" alt="Poker Math Made Easy" loading="lazy" /></button>
-          <button type="button" class="pl-featured-book" data-book-details="is-he-bluffing" aria-label="View Is He Bluffing?"><img src="assets/covers/clean/is-he-bluffing.jpg" alt="Is He Bluffing?" loading="lazy" /></button>
-          <button type="button" class="pl-featured-book" data-book-details="texas-holdem-in-texas" aria-label="View Texas Hold’em in Texas"><img src="assets/covers/clean/texas-holdem-in-texas.jpg" alt="Texas Hold’em in Texas" loading="lazy" /></button>
-        </div>
-        <div class="pl-book-slide" data-book-slide="2" hidden role="group" aria-roledescription="slide" aria-label="3 of 4: Tournament strategy">
-          <button type="button" class="pl-featured-book" data-book-details="winning-tournament-poker" aria-label="View Winning Tournament Poker"><img src="assets/covers/clean/winning-tournament-poker.jpg" alt="Winning Tournament Poker" loading="lazy" /></button>
-          <button type="button" class="pl-featured-book" data-book-details="final-table-secrets" aria-label="View Final Table Secrets"><img src="assets/covers/clean/final-table-secrets.jpg" alt="Final Table Secrets" loading="lazy" /></button>
-          <button type="button" class="pl-featured-book" data-book-details="only-poker-book-youll-ever-need" aria-label="View The Only Poker Book You’ll Ever Need"><img src="assets/covers/clean/the-only-poker-book.jpg" alt="The Only Poker Book You’ll Ever Need" loading="lazy" /></button>
-        </div>
-        <div class="pl-book-slide" data-book-slide="3" hidden role="group" aria-roledescription="slide" aria-label="4 of 4: Stories and mindset">
-          <button type="button" class="pl-featured-book" data-book-details="i-just-ran-bad" aria-label="View I Just Ran Bad"><img src="assets/covers/clean/i-just-ran-bad.jpg" alt="I Just Ran Bad and Other Lies Poker Players Tell Themselves" loading="lazy" /></button>
-          <button type="button" class="pl-featured-book" data-book-details="poker-life-culture" aria-label="View Poker Life"><img src="assets/covers/clean/poker-life-culture.jpg" alt="Poker Life: The Complete Guide to Poker Culture" loading="lazy" /></button>
-          <button type="button" class="pl-featured-book" data-book-details="complete-guide-to-poker-for-women" aria-label="View The Complete Guide to Poker for Women"><img src="assets/covers/clean/complete-guide-to-poker-for-women.jpg" alt="The Complete Guide to Poker for Women" loading="lazy" /></button>
-        </div>
-        <button type="button" class="pl-carousel-arrow pl-prev" data-carousel-step="-1" aria-label="Previous featured books"><svg viewBox="0 0 20 32" aria-hidden="true"><path d="m15 3-12 13 12 13" /></svg></button>
-        <button type="button" class="pl-carousel-arrow pl-next" data-carousel-step="1" aria-label="Next featured books"><svg viewBox="0 0 20 32" aria-hidden="true"><path d="m5 3 12 13L5 29" /></svg></button>
-        <div class="pl-carousel-dots" aria-label="Choose featured books">
-          <button type="button" data-carousel-index="0" aria-label="Show collection 1" aria-current="true"></button>
-          <button type="button" data-carousel-index="1" aria-label="Show collection 2"></button>
-          <button type="button" data-carousel-index="2" aria-label="Show collection 3"></button>
-          <button type="button" data-carousel-index="3" aria-label="Show collection 4"></button>
-        </div>
-        <p class="pl-visually-hidden" aria-live="polite" data-carousel-status></p>
-      </div>
+    <section class="pl-intro pl-reference-section" aria-label="Explore Poker Life">
+      <svg class="pl-reference-art" viewBox="0 390 1024 95" aria-hidden="true" focusable="false"><image href="assets/home-reference-october.png" width="1024" height="1536" /></svg>
+      <nav class="pl-category-links" aria-label="Explore collections">
+        <a href="books.html"><span>Books</span></a><a href="apparel.html"><span>Apparel</span></a><a href="card-protectors.html"><span>Accessories</span></a><a href="resources.html"><span>Resources</span></a>
+      </nav>
+      <p class="pl-reference-copy pl-intro-tagline">A poker lifestyle brand</p>
+      <a class="pl-art-link pl-explore-link" href="#books"><span>Explore Poker Life <b aria-hidden="true">→</b></span></a>
     </section>
 
-    <section id="ripple" class="pl-ripple-feature" aria-labelledby="ripple-home-title">
-      <div class="pl-ripple-home-copy">
-        <p class="pl-ripple-kicker">Coming soon · A new thriller series</p>
-        <h2 id="ripple-home-title">The Ripple</h2>
-        <p class="pl-ripple-home-tagline">One hand. Five different lives.</p>
-        <p>Same table. Same players. Same night. Discover Larry McCracken’s five-book thriller series—and the consequences no one saw coming.</p>
-        <div class="pl-ripple-home-offers"><span><strong>$25</strong> Signed Pink preorder<br /><small>Free shipping during preorders</small></span><span><strong>$100</strong> Complete series preorder<br /><small>Early releases + a free Poker Life T-shirt</small></span></div>
-        <a class="pl-cta" href="ripple.html">Explore The Ripple <span aria-hidden="true">→</span></a>
+    <section id="books" class="pl-books pl-reference-section" aria-labelledby="books-title">
+      <svg class="pl-reference-art" viewBox="0 485 1024 181" aria-hidden="true" focusable="false"><image href="assets/home-reference-october.png" width="1024" height="1536" /></svg>
+      <div class="pl-reference-copy pl-books-copy"><h2 id="books-title">The Books</h2><p>Real strategy. Real stories. Real poker life.</p></div>
+      <div class="pl-featured-books" aria-label="Featured books">
+        <button class="pl-featured-book" type="button" data-book-details="patient-poker-player-win-more" aria-label="View The Patient Poker Player, available paperback edition">
+          <svg viewBox="478 502 99 160" aria-hidden="true" focusable="false"><image href="assets/home-reference-october.png" width="1024" height="1536" /></svg>
+        </button>
+        <button class="pl-featured-book" type="button" data-book-details="patient-poker-player-advanced-tactics" aria-label="View The Patient Poker Player 2, available paperback edition">
+          <svg viewBox="584 502 102 160" aria-hidden="true" focusable="false"><image href="assets/home-reference-october.png" width="1024" height="1536" /></svg>
+        </button>
+        <button class="pl-featured-book" type="button" data-preview="behind-the-felt" aria-label="Behind the Felt: view availability">
+          <svg viewBox="693 502 95 160" aria-hidden="true" focusable="false"><image href="assets/home-reference-october.png" width="1024" height="1536" /></svg>
+        </button>
       </div>
-      <a class="pl-ripple-home-art" href="ripple.html" aria-label="Explore The Ripple series and preorder offers"><img src="assets/ripple-series-promo.png" width="1024" height="1536" alt="The Ripple: Pink, Blue, Red, Yellow, and Black by Larry McCracken. Coming soon." loading="lazy" /></a>
+      <a href="books.html" class="pl-art-link pl-books-link"><span>View all books <b aria-hidden="true">→</b></span></a>
     </section>
 
-    <section id="merch" class="pl-feature pl-apparel" aria-labelledby="apparel-title">
-      <svg class="pl-art" viewBox="239 760 531 230" role="img" aria-label="Black and white Poker Life logo hoodies, a black cap, and patterned apparel." preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg>
-      <div class="pl-feature-copy">
-        <h2 id="apparel-title">Wear<br /> the Life</h2>
-        <p class="pl-eyebrow">Premium Poker Life apparel</p>
+    <section id="ripple" class="pl-ripple pl-reference-section" aria-labelledby="ripple-home-title">
+      <svg class="pl-reference-art" viewBox="0 666 1024 598" aria-hidden="true" focusable="false"><image href="assets/home-reference-october.png" width="1024" height="1536" /></svg>
+      <h2 id="ripple-home-title" class="pl-sr-only">The Ripple</h2>
+      <div class="pl-ripple-mobile-art" aria-hidden="true">
+        <svg class="pl-ripple-title-art" viewBox="275 675 475 112" focusable="false"><image href="assets/home-reference-october.png" width="1024" height="1536" /></svg>
+      </div>
+      <div class="pl-reference-copy pl-ripple-heading"><p class="pl-eyebrow">An original five-book thriller series</p><p class="pl-ripple-tagline">One hand. Five outcomes. Everything changes.</p></div>
+      <svg class="pl-ripple-mobile-covers" viewBox="0 841 1024 287" role="img" aria-label="The five Ripple books: Pink, Blue, Red, Yellow and Black."><image href="assets/home-reference-october.png" width="1024" height="1536" /></svg>
+      <div class="pl-reference-copy pl-ripple-description"><p>Four players. One unforgettable poker hand.<br /> Change the winner, and everything that follows changes with it.</p></div>
+      <a href="ripple.html" class="pl-art-link pl-ripple-link"><span>Enter The Ripple <b aria-hidden="true">→</b></span></a>
+    </section>
+
+    <section id="apparel" class="pl-apparel pl-reference-section" aria-labelledby="apparel-title">
+      <svg class="pl-reference-art" viewBox="0 1264 1024 262" aria-hidden="true" focusable="false"><image href="assets/home-reference-october.png" width="1024" height="1536" /></svg>
+      <div class="pl-reference-copy pl-apparel-copy">
+        <h2 id="apparel-title">Wear the Life</h2><p class="pl-eyebrow">Premium Poker Life apparel</p>
         <p>Rep the brand on and off the felt with high-quality clothing and gear designed for the poker lifestyle.</p>
-        <a href="apparel.html" class="pl-cta">Shop apparel <span aria-hidden="true">→</span></a>
       </div>
-    </section>
-
-    <section id="coins" class="pl-feature pl-coins" aria-labelledby="coins-title">
-      <svg class="pl-art" viewBox="266 992 504 235" role="img" aria-label="Two gold Poker Life card protector coins, with the PL spade and the words More Than Just a Game — It's a Lifestyle." preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg>
-      <div class="pl-feature-copy">
-        <h2 id="coins-title">Card<br /> Protectors</h2>
-        <p class="pl-eyebrow">Custom Poker Life coins</p>
-        <p>High-quality card protector coins featuring the Poker Life logo.<br />A must-have for any poker player or collector.</p>
-        <a href="card-protectors.html" class="pl-cta">Shop coins <span aria-hidden="true">→</span></a>
-      </div>
-    </section>
-
-    <section id="resources" class="pl-feature pl-resources" aria-labelledby="resources-title">
-      <svg class="pl-resource-background" viewBox="272 1229 498 223" role="img" aria-label="A dark poker table with black and gold chips." preserveAspectRatio="xMidYMid slice"><defs><mask id="resource-tiles-mask" maskUnits="userSpaceOnUse" x="272" y="1229" width="498" height="223"><rect x="272" y="1229" width="498" height="223" fill="white" /><rect x="281" y="1280" width="476" height="93" fill="black" /></mask></defs><image href="assets/poker-life-design-reference.png" width="770" height="2043" mask="url(#resource-tiles-mask)" /></svg>
-      <div class="pl-feature-copy">
-        <h2 id="resources-title">Poker<br /> Resources</h2>
-        <p class="pl-eyebrow">Trusted brands. Useful tools.</p>
-        <p>Check out poker sites, tools, and resources to help you play better, stay informed, and get more out of the game.</p>
-        <a href="resources.html" class="pl-cta">View resources <span aria-hidden="true">→</span></a>
-      </div>
-      <div class="pl-resource-links" aria-label="Poker resources">
-        <a href="https://www.worldpokertour.com/" target="_blank" rel="noopener noreferrer" aria-label="World Poker Tour — opens a new tab"><svg class="pl-resource-logo" viewBox="283 1283 113 86" role="img" aria-label="World Poker Tour" preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg></a>
-        <a href="https://www.pokeratlas.com/" target="_blank" rel="noopener noreferrer" aria-label="PokerAtlas — opens a new tab"><svg class="pl-resource-logo" viewBox="406 1283 110 86" role="img" aria-label="PokerAtlas" preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg></a>
-        <a href="https://www.acrpoker.eu/" target="_blank" rel="noopener noreferrer" aria-label="Americas Cardroom, now ACR Poker — opens a new tab"><svg class="pl-resource-logo" viewBox="525 1283 111 86" role="img" aria-label="Americas Cardroom" preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg></a>
-        <a href="https://www.pokerstars.com/" target="_blank" rel="noopener noreferrer" aria-label="PokerStars — opens a new tab"><svg class="pl-resource-logo" viewBox="645 1283 110 86" role="img" aria-label="PokerStars" preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg></a>
-      </div>
-    </section>
-
-    <section id="community" class="pl-feature pl-community" aria-labelledby="community-title">
-      <svg class="pl-art" viewBox="0 1453 487 203" role="img" aria-label="Larry at a poker table wearing a black Poker Life hoodie, photographed from behind." preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg>
-      <div class="pl-feature-copy">
-        <h2 id="community-title">Poker Life<br /> Community</h2>
-        <p class="pl-eyebrow">More than just a game.</p>
-        <p>Poker is a lifestyle — a community of players, dreamers, and grinders who love the game and everything that comes with it.</p>
-        <a href="community.html" class="pl-cta">Join the community <span aria-hidden="true">→</span></a>
-      </div>
-    </section>
-
-    <section id="story" class="pl-feature pl-story" aria-labelledby="story-title">
-      <svg class="pl-art" viewBox="302 1659 468 205" role="img" aria-label="Larry McCracken smiling in a white Poker Life hoodie, against a black and white poker-room portrait." preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-portraits-retouched.png" width="770" height="2043" /></svg>
-      <div class="pl-feature-copy">
-        <h2 id="story-title">My Story</h2>
-        <p class="pl-eyebrow">Larry McCracken</p>
-        <p>From the poker rooms to the books, from the DJ booth to the road, this is my journey. Learn more about who I am, how Poker Life started, and what keeps me focused, patient, and always looking for the next opportunity.</p>
-        <a href="about.html" class="pl-cta">Read my story <span aria-hidden="true">→</span></a>
-      </div>
-      <blockquote class="pl-visually-hidden">“More than just a game, it’s a lifestyle.” — Larry McCracken</blockquote>
+      <svg class="pl-apparel-mobile-art" viewBox="505 1265 519 259" role="img" aria-label="Black and white Poker Life hoodies, a black cap, and patterned apparel."><image href="assets/home-reference-october.png" width="1024" height="1536" /></svg>
+      <a href="apparel.html" class="pl-art-link pl-apparel-link"><span>Shop apparel <b aria-hidden="true">→</b></span></a>
     </section>
   </main>
     <footer class="pl-footer">

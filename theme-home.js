@@ -1,30 +1,5 @@
 /* Homepage interactions only. Checkout/catalog remain owned by script.js. */
 (() => {
-  const slides = [...document.querySelectorAll('[data-book-slide]')];
-  const dots = [...document.querySelectorAll('[data-carousel-index]')];
-  let active = 0;
-  function showSlide(index) {
-    active = (index + slides.length) % slides.length;
-    slides.forEach((slide, i) => { slide.hidden = i !== active; });
-    dots.forEach((dot, i) => {
-      if (i === active) dot.setAttribute('aria-current', 'true');
-      else dot.removeAttribute('aria-current');
-    });
-    const status = document.querySelector('[data-carousel-status]');
-    if (status) status.textContent = slides[active].getAttribute('aria-label');
-  }
-  document.querySelectorAll('[data-carousel-step]').forEach(button =>
-    button.addEventListener('click', () => showSlide(active + Number(button.dataset.carouselStep))));
-  dots.forEach(button => button.addEventListener('click', () => showSlide(Number(button.dataset.carouselIndex))));
-  const showcase = document.querySelector('.pl-book-showcase');
-  showcase?.addEventListener('keydown', event => {
-    if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
-      event.preventDefault();
-      showSlide(active + (event.key === 'ArrowRight' ? 1 : -1));
-      // A hidden slide must never retain keyboard focus.
-      dots[active].focus();
-    }
-  });
 
   const previews = {
     'behind-the-felt': {
