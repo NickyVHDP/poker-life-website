@@ -4,7 +4,6 @@ const dialog = document.querySelector('[data-preorder-dialog]');
 const form = dialog.querySelector('[data-preorder-form]');
 const submit = dialog.querySelector('[data-preorder-checkout]');
 const error = dialog.querySelector('[data-preorder-error]');
-const shirt = form.elements.shirtSize;
 const consent = form.elements.accepted;
 const money = (cents) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: cents % 100 ? 2 : 0 }).format(cents / 100);
 const date = (value) => new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(`${value}T12:00:00Z`));
@@ -17,20 +16,20 @@ let attempt = 0;
 let requestController = null;
 
 // This only controls presentation. The server independently validates all terms,
-// timing, sizes and prices before it creates a Stripe Checkout session.
+// timing and prices before it creates a Stripe Checkout session.
 function isOpen(key) {
   const offer = config[key];
   if (!config.enabled || !offer || !config.countries?.length || !offer.termsText || !config.termsVersion) return false;
   if (!offer.purchaseCutoffAt || Date.parse(offer.purchaseCutoffAt) <= Date.now() + 31 * 60 * 1000 || !Number.isFinite(Date.parse(offer.purchaseCutoffAt))) return false;
   if (key === 'pink') return validDate(offer.releaseDate) && validDate(offer.shipDate) && offer.shippingAmount === 0;
-  return Number.isInteger(offer.shippingAmount) && offer.shippingAmount >= 0 && offer.shirtSizes?.length > 0 && offer.schedule?.length === 5 && offer.schedule.every((item) => validDate(item.releaseDate) && validDate(item.arrivalDate));
+  return Number.isInteger(offer.shippingAmount) && offer.shippingAmount >= 0 && offer.schedule?.length === 5 && offer.schedule.every((item) => validDate(item.releaseDate) && validDate(item.arrivalDate));
 }
 
 function details(key) {
   const offer = config[key];
   if (!isOpen(key)) return key === 'pink'
     ? 'An autographed copy of The Ripple: Pink for $25 with free preorder shipping. Standard book price: $29.99.'
-    : 'All five books for $100, each received one week before its official release, plus a free Poker Life T-shirt. Shipping details and shirt sizes will be confirmed before payment opens.';
+    : 'All five books for $100, each received one week before its official release. Shipping details will be confirmed before payment opens.';
   const schedule = key === 'pink'
     ? `Ships by ${date(offer.shipDate)}. Official release: ${date(offer.releaseDate)}.`
     : offer.schedule.map((item) => `${item.volume}: receive by ${date(item.arrivalDate)}; official release ${date(item.releaseDate)}.`).join('\n');
@@ -38,7 +37,7 @@ function details(key) {
 }
 
 function updateSubmit() {
-  submit.disabled = busy || !selected || !isOpen(selected) || !consent.checked || (selected === 'bundle' && !shirt.value);
+  submit.disabled = busy || !selected || !isOpen(selected) || !consent.checked;
 }
 
 const pinkOpen = isOpen('pink');
@@ -73,12 +72,6 @@ for (const button of document.querySelectorAll('[data-preorder-offer]')) {
     dialog.querySelector('[data-preorder-price]').textContent = money(offer.amount);
     dialog.querySelector('[data-preorder-status]').textContent = open ? 'This is a paid preorder, not an in-stock shipment. Please review the delivery dates and terms.' : closedMessage;
     dialog.querySelector('[data-preorder-terms]').textContent = details(selected);
-    const needShirt = selected === 'bundle' && open;
-    dialog.querySelector('[data-shirt-field]').hidden = !needShirt;
-    shirt.required = needShirt;
-    shirt.disabled = !needShirt;
-    shirt.replaceChildren(new Option('Choose your size', ''));
-    if (needShirt) for (const size of config.bundle.shirtSizes) shirt.add(new Option(size, size));
     dialog.querySelector('[data-preorder-consent]').hidden = !open;
     consent.disabled = !open;
     submit.textContent = open ? 'Continue to secure checkout →' : 'Checkout opens soon';
@@ -112,7 +105,7 @@ form.addEventListener('submit', async (event) => {
       signal: requestController.signal,
       body: JSON.stringify({
         items: [{ slug: config[key].slug, quantity: 1 }],
-        preorder: { accepted: true, termsVersion: config.termsVersion, ...(key === 'bundle' ? { shirtSize: shirt.value } : {}) }
+        preorder: { accepted: true, termsVersion: config.termsVersion }
       })
     });
     const result = await response.json();

@@ -2,7 +2,7 @@
 // Paid checkout remains closed until the owner confirms every required field.
 export const ripplePreorderConfig = {
   enabled: false,
-  termsVersion: 'ripple-preorder-v1',
+  termsVersion: 'ripple-preorder-v2',
   countries: [],
   pink: {
     slug: 'ripple-pink-preorder',
@@ -23,7 +23,6 @@ export const ripplePreorderConfig = {
     regularBookAmount: 2999,
     volumes: ['Pink', 'Blue', 'Red', 'Yellow', 'Black'],
     shippingAmount: null,
-    shirtSizes: [],
     purchaseCutoffAt: null,
     // Each entry: { volume, releaseDate: 'YYYY-MM-DD', arrivalDate: 'YYYY-MM-DD' }.
     // Arrival must be seven calendar days before release for every volume.

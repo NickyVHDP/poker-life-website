@@ -98,7 +98,6 @@ function configuredPreorder(config, slug) {
   if (bundle) {
     if (!Array.isArray(offer.volumes) || offer.volumes.join(',') !== 'Pink,Blue,Red,Yellow,Black') return null;
     if (!Number.isInteger(offer.shippingAmount) || offer.shippingAmount < 0 || offer.shippingAmount > 100000) return null;
-    if (!Array.isArray(offer.shirtSizes) || !offer.shirtSizes.length || offer.shirtSizes.some(size => typeof size !== 'string' || !/^[A-Za-z0-9 -]{1,24}$/.test(size))) return null;
     if (!Array.isArray(offer.schedule) || offer.schedule.length !== 5) return null;
     schedule = [];
     for (const volume of offer.volumes) {
@@ -162,16 +161,12 @@ export function createCheckoutHandler({ env = process.env, fetchImpl = fetch, pr
       if (consent?.accepted !== true || consent.termsVersion !== preorder.termsVersion) {
         return response({ error: 'Please review and accept the current preorder terms before continuing.' }, 400);
       }
-      if (preorder.bundle && !preorder.offer.shirtSizes.includes(consent.shirtSize)) {
-        return response({ error: 'Please select an available size for the included T-shirt.' }, 400);
-      }
       const timestamp = new Date(now()).getTime();
       if (!Number.isFinite(timestamp) || timestamp + preorderSessionDuration >= preorder.cutoff) {
         return response({ error: 'This preorder offer has closed. Please check the current book availability.' }, 409);
       }
       preorder.acceptedAt = new Date(timestamp).toISOString();
       preorder.expiresAt = Math.floor((timestamp + preorderSessionDuration) / 1000);
-      preorder.shirtSize = preorder.bundle ? consent.shirtSize : null;
     } else if (body.preorder !== undefined) {
       return response({ error: 'Preorder terms cannot be used for regular cart purchases.' }, 400);
     }
@@ -205,14 +200,15 @@ export function createCheckoutHandler({ env = process.env, fetchImpl = fetch, pr
       cancel_url: `${siteUrl}/${preorder ? 'ripple.html' : 'checkout.html'}`
     });
     if (preorder) {
-      const { offer, bundle, schedule, termsVersion, acceptedAt, shirtSize } = preorder;
+      const { offer, bundle, schedule, termsVersion, acceptedAt } = preorder;
       setMetadata(form, {
         order_type: 'preorder', preorder_slug: offer.slug, preorder_title: offer.title, preorder_terms_version: termsVersion,
         preorder_terms_text: offer.termsText, preorder_accepted_at: acceptedAt,
         preorder_purchase_cutoff_at: new Date(preorder.cutoff).toISOString(),
         preorder_schedule: JSON.stringify(schedule), preorder_shipping_amount: offer.shippingAmount,
         preorder_countries: preorder.countries.join(','), preorder_autographed: bundle ? 'not-specified' : 'true',
-        preorder_tshirt_included: bundle ? 'true' : 'false', ...(shirtSize ? { preorder_tshirt_size: shirtSize } : {})
+        // New offers are books-only; historical orders retain their own terms.
+        preorder_tshirt_included: 'false'
       });
       form.set('expires_at', String(preorder.expiresAt));
       form.set('custom_text[submit][message]', preorder.checkoutDisclosure);

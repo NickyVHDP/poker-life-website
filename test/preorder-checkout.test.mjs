@@ -20,7 +20,7 @@ function configured() {
   config.enabled = true;
   config.countries = ['US'];
   Object.assign(config.pink, { releaseDate: '2030-02-01', shipDate: '2030-01-25', purchaseCutoffAt: '2030-01-20T23:59:59Z', termsText: 'Fixture terms: paid Pink preorder, signed copy, ships January 25, free US shipping.' });
-  Object.assign(config.bundle, { shippingAmount: 700, shirtSizes: ['S', 'M', 'L', 'XL'], purchaseCutoffAt: '2030-01-15T23:59:59Z', termsText: 'Fixture terms: five-book preorder, $7 shipping, included shirt, each volume arrives seven days before release.' });
+  Object.assign(config.bundle, { shippingAmount: 700, purchaseCutoffAt: '2030-01-15T23:59:59Z', termsText: 'Fixture terms: five-book preorder, $7 shipping, each volume arrives seven days before release.' });
   config.bundle.schedule = config.bundle.volumes.map((volume, index) => {
     const releaseDate = `2030-0${index + 2}-01`;
     const arrivalDate = new Date(Date.parse(releaseDate + 'T00:00:00Z') - 7 * 86400000).toISOString().slice(0, 10);
@@ -29,7 +29,7 @@ function configured() {
   return config;
 }
 function payload(slug = 'ripple-pink-preorder', extra = {}) {
-  return { items: [{ slug, quantity: 1 }], preorder: { accepted: true, termsVersion: 'ripple-preorder-v1', ...extra } };
+  return { items: [{ slug, quantity: 1 }], preorder: { accepted: true, termsVersion: ripplePreorderConfig.termsVersion, ...extra } };
 }
 async function checkout(body, options = {}) {
   let form;
@@ -57,6 +57,8 @@ test('paid preorders are disabled by default and never contact Stripe', async ()
   assert.equal(ripplePreorderConfig.pink.amount, 2500);
   assert.equal(ripplePreorderConfig.pink.regularAmount, 2999);
   assert.equal(ripplePreorderConfig.bundle.amount, 10000);
+  assert.equal(ripplePreorderConfig.termsVersion, 'ripple-preorder-v2');
+  assert.equal(Object.hasOwn(ripplePreorderConfig.bundle, 'shirtSizes'), false);
   assert.equal(ripplePreorderConfig.pink.releaseDate, null);
   assert.equal(ripplePreorderConfig.pink.purchaseCutoffAt, null);
   assert.equal(ripplePreorderConfig.bundle.purchaseCutoffAt, null);
@@ -144,14 +146,14 @@ test('one preorder offer must be isolated from other offers and normal cart item
 });
 
 test('current affirmative preorder terms acceptance is required', async () => {
-  for (const consent of [undefined, {}, { accepted: 'true', termsVersion: 'ripple-preorder-v1' }, { accepted: false, termsVersion: 'ripple-preorder-v1' }, { accepted: true, termsVersion: 'old' }]) {
+  for (const consent of [undefined, {}, { accepted: 'true', termsVersion: ripplePreorderConfig.termsVersion }, { accepted: false, termsVersion: ripplePreorderConfig.termsVersion }, { accepted: true, termsVersion: 'ripple-preorder-v1' }, { accepted: true, termsVersion: 'old' }]) {
     const result = await checkout({ items: payload().items, preorder: consent });
     assert.equal(result.status, 400);
     assert.equal(result.calls, 0);
   }
 });
 
-test('bundle requires every release/arrival date, confirmed shipping and approved shirt sizes', async () => {
+test('bundle requires every release/arrival date and confirmed shipping', async () => {
   for (const change of [
     config => { config.bundle.schedule = []; },
     config => { config.bundle.schedule[0].arrivalDate = '2030-01-24'; },
@@ -159,30 +161,26 @@ test('bundle requires every release/arrival date, confirmed shipping and approve
     config => { config.bundle.purchaseCutoffAt = null; },
     config => { config.bundle.purchaseCutoffAt = '2030-01-25T00:00:00Z'; },
     config => { config.bundle.shippingAmount = null; },
-    config => { config.bundle.shirtSizes = []; },
     config => { config.bundle.termsText = null; },
     config => { config.bundle.amount = 9999; }
   ]) {
     const config = configured(); change(config);
-    const result = await checkout(payload('ripple-series-preorder', { shirtSize: 'L' }), { preorderConfig: config });
+    const result = await checkout(payload('ripple-series-preorder'), { preorderConfig: config });
     assert.equal(result.status, 503);
-    assert.equal(result.calls, 0);
-  }
-  for (const shirtSize of [undefined, '', 'XXXL', '<script>', 42]) {
-    const result = await checkout(payload('ripple-series-preorder', { shirtSize }));
-    assert.equal(result.status, 400);
     assert.equal(result.calls, 0);
   }
 });
 
-test('bundle is $100 with included shirt and its own shipping/fulfillment metadata', async () => {
-  const result = await checkout(payload('ripple-series-preorder', { shirtSize: 'L', shippingAmount: 0 }));
+test('bundle is $100 without a shirt and retains its shipping/fulfillment metadata', async () => {
+  const result = await checkout(payload('ripple-series-preorder', { shippingAmount: 0 }));
   assert.equal(result.status, 200);
   const { form } = result;
   assert.equal(form.get('line_items[0][price_data][unit_amount]'), '10000');
   assert.equal(form.get('shipping_options[0][shipping_rate_data][fixed_amount][amount]'), '700');
-  assert.equal(form.get('metadata[preorder_tshirt_included]'), 'true');
-  assert.equal(form.get('metadata[preorder_tshirt_size]'), 'L');
+  assert.equal(form.get('metadata[preorder_tshirt_included]'), 'false');
+  assert.equal(form.has('metadata[preorder_tshirt_size]'), false);
+  assert.equal(form.get('payment_intent_data[metadata][preorder_tshirt_included]'), 'false');
+  assert.equal(form.has('payment_intent_data[metadata][preorder_tshirt_size]'), false);
   assert.deepEqual(JSON.parse(form.get('metadata[preorder_schedule]')), configured().bundle.schedule);
   assert.ok(form.get('metadata[preorder_schedule]').length <= 500);
   const disclosure = form.get('custom_text[submit][message]');
@@ -190,8 +188,25 @@ test('bundle is $100 with included shirt and its own shipping/fulfillment metada
     assert.ok(disclosure.includes(`${volume}: arrives ${arrivalDate}; release ${releaseDate}.`));
   }
   assert.ok(disclosure.includes('Shipping: USD $7.00. Eligible countries: US only.'));
+  assert.doesNotMatch(disclosure, /shirt/i);
   assert.equal(form.get('line_items[0][price_data][product_data][description]'), disclosure);
   assert.ok(disclosure.length <= 1200);
+});
+
+test('legacy client shirt fields cannot add a shirt or affect new preorder fulfillment', async () => {
+  for (const slug of ['ripple-pink-preorder', 'ripple-series-preorder']) {
+    for (const shirtSize of [undefined, '', 'L', 'XXXL', '<script>', 42]) {
+      const body = payload(slug, { shirtSize, tshirtIncluded: true });
+      body.metadata = { preorder_tshirt_included: 'true', preorder_tshirt_size: 'L' };
+      const { status, calls, form } = await checkout(body);
+      assert.equal(status, 200);
+      assert.equal(calls, 1);
+      for (const prefix of ['metadata', 'payment_intent_data[metadata]']) {
+        assert.equal(form.get(`${prefix}[preorder_tshirt_included]`), 'false');
+        assert.equal(form.has(`${prefix}[preorder_tshirt_size]`), false);
+      }
+    }
+  }
 });
 
 test('checkout disclosure adds dates and shipping even when approved custom terms omit them', async () => {
@@ -199,7 +214,7 @@ test('checkout disclosure adds dates and shipping even when approved custom term
     const config = configured();
     config[key].termsText = 'This purchase reserves the preorder offer.';
     config.countries = ['US', 'CA'];
-    const { status, form } = await checkout(payload(config[key].slug, { shirtSize: 'S' }), { preorderConfig: config });
+    const { status, form } = await checkout(payload(config[key].slug), { preorderConfig: config });
     assert.equal(status, 200);
     const disclosure = form.get('custom_text[submit][message]');
     assert.ok(disclosure.includes('2030-02-01'));
@@ -213,7 +228,7 @@ test('oversized composed Stripe disclosure fails closed instead of truncating te
   const config = configured();
   config.bundle.termsText = 'x'.repeat(500);
   config.countries = Array.from({ length: 140 }, (_, index) => String.fromCharCode(65 + Math.floor(index / 26), 65 + index % 26));
-  const result = await checkout(payload(config.bundle.slug, { shirtSize: 'S' }), { preorderConfig: config });
+  const result = await checkout(payload(config.bundle.slug), { preorderConfig: config });
   assert.equal(result.status, 503);
   assert.equal(result.calls, 0);
 });
@@ -241,25 +256,26 @@ test('unknown and prototype-property product slugs cannot enter checkout', async
 
 test('explicit purchase cutoff and the final checkout window cannot create checkout', async () => {
   for (const [slug, timestamp] of [['ripple-pink-preorder', '2030-01-21T00:00:00Z'], ['ripple-pink-preorder', '2030-01-20T23:45:00Z'], ['ripple-series-preorder', '2030-01-16T00:00:00Z']]) {
-    const result = await checkout(payload(slug, { shirtSize: 'L' }), { now: () => new Date(timestamp) });
+    const result = await checkout(payload(slug), { now: () => new Date(timestamp) });
     assert.equal(result.status, 409);
     assert.equal(result.calls, 0);
   }
 });
 
 test('private paid-order record preserves the agreed preorder fulfillment snapshot', async () => {
-  const { form } = await checkout(payload('ripple-series-preorder', { shirtSize: 'M' }));
+  const { form } = await checkout(payload('ripple-series-preorder'));
   const metadata = Object.fromEntries([...form].filter(([key]) => key.startsWith('metadata[')).map(([key, value]) => [key.slice(9, -1), value]));
   const shipping = { name: 'Test Recipient', address: { country: 'US', postal_code: '00000' } };
   const session = { id: 'cs_test_fixture', metadata, payment_intent: 'pi_fixture', amount_total: 10700, currency: 'usd', payment_status: 'paid', collected_information: { shipping_details: shipping }, customer_details: { email: 'test@example.invalid' } };
   const record = orderRecord(session, 'stripe-webhook', 'evt_fixture');
   assert.equal(record.orderType, 'preorder');
-  assert.equal(record.preorder.termsVersion, 'ripple-preorder-v1');
+  assert.equal(record.preorder.termsVersion, ripplePreorderConfig.termsVersion);
   assert.equal(record.preorder.termsText, configured().bundle.termsText);
   assert.equal(record.preorder.acceptedAt, fixedNow.toISOString());
   assert.equal(record.preorder.purchaseCutoffAt, '2030-01-15T23:59:59.000Z');
   assert.equal(record.preorder.title, configured().bundle.title);
-  assert.equal(record.preorder.tshirtSize, 'M');
+  assert.equal(record.preorder.tshirtIncluded, false);
+  assert.equal(record.preorder.tshirtSize, null);
   assert.equal(record.preorder.shippingAmount, 700);
   assert.deepEqual(record.preorder.schedule, configured().bundle.schedule);
   assert.deepEqual(record.preorder.shippingDetails, shipping);
@@ -268,8 +284,24 @@ test('private paid-order record preserves the agreed preorder fulfillment snapsh
   assert.doesNotThrow(() => orderRecord({ ...session, metadata: { ...metadata, preorder_schedule: '{bad' } }, 'stripe-webhook'));
 });
 
+test('historical paid orders retain their originally agreed T-shirt fulfillment', () => {
+  const metadata = {
+    order_id: 'historical-order', order_type: 'preorder', preorder_slug: 'ripple-series-preorder',
+    preorder_terms_version: 'ripple-preorder-v1',
+    preorder_terms_text: 'Original agreed terms: five early books and a free Poker Life T-shirt.',
+    preorder_tshirt_included: 'true', preorder_tshirt_size: 'M',
+    preorder_schedule: JSON.stringify(configured().bundle.schedule)
+  };
+  const record = orderRecord({ id: 'cs_test_historical', metadata, payment_status: 'paid' }, 'stripe-webhook');
+  assert.equal(record.preorder.termsVersion, 'ripple-preorder-v1');
+  assert.equal(record.preorder.termsText, metadata.preorder_terms_text);
+  assert.equal(record.preorder.tshirtIncluded, true);
+  assert.equal(record.preorder.tshirtSize, 'M');
+  assert.deepEqual(record.preorder.schedule, configured().bundle.schedule);
+});
+
 test('verified preorder payment persists privately without exposing fulfillment details', async () => {
-  const { form } = await checkout(payload('ripple-series-preorder', { shirtSize: 'L' }));
+  const { form } = await checkout(payload('ripple-series-preorder'));
   const metadata = Object.fromEntries([...form].filter(([key]) => key.startsWith('metadata[')).map(([key, value]) => [key.slice(9, -1), value]));
   const session = {
     id: 'cs_test_preorder123', object: 'checkout.session', metadata,
@@ -292,12 +324,13 @@ test('verified preorder payment persists privately without exposing fulfillment 
   const publicSummary = await response.json();
   assert.deepEqual(publicSummary, {
     status: 'paid', recorded: true, orderId: metadata.order_id, orderType: 'preorder',
-    preorder: { slug: configured().bundle.slug, title: configured().bundle.title, termsVersion: 'ripple-preorder-v1', termsText: configured().bundle.termsText, schedule: configured().bundle.schedule, shippingAmount: 700, countries: ['US'] }
+    preorder: { slug: configured().bundle.slug, title: configured().bundle.title, termsVersion: ripplePreorderConfig.termsVersion, termsText: configured().bundle.termsText, schedule: configured().bundle.schedule, shippingAmount: 700, countries: ['US'] }
   });
   assert.equal(JSON.stringify(publicSummary).includes('test@example.invalid'), false);
   assert.equal(JSON.stringify(publicSummary).includes('Test Recipient'), false);
   assert.equal(JSON.stringify(publicSummary).includes('tshirtSize'), false);
-  assert.equal(records.get(`paid/${session.id}`).preorder.tshirtSize, 'L');
+  assert.equal(records.get(`paid/${session.id}`).preorder.tshirtIncluded, false);
+  assert.equal(records.get(`paid/${session.id}`).preorder.tshirtSize, null);
   assert.equal(records.get(`paid/${session.id}`).preorder.customerEmail, 'test@example.invalid');
 
   const webhookSecret = 'whsec_fixture';

@@ -72,8 +72,6 @@
 .ripple-dialog-price { font:400 36px/1.3 Georgia,serif; margin:15px 0; color:#e9c785; }
 .ripple-dialog-status, .ripple-checkout-terms { font-size:13px; line-height:1.8; white-space:pre-line; }
 .ripple-dialog-status { padding:14px; background:#b8883410; border-left:2px solid #b48c4c; }
-.ripple-shirt-field label { display:block; font-size:13px; margin:15px 0 8px; }
-.ripple-shirt-field select { width:100%; min-height:44px; padding:10px; color:#f0e6d8; background:#080706; border:1px solid #8f713e; font:inherit; }
 .ripple-consent { display:flex; align-items:flex-start; gap:10px; margin:20px 0; font-size:12px; line-height:1.7; }
 .ripple-consent input { width:18px; height:18px; flex:0 0 18px; margin-top:2px; accent-color:#d3aa5f; }
 .ripple-checkout-dialog .ripple-button { width:100%; margin-top:15px; }

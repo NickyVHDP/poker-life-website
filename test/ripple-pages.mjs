@@ -219,6 +219,9 @@ async function checkLinks(context, page, name) {
   }
 }
 async function checkCopy(page, name) {
+  if (name === 'ripple' || name === 'books') {
+    assert.doesNotMatch(await page.locator('main').textContent(), /(?:free|included)\s+(?:Poker Life\s+)?T-shirt|shirt sizes/i, name + ': removed T-shirt offer remains');
+  }
   if (name === 'about') {
     const paragraphs = await page.locator('.pl-author-intro, .pl-author-chapter p').allTextContents();
     assert.deepEqual(paragraphs.map(normalize), biography, 'Author biography was shortened or changed');
@@ -231,7 +234,8 @@ async function checkCopy(page, name) {
     assert.match(await page.locator('.ripple-offer-pink .ripple-price').textContent(), /\$25\b/);
     assert.match(await page.locator('.ripple-offer-bundle .ripple-price').textContent(), /\$100\b/);
     assert.match(await page.locator('.ripple-offer-pink .ripple-standard').textContent(), /\$29\.99\b/);
-    assert.match(await page.locator('.ripple-offer-bundle').textContent(), /free Poker Life T-shirt/);
+    assert.doesNotMatch(await page.locator('.ripple-offer-bundle').textContent(), /shirt/i);
+    assert.equal(await page.locator('[data-shirt-field], [name="shirtSize"]').count(), 0, 'Removed shirt-size selector remains');
     assert.match(await page.locator('[data-preorder-launch-notice]').textContent(), /No payment is taken yet/);
     assert.deepEqual((await page.locator('.ripple-volumes li').allTextContents()).map(normalize), ['Pink', 'Blue', 'Red', 'Yellow', 'Black']);
   }
@@ -247,6 +251,7 @@ async function checkClosedPreorders(page, width, originalCart) {
     assert.match(await page.locator('[data-preorder-price]').textContent(), new RegExp(price.replace('$', '\\$')));
     assert.ok(await page.locator('[data-preorder-checkout]').isDisabled(), 'Unconfigured paid preorder must be disabled');
     assert.ok(!(await page.locator('[data-preorder-consent]').isVisible()), 'Closed checkout must not request payment consent');
+    assert.doesNotMatch(await page.locator('[data-preorder-terms]').textContent(), /shirt/i, 'Closed offer still advertises the removed shirt');
     const bounds = await dialog.evaluate(element => ({ width: element.getBoundingClientRect().width, left: element.getBoundingClientRect().left, right: element.getBoundingClientRect().right, scrollWidth: element.scrollWidth, clientWidth: element.clientWidth, height: element.getBoundingClientRect().height, viewport: innerWidth, viewportHeight: innerHeight }));
     assert.ok(bounds.left >= 0 && bounds.right <= bounds.viewport && bounds.scrollWidth <= bounds.clientWidth && bounds.height <= bounds.viewportHeight, 'Dialog overflows: ' + JSON.stringify(bounds));
     await page.locator('[data-preorder-form]').evaluate(form => form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })));
@@ -265,7 +270,7 @@ function enabledFixture() {
   config.enabled = true;
   config.countries = ['US'];
   Object.assign(config.pink, { releaseDate: year + '-02-01', shipDate: year + '-01-25', purchaseCutoffAt: year + '-01-20T18:00:00Z', termsText: 'QA fixture: paid signed Pink preorder, free US shipping; ships January 25.' });
-  Object.assign(config.bundle, { shippingAmount: 700, shirtSizes: ['S', 'M', 'L', 'XL'], purchaseCutoffAt: year + '-01-20T18:00:00Z', termsText: 'QA fixture: all five books, $7 shipping, included shirt, each arrives seven days before release.' });
+  Object.assign(config.bundle, { shippingAmount: 700, purchaseCutoffAt: year + '-01-20T18:00:00Z', termsText: 'QA fixture: all five books, $7 shipping, each arrives seven days before release.' });
   config.bundle.schedule = config.bundle.volumes.map((volume, index) => {
     const releaseDate = year + '-0' + (index + 2) + '-01';
     const arrivalDate = new Date(Date.parse(releaseDate + 'T00:00:00Z') - 7 * 86400000).toISOString().slice(0, 10);
@@ -332,18 +337,9 @@ try {
     const before = checkoutRequests.length;
     await form.evaluate(element => element.requestSubmit());
     assert.equal(checkoutRequests.length, before, 'Consent must be required before checkout');
-    if (offer === 'bundle') {
-      assert.ok(await fixture.page.locator('[data-shirt-field]').isVisible());
-      await fixture.page.locator('[name="accepted"]').check();
-      assert.ok(await submit.isDisabled(), 'Bundle checkout must wait for a shirt size');
-      await form.evaluate(element => element.requestSubmit());
-      assert.equal(checkoutRequests.length, before, 'Bundle shirt size must be required');
-      await fixture.page.locator('[name="shirtSize"]').selectOption('L');
-    } else {
-      assert.ok(!(await fixture.page.locator('[data-shirt-field]').isVisible()));
-      await fixture.page.locator('[name="accepted"]').check();
-    }
-    assert.ok(!(await submit.isDisabled()), 'Complete offer, size, and consent must permit checkout');
+    assert.equal(await fixture.page.locator('[data-shirt-field], [name="shirtSize"]').count(), 0, 'No offer should request a shirt size');
+    await fixture.page.locator('[name="accepted"]').check();
+    assert.ok(!(await submit.isDisabled()), 'Complete offer and consent must permit checkout without a shirt size');
     await submit.click();
     await fixture.page.locator('[data-preorder-error]').filter({ hasText: 'QA fixture:' }).waitFor();
     assert.equal(checkoutRequests.length, before + 1);
@@ -352,7 +348,7 @@ try {
     assert.deepEqual(request.body.items, [{ slug, quantity: 1 }]);
     assert.equal(request.body.preorder.accepted, true);
     assert.equal(request.body.preorder.termsVersion, fixtureConfig.termsVersion);
-    if (offer === 'bundle') assert.equal(request.body.preorder.shirtSize, 'L');
+    assert.equal(Object.hasOwn(request.body.preorder, 'shirtSize'), false, 'Checkout request must omit the removed shirt size');
     assert.ok(!(await submit.isDisabled()), 'Failed request should allow a deliberate retry');
     assert.equal(await fixture.page.evaluate(key => localStorage.getItem(key), cartKey), originalCart, 'Preorder fixture mutated original cart');
     await fixture.page.screenshot({ path: out + '/enabled-' + offer + '-390.png', fullPage: false });
@@ -395,7 +391,6 @@ try {
   await race.page.locator('[data-preorder-offer="bundle"]').click();
   assert.equal(await race.page.locator('#ripple-dialog-title').textContent(), fixtureConfig.bundle.title);
   assert.equal(await race.page.locator('[data-preorder-price]').textContent(), '$100');
-  await race.page.locator('[name="shirtSize"]').selectOption('M');
   await race.page.locator('[name="accepted"]').check();
   await race.page.locator('[data-preorder-checkout]').click();
   await race.page.waitForFunction(() => window.__qaPreorderRace.requests.length === 2);
@@ -454,6 +449,8 @@ try {
     assert.ok(size.width <= size.viewport, 'Preorder confirmation overflows at ' + width);
     await confirmation.page.screenshot({ path: out + '/confirmation-preorder-' + width + '.png', fullPage: true });
   }
+  // Historical paid orders must still show their captured terms, even if the
+  // current offer no longer includes the original shirt bonus.
   confirmedPreorder = {
     slug: 'ripple-series-preorder', title: 'The Ripple Collection', termsVersion: 'captured-bundle-v1',
     termsText: 'Captured bundle terms: five early deliveries and one shirt; $7 shipping.', shippingAmount: 700,

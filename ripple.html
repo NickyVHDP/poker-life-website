@@ -15,10 +15,10 @@
     <link rel="stylesheet" href="logo-art.css" />
     <link rel="stylesheet" href="pages.css" />
     <link rel="stylesheet" href="theme-shared.css" />
-    <link rel="stylesheet" href="ripple.css" />
+    <link rel="stylesheet" href="ripple.css?v=2" />
     <script defer src="script.js?v=13"></script>
     <script defer src="theme-ui.js"></script>
-    <script type="module" src="ripple-page.js"></script>
+    <script type="module" src="ripple-page.js?v=2"></script>
   </head>
   <body class="pl-inner pl-destination">
     <a class="skip-link" href="#main">Skip to content</a>
@@ -74,7 +74,7 @@
             <h3>The Ripple Collection</h3>
             <p class="ripple-price">$100 <span>for the entire series</span></p>
             <p class="ripple-standard">Five books at $29.99 each would be $149.95</p>
-            <ul><li>All five books: Pink, Blue, Red, Yellow, and Black</li><li>Receive each book one week before its official release</li><li>A free Poker Life T-shirt included</li></ul>
+            <ul><li>All five books: Pink, Blue, Red, Yellow, and Black</li><li>Receive each book one week before its official release</li></ul>
             <p class="ripple-offer-date" data-bundle-date>Release schedule and shipping details to be announced</p>
             <button class="ripple-button" type="button" data-preorder-offer="bundle">Preorder the full series <span aria-hidden="true">→</span></button>
           </article>
@@ -116,7 +116,7 @@
         <div class="ripple-faq-items">
           <details open><summary>When will the books be released?</summary><p data-release-faq>The series is coming soon. Confirmed release and delivery dates will appear here before paid preorders open.</p><ol class="ripple-release-schedule" data-release-schedule hidden></ol></details>
           <details><summary>What is included in the $25 Pink offer?</summary><p>An autographed copy of <em>The Ripple: Pink</em> for $25, with free shipping during the preorder period. Its standard book price is $29.99.</p></details>
-          <details><summary>What is included in the $100 series offer?</summary><p>All five Ripple books, received one week before each book’s official release, plus a free Poker Life T-shirt. Shirt sizes and shipping details will be shown before checkout opens.</p></details>
+          <details><summary>What is included in the $100 series offer?</summary><p>All five Ripple books, received one week before each book’s official release. Shipping details will be shown before checkout opens.</p></details>
           <details><summary>Can I combine a preorder with in-stock books?</summary><p>Preorders use a separate checkout. Your regular Poker Life cart remains unchanged, and your preorder’s delivery details are shown separately.</p></details>
         </div>
       </section>
@@ -128,7 +128,6 @@
       <p class="ripple-dialog-price" data-preorder-price></p>
       <p class="ripple-dialog-status" data-preorder-status role="status"></p>
       <form data-preorder-form>
-        <div class="ripple-shirt-field" data-shirt-field hidden><label for="ripple-shirt-size">Your free Poker Life T-shirt size</label><select id="ripple-shirt-size" name="shirtSize"><option value="">Choose your size</option></select></div>
         <p class="ripple-checkout-terms" data-preorder-terms></p>
         <label class="ripple-consent" data-preorder-consent hidden><input type="checkbox" name="accepted" required /><span>I understand this is a preorder, my payment is collected now, and I agree to the delivery terms above.</span></label>
         <button class="ripple-button" type="submit" data-preorder-checkout disabled>Checkout opens soon</button>
