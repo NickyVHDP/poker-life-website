@@ -1,0 +1,9 @@
+Poker Life portrait cleanup
+Mode: edit / identity-preserve, built-in image generation.
+Input: assets/poker-life-design-reference.png (770 x 2043).
+Output: assets/poker-life-portraits-retouched.png (770 x 2043).
+Only the hero and author portrait SVG windows use this edited asset. All other
+section artwork and the separate original sharp brand/logo assets are unchanged.
+
+Final prompt:
+Use case: identity-preserve. Edit target: the supplied Poker Life website design image. Retouch ONLY Larry McCracken's facial skin in the TWO existing front-facing portraits: the large portrait in the top hero, and the smaller portrait in the My Story section near the bottom. Make the patchy/blotchy red-orange skin tone more even and natural with subtle professional portrait retouching. Keep his exact facial identity, age, facial contours, expression, smile, eyes, beard, hair, wrinkles and skin texture. No plastic skin, no beauty filter, no changes to tattoos, hands, clothing, logos, book covers, typography, placement, backgrounds or other people. Preserve the full original image's exact composition and aspect ratio (770x2043), including every section at the same position. Do not crop, zoom, rearrange, recolor the website or recreate any text. This is a subtle facial skin-tone correction only, not a website redesign. Return the entire edited image so the two portraits stay aligned with their original coordinates.

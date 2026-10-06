@@ -93,6 +93,17 @@
 .pl-preview-dialog ul { padding-left:20px; }
 .pl-dialog-close { position:absolute; top:8px; right:14px; border:0; color:#edc47d; background:none; font-size:28px; cursor:pointer; min-width:38px; min-height:38px; }
 .pl-preview-dialog .pl-dialog-link { display:inline-flex; align-items:center; margin-top:8px; padding:12px 18px; border:1px solid #bb9754; text-decoration:none; }
+.pl-ripple-feature { display:grid; grid-template-columns:1.25fr 1fr; gap:6%; align-items:center; padding:5% 8%; border-bottom:1px solid #b08030; background:radial-gradient(ellipse at 75% 35%,#49213133,transparent 60%),#080505; }
+.pl-ripple-home-copy h2 { color:#efd19a; font:400 clamp(40px,5.7vw,80px)/1 Georgia,serif; margin:0 0 18px; }
+.pl-ripple-home-copy > p:not(.pl-ripple-kicker) { color:#bdb5ae; font:400 clamp(14px,1.6vw,22px)/1.65 Inter,Arial,sans-serif; max-width:46ch; }
+.pl-ripple-home-copy > p.pl-ripple-home-tagline { color:#e99cc4; font:400 clamp(22px,2.5vw,35px)/1.3 Georgia,serif; }
+.pl-ripple-kicker { color:#d3b377; font:600 clamp(10px,1vw,14px)/1.5 Inter,Arial,sans-serif; letter-spacing:.12em; text-transform:uppercase; margin:0 0 20px; }
+.pl-ripple-home-art { display:block; width:min(100%,365px); justify-self:center; border:1px solid #9b713b70; box-shadow:0 18px 55px #0008; }
+.pl-ripple-home-art img { display:block; width:100%; height:auto; }
+.pl-ripple-home-offers { display:grid; grid-template-columns:1fr; gap:15px; margin:25px 0 28px; padding-top:22px; border-top:1px solid #b7954533; font:400 clamp(12px,1.1vw,16px)/1.65 Inter,Arial,sans-serif; color:#d1c3b3; }
+.pl-ripple-home-offers strong { color:#f0d397; font:400 clamp(25px,2.5vw,35px)/1 Georgia,serif; margin-right:8px; }
+.pl-ripple-home-offers small { color:#948c82; font-size:.8em; }
+@media(max-width:700px) { .pl-ripple-feature { grid-template-columns:1fr; padding:36px 24px; gap:30px; }.pl-ripple-home-art { width:min(100%,340px); }.pl-ripple-home-copy h2 { font-size:43px; }.pl-ripple-home-offers { font-size:13px; } }
 @media(min-width:721px) {
   .pl-homepage .pl-footer { padding-top:2.1vw; padding-bottom:2.2vw; }
   .pl-homepage .pl-footer h2 { font:500 clamp(18px,2.35vw,36px)/1 'Cormorant Garamond',Georgia,serif; }

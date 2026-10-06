@@ -95,6 +95,62 @@ test('session from another integration is rejected', async () => {
   assert.equal((await handler(statusRequest())).status, 404);
 });
 
+test('paid preorder summary comes only from Stripe and excludes private or unknown fields', async () => {
+  const preorderSession = {
+    ...session,
+    metadata: {
+      ...session.metadata, order_type: 'preorder', preorder_slug: 'ripple-pink-preorder',
+      preorder_title: 'Captured title at purchase', preorder_terms_version: 'captured-v1',
+      preorder_terms_text: 'Captured shipping terms at purchase.',
+      preorder_schedule: JSON.stringify([{ volume: 'Pink', releaseDate: '2030-02-01', shipDate: '2030-01-25', email: 'private@example.invalid', address: 'private address' }]),
+      preorder_tshirt_size: 'L', preorder_customer_email: 'private@example.invalid',
+      preorder_shipping_amount: '0', preorder_countries: 'US,CA,private@example.invalid,US'
+    },
+    customer_details: { email: 'private@example.invalid' }, shipping_details: { name: 'Private Name' }
+  };
+  const handler = createOrderStatusHandler({ env: { STRIPE_SECRET_KEY: 'sk_test_fixture' }, fetchImpl: async () => stripeReply(preorderSession), storeFactory: memoryStore });
+  const request = new Request(`https://pokerlifeusa.com/.netlify/functions/order-status?session_id=${sessionId}&order_type=regular&preorder_title=forged`);
+  const result = await (await handler(request)).json();
+  assert.deepEqual(result.preorder, {
+    slug: 'ripple-pink-preorder', title: 'Captured title at purchase', termsVersion: 'captured-v1',
+    termsText: 'Captured shipping terms at purchase.', schedule: [{ volume: 'Pink', releaseDate: '2030-02-01', shipDate: '2030-01-25' }],
+    shippingAmount: 0, countries: ['US', 'CA']
+  });
+  assert.equal(result.orderType, 'preorder');
+  assert.equal(JSON.stringify(result).includes('private'), false);
+  assert.equal(JSON.stringify(result).includes('tshirt'), false);
+});
+
+test('unpaid or unrelated sessions cannot receive a paid preorder summary', async () => {
+  const metadata = { ...session.metadata, order_type: 'preorder', preorder_slug: 'ripple-pink-preorder', preorder_terms_text: 'Preorder terms' };
+  for (const [stripeSession, expectedStatus, expectedBody] of [
+    [{ ...session, metadata, payment_status: 'unpaid', status: 'open' }, 200, { status: 'pending' }],
+    [{ ...session, metadata: { ...metadata, site: 'other-site' } }, 404, { error: 'Checkout session not found.' }]
+  ]) {
+    const handler = createOrderStatusHandler({ env: { STRIPE_SECRET_KEY: 'sk_test_fixture' }, fetchImpl: async () => stripeReply(stripeSession), storeFactory: memoryStore });
+    const response = await handler(statusRequest());
+    assert.equal(response.status, expectedStatus);
+    assert.deepEqual(await response.json(), expectedBody);
+  }
+});
+
+test('malformed historical preorder summaries do not hide payment confirmation', async () => {
+  for (const schedule of ['{bad', '[null]', JSON.stringify([{ volume: 'Pink', releaseDate: '2030-02-31', shipDate: 'personal data' }])]) {
+    const handler = createOrderStatusHandler({
+      env: { STRIPE_SECRET_KEY: 'sk_test_fixture' }, storeFactory: memoryStore,
+      fetchImpl: async () => stripeReply({ ...session, metadata: { ...session.metadata, order_type: 'preorder', preorder_slug: 'ripple-pink-preorder', preorder_schedule: schedule } })
+    });
+    const result = await (await handler(statusRequest())).json();
+    assert.equal(result.status, 'paid');
+    assert.equal(result.preorder.title, 'Ripple: Pink — Autographed Preorder');
+    assert.equal(result.preorder.termsText, null);
+    assert.equal(result.preorder.shippingAmount, null);
+    assert.deepEqual(result.preorder.countries, []);
+    assert.equal(JSON.stringify(result.preorder.schedule).includes('personal data'), false);
+    assert.equal(JSON.stringify(result.preorder.schedule).includes('2030-02-31'), false);
+  }
+});
+
 test('recorded delayed-payment failure is reported without marking paid', async () => {
   const store = memoryStore();
   store.records.set(`failed/${sessionId}`, { sessionId });

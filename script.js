@@ -300,13 +300,41 @@ if (orderPage) {
         if (!response.ok) throw new Error(result.error || 'Verification is temporarily unavailable.');
         if (result.status === 'paid') {
           removePaidItems(sessionId);
+          const isPreorder = result.orderType === 'preorder' && result.preorder;
           setStatus(
-            'Payment confirmed.',
+            isPreorder ? 'Preorder payment confirmed.' : 'Payment confirmed.',
             result.recorded
-              ? 'Thank you. Stripe has confirmed your payment and your order has been recorded.'
+              ? (isPreorder ? `Thank you. Your ${result.preorder.title} has been recorded. This is an upcoming release, not an in-stock shipment.` : 'Thank you. Stripe has confirmed your payment and your order has been recorded.')
               : 'Stripe has confirmed your payment. We are finishing the order record; please do not pay again. Your Stripe receipt confirms payment.',
             `Order reference: ${result.orderId}`
           );
+          if (isPreorder) {
+            const terms = orderPage.querySelector('[data-confirmed-preorder-terms]');
+            terms.textContent = result.preorder.termsText || 'Your confirmed preorder delivery terms are included in your order record. Contact us with your order reference if you need a copy.';
+            terms.hidden = false;
+            const schedule = orderPage.querySelector('[data-confirmed-preorder-schedule]');
+            const formatDate = (value) => new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(`${value}T12:00:00Z`));
+            for (const item of result.preorder.schedule || []) {
+              const row = document.createElement('li');
+              const dates = [];
+              if (item.shipDate) dates.push(`ships by ${formatDate(item.shipDate)}`);
+              if (item.arrivalDate) dates.push(`receive by ${formatDate(item.arrivalDate)}`);
+              if (item.releaseDate) dates.push(`official release ${formatDate(item.releaseDate)}`);
+              if (dates.length) {
+                row.textContent = `${item.volume}: ${dates.join('; ')}.`;
+                schedule.append(row);
+              }
+            }
+            schedule.hidden = !schedule.children.length;
+            const shipping = orderPage.querySelector('[data-confirmed-preorder-shipping]');
+            if (Number.isInteger(result.preorder.shippingAmount) && result.preorder.shippingAmount >= 0) {
+              shipping.textContent = result.preorder.shippingAmount === 0 ? 'Your preorder includes free shipping.' : `Preorder shipping: $${(result.preorder.shippingAmount / 100).toFixed(2)}.`;
+              shipping.hidden = false;
+            }
+            const returnLink = orderPage.querySelector('[data-order-return]');
+            returnLink.href = 'ripple.html';
+            returnLink.textContent = 'Back to The Ripple →';
+          }
         } else if (result.status === 'processing') {
           setStatus('Payment processing.', 'Stripe is still processing your payment. Please do not place another order yet.', 'This page will check again automatically.');
           if (++checks < 12) window.setTimeout(verifyOrder, 5000);

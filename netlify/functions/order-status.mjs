@@ -1,5 +1,46 @@
 import { isSiteSession, orderStore, recordPaidOrder } from '../lib/order-record.mjs';
 
+const preorderTitles = {
+  'ripple-pink-preorder': 'Ripple: Pink — Autographed Preorder',
+  'ripple-series-preorder': 'Ripple — Five-Book Preorder Bundle'
+};
+
+function publicPreorderSummary(session) {
+  const metadata = session.metadata;
+  if (metadata.order_type !== 'preorder') return null;
+  const text = (value, limit) => typeof value === 'string' && value.length <= limit ? value : null;
+  const slug = Object.hasOwn(preorderTitles, metadata.preorder_slug) ? metadata.preorder_slug : null;
+  let schedule = [];
+  try {
+    const parsed = JSON.parse(metadata.preorder_schedule || '[]');
+    if (Array.isArray(parsed) && parsed.length <= 5) {
+      schedule = parsed.filter(entry => ['Pink', 'Blue', 'Red', 'Yellow', 'Black'].includes(entry?.volume)).map(entry => {
+        const safe = { volume: entry.volume };
+        for (const key of ['releaseDate', 'shipDate', 'arrivalDate']) {
+          const date = entry[key];
+          if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) continue;
+          const timestamp = Date.parse(date + 'T00:00:00Z');
+          if (Number.isFinite(timestamp) && new Date(timestamp).toISOString().slice(0, 10) === date) safe[key] = date;
+        }
+        return safe;
+      });
+    }
+  } catch { /* A missing historical summary must not hide a confirmed payment. */ }
+  const amount = typeof metadata.preorder_shipping_amount === 'string' && /^\d{1,6}$/.test(metadata.preorder_shipping_amount)
+    ? Number(metadata.preorder_shipping_amount) : null;
+  const countries = [...new Set((text(metadata.preorder_countries, 500) || '').split(',').filter(country => /^[A-Z]{2}$/.test(country)))];
+  // Whitelist only public offer terms. Do not return customer or fulfillment PII.
+  return {
+    slug,
+    title: text(metadata.preorder_title, 120) || preorderTitles[slug] || 'Preorder',
+    termsVersion: text(metadata.preorder_terms_version, 100),
+    termsText: text(metadata.preorder_terms_text, 500),
+    schedule,
+    shippingAmount: amount !== null && amount <= 100000 ? amount : null,
+    countries
+  };
+}
+
 function json(body, status = 200) {
   return Response.json(body, {
     status,
@@ -38,7 +79,8 @@ export function createOrderStatusHandler({ env = process.env, fetchImpl = fetch,
       } catch (error) {
         console.error('Could not save a paid order record:', error);
       }
-      return json({ status: 'paid', recorded, orderId: session.metadata.order_id });
+      const preorder = publicPreorderSummary(session);
+      return json({ status: 'paid', recorded, orderId: session.metadata.order_id, ...(preorder ? { orderType: 'preorder', preorder } : {}) });
     }
     if (session.status === 'expired') return json({ status: 'expired' });
     try {

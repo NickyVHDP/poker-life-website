@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="About Larry McCracken — more than 25 years in poker as a player, dealer, poker room manager, and author, and the thinking behind Poker Life." />
-    <title>About Larry | Poker Life</title>
+    <meta name="description" content="Meet Larry McCracken, the author, poker player, and professional DJ behind Poker Life USA and The Ripple thriller series." />
+    <title>About Larry McCracken | Poker Life</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -15,10 +15,11 @@
     <link rel="stylesheet" href="logo-art.css" />
     <link rel="stylesheet" href="pages.css" />
     <link rel="stylesheet" href="theme-shared.css" />
-    <script defer src="script.js?v=12"></script>
+    <link rel="stylesheet" href="author-page.css" />
+    <script defer src="script.js?v=13"></script>
     <script defer src="theme-ui.js"></script>
   </head>
-  <body class="pl-inner">
+  <body class="pl-inner pl-author-page">
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="pl-site-header">
           <a class="pl-brand" href="index.html" aria-label="Poker Life — home">
@@ -26,7 +27,7 @@
           </a>
           <button class="pl-menu-toggle" type="button" aria-controls="pl-main-nav" aria-expanded="false" aria-label="Open navigation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" /></svg></button>
           <nav class="pl-nav" id="pl-main-nav" aria-label="Main navigation">
-            <a href="index.html">Home</a><a href="books.html">Books</a><a href="apparel.html">Merch</a><a href="resources.html">Resources</a><a href="community.html">Community</a><a href="about.html">My Story</a>
+            <a href="index.html">Home</a><a href="books.html">Books</a><a href="ripple.html">The Ripple</a><a href="apparel.html">Merch</a><a href="resources.html">Resources</a><a href="community.html">Community</a><a href="about.html">My Story</a>
           </nav>
           <div class="pl-header-actions">
             <button type="button" data-search-toggle aria-controls="pl-site-search" aria-expanded="false" aria-label="Search books"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m15.5 15.5 5 5" /></svg></button>
@@ -36,72 +37,71 @@
             <label class="pl-sr-only" for="pl-search-input">Search the Poker Life library</label><input id="pl-search-input" name="q" type="search" placeholder="Search books, strategy, mindset…" autocomplete="off" /><button class="pl-button" type="submit">Search <span aria-hidden="true">→</span></button>
           </form>
         </header>
-    <main id="main">
-      <section class="page-hero">
-        <p class="kicker">About the author</p>
-        <h1>Larry <span>McCracken</span></h1>
-        <p>More than 25 years in poker — as a player, a dealer, a poker room manager, and an author. Poker Life is what came out of seeing the game from all four seats.</p>
+    <main id="main" class="pl-author-main">
+      <section class="pl-author-hero" aria-labelledby="author-title">
+        <div class="pl-author-hero-copy">
+          <h1 id="author-title"><span>About</span> Larry McCracken</h1>
+          <p class="pl-author-intro">For Larry McCracken, poker has never been just a card game. It has been a career, a community, a source of unforgettable stories, and ultimately the inspiration behind Poker Life USA.</p>
+        </div>
+        <figure class="pl-author-portrait">
+          <svg viewBox="316 1659 295 205" role="img" aria-label="Larry McCracken smiling in a white Poker Life hoodie." preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-portraits-retouched.png" width="770" height="2043" /></svg>
+          <figcaption>Larry McCracken <span aria-hidden="true">/</span> Poker Life USA</figcaption>
+        </figure>
       </section>
 
-      <section class="stats-bar" aria-label="Larry McCracken's experience in poker">
-        <div><svg class="stat-icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="10" width="34" height="30" rx="3"/><path d="M7 18h34M15 6v8M33 6v8M15 25h7M15 31h7M27 25h6M27 31h6"/></svg><p><strong>25+</strong><small>Years in Poker</small></p></div>
-        <div><svg class="stat-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 8h11c3 0 5 2 5 5v27c0-3-2-5-5-5H8zM40 8H29c-3 0-5 2-5 5v27c0-3 2-5 5-5h11zM13 15h6M13 21h6M29 15h6M29 21h6"/></svg><p><strong>14</strong><small>Books Published</small></p></div>
-        <div><svg class="stat-icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="9" width="22" height="29" rx="2" transform="rotate(-10 8 9)"/><rect x="20" y="10" width="21" height="29" rx="2"/><path d="M30.5 17c-4 4-5 7-5 9 0 3 2 5 5 5s5-2 5-5c0-2-1-5-5-9zM30.5 30v5M27.5 35h6"/></svg><p><strong>Four Roles</strong><small>Player, dealer, room manager, author</small></p></div>
-        <div><svg class="stat-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M13 8h22v8c0 7-5 12-11 12S13 23 13 16zM13 12H7v4c0 5 3 8 8 8M35 12h6v4c0 5-3 8-8 8M24 28v8M16 41h16M18 36h12"/></svg><p><strong>One Mission</strong><small>Helping players make smarter decisions</small></p></div>
-      </section>
+      <div class="pl-author-layout">
+        <nav class="pl-author-contents" aria-label="On this page">
+          <p>In this story</p>
+          <a href="#author-story">About Larry</a>
+          <a href="#the-poker-life">The Poker Life</a>
+          <a href="#more-than-one-story">More Than One Story</a>
+          <a class="pl-author-series-link" href="ripple.html">The Ripple Series <span aria-hidden="true">↗</span></a>
+        </nav>
+        <div class="pl-author-story">
+          <section class="pl-author-chapter" id="author-story" aria-labelledby="author-title">
+            <p>Larry has spent years on nearly every side of the poker table. He has worked as a poker dealer, floor manager, and poker room manager, while also spending countless hours as a player himself. That experience has given him a perspective on the poker world that goes far beyond cards, chips, bad beats, and big pots. He understands the personalities, friendships, rivalries, pressure, humor, and unpredictability that make the poker room such a fascinating place.</p>
+            <p>But poker is only one chapter of his story.</p>
+            <p>For more than 25 years, Larry has also worked in the entertainment and nightlife industry as a professional DJ, performing in clubs and learning how to read a room long before he ever started writing about reading people at a poker table. Those years introduced him to an endless collection of characters, situations, and stories—some hilarious, some unbelievable, and some that sound like they belong in a novel.</p>
+            <p>Eventually, Larry realized that many of those experiences were stories worth telling.</p>
+            <p>That realization led him into publishing.</p>
+            <p>Writing as Larry McCracken, he began creating books centered around poker, entertainment, humor, real-life experience, and the fascinating people who inhabit those worlds. His goal has never been to write books that feel distant or overly complicated. He wants readers to feel as though they are sitting across the table, standing inside the club, or experiencing the story alongside the characters.</p>
+            <p>His fiction takes that philosophy even further.</p>
+            <p>Through characters such as Larry Legend, Larry combines the world he knows with suspense, crime, relationships, humor, money, temptation, and unexpected consequences. Poker may provide the setting, but the stories are ultimately about people—and what happens when one decision changes everything.</p>
+            <p>That idea is at the heart of <a href="ripple.html">The Ripple</a>, an ambitious thriller series built around a single pivotal poker hand. The same moment can produce completely different consequences depending on who wins, who loses, and what happens next. Each book explores another version of that ripple, showing how seemingly small moments can alter relationships, careers, fortunes, and lives.</p>
+            <p>Larry’s writing reflects the personality he brings to the poker table and DJ booth: conversational, unpredictable, occasionally sarcastic, and never afraid to have some fun. Even when the stakes become serious, humor remains part of the experience because that is how Larry sees the real world. Some of the funniest conversations happen during the worst nights, and some of the biggest decisions begin with moments nobody realizes are important until much later.</p>
+          </section>
 
-      <section class="section">
-        <p class="section-kicker">The short version</p>
-        <h2>Four Seats at the Same Table.</h2>
-        <div class="prose">
-          <p>Most poker writing comes from one vantage point. Larry McCracken has spent more than 25 years working the game from four of them, and each one teaches something the others cannot.</p>
-          <p><strong>As a player</strong>, you learn what a decision actually costs — not in theory, but in the moment, with your own money in front of you and a clock running in your head.</p>
-          <p><strong>As a dealer</strong>, you see hands from the outside. You watch hundreds of players make the same handful of mistakes, over and over, and you start to notice that the losing decisions have patterns.</p>
-          <p><strong>As a poker room manager</strong>, you see the game as a whole: who comes back, who burns out, how a room runs, and what separates the regulars who last from the ones who disappear after a bad month.</p>
-          <p><strong>As an author</strong>, the job is to turn all of that into something a reader can use on their next session. That is what the 14 Poker Life books are for.</p>
-        </div>
-      </section>
+          <section class="pl-author-chapter" id="the-poker-life" aria-labelledby="poker-life-title">
+            <h2 id="poker-life-title">The Poker Life</h2>
+            <p>Poker Life USA was created to bring all of those worlds together.</p>
+            <p>It is more than a website promoting books. It represents the lifestyle surrounding the game—the late nights, friendships, road trips, tournaments, cash games, incredible wins, brutal bad beats, colorful personalities, inside jokes, and stories that poker players collect over a lifetime.</p>
+            <p>Through PokerLifeUSA.com, Larry is building a home for his books, original Poker Life apparel, merchandise, collectibles, and future projects inspired by the game and the people who play it.</p>
+            <p>The philosophy behind the brand is simple:</p>
+            <p class="pl-author-pull">Poker isn’t something you simply play. For some of us, it’s part of who we are.</p>
+            <p>Larry knows what it feels like to deal the cards, run the room, sit in the game, watch a huge pot develop, experience the frustration of losing one, and laugh about something ridiculous that happened at the table five minutes later. Those experiences are what give Poker Life its authenticity.</p>
+            <p>There are plenty of poker brands built around winning.</p>
+            <p class="pl-author-emphasis">Poker Life is built around living it.</p>
+          </section>
 
-      <section class="section">
-        <p class="section-kicker">The idea behind Poker Life</p>
-        <h2>Focus. Patience. Profit.</h2>
-        <p class="section-subtitle">Three words, in that order, for a reason.</p>
-        <div class="card-grid">
-          <article class="panel">
-            <span class="eyebrow">One</span>
-            <h3>Focus</h3>
-            <p>Poker rewards attention more reliably than it rewards talent. The information you need is on the table — bet sizes, timing, who is watching and who is not. Most of it is simply missed.</p>
-            <p>Focus is the discipline of still gathering that information on hour six, when it would be easier to autopilot.</p>
-          </article>
-          <article class="panel">
-            <span class="eyebrow">Two</span>
-            <h3>Patience</h3>
-            <p>Nearly every hand you are dealt is a hand to release. Patience is not passivity — it is the willingness to wait for a spot where your edge is real rather than manufacturing action out of boredom.</p>
-            <p>It is also the harder half of the game to sell, because folding never feels like progress.</p>
-          </article>
-          <article class="panel">
-            <span class="eyebrow">Three</span>
-            <h3>Profit</h3>
-            <p>Profit is a result, not a strategy. It arrives as the byproduct of a long series of decisions made well, and it is the last thing to show up — long after the process is already sound.</p>
-            <p>Which is why the first two words come first.</p>
-          </article>
-        </div>
-      </section>
+          <section class="pl-author-chapter" id="more-than-one-story" aria-labelledby="more-stories-title">
+            <h2 id="more-stories-title">More Than One Story</h2>
+            <p>Larry’s path has never followed a straight line, and he wouldn’t want it to.</p>
+            <p>He has spent decades entertaining crowds as a DJ, years working inside poker rooms, thousands of hours around poker tables, and more recently has turned those experiences and his imagination toward becoming an independent author and entrepreneur.</p>
+            <p>Every chapter has added another story.</p>
+            <p>Today, Larry continues playing poker, writing and publishing books, DJing, developing the Poker Life USA brand, and creating new projects that bring together the worlds he knows best.</p>
+            <p>There are more books coming.</p>
+            <p>There are more stories coming.</p>
+            <p>And there will definitely be more poker hands that seemed like a good idea when the money went in.</p>
+            <p>Welcome to Poker Life USA.</p>
+            <p class="pl-author-closing">The cards are only the beginning.</p>
+          </section>
 
-      <section class="section">
-        <p class="section-kicker">How the books are written</p>
-        <h2>Practical First.</h2>
-        <div class="prose">
-          <p>The Poker Life catalogue covers strategy, tournament play, poker math, reading opponents, and the mental side of the game. Different subjects, one approach: explain the thinking clearly enough that a reader can apply it at the table, not just agree with it in an armchair.</p>
-          <p>That means plain language over jargon, worked reasoning over rules to memorise, and honesty about variance. No book can promise results in a game with this much short-term luck in it. What a good one can do is make your decisions better and let the arithmetic take care of the rest over time.</p>
-          <p>It is the same principle the whole site is built on:</p>
+          <div class="pl-author-actions">
+            <a class="pl-button" href="ripple.html">Explore The Ripple Series <span aria-hidden="true">→</span></a>
+            <a class="pl-author-text-link" href="books.html">Browse all books <span aria-hidden="true">→</span></a>
+          </div>
         </div>
-        <blockquote class="pull-quote">“It’s not about the cards you’re dealt. It’s about the decisions you make.”<small>— Larry McCracken</small></blockquote>
-        <div class="hero-actions">
-          <a class="button gold" href="books.html">Browse the books &nbsp; →</a>
-          <a class="button outline" href="articles.html">Read the articles</a>
-        </div>
-      </section>
+      </div>
     </main>
     <footer class="pl-footer">
           <div class="pl-footer-connect">
@@ -121,7 +121,7 @@
           </div>
           <div class="pl-footer-brand-area">
             <a class="pl-footer-brand" href="index.html" aria-label="Poker Life — home"><img class="pl-brand-mark" src="assets/poker-life-mark-transparent.png" alt="" width="1326" height="1187" /><img class="pl-brand-wordmark" src="assets/poker-life-wordmark-detailed-transparent.png" alt="Poker Life — Focus. Patience. Profit." width="1120" height="340" /></a>
-            <nav class="pl-footer-nav" aria-label="Footer navigation"><a href="index.html">Home</a><a href="books.html">Books</a><a href="apparel.html">Apparel</a><a href="card-protectors.html">Card Protectors</a><a href="resources.html">Resources</a><a href="community.html">Community</a><a href="about.html">My Story</a><a href="contact.html">Contact</a></nav>
+            <nav class="pl-footer-nav" aria-label="Footer navigation"><a href="index.html">Home</a><a href="books.html">Books</a><a href="ripple.html">The Ripple</a><a href="apparel.html">Apparel</a><a href="card-protectors.html">Card Protectors</a><a href="resources.html">Resources</a><a href="community.html">Community</a><a href="about.html">My Story</a><a href="contact.html">Contact</a></nav>
             <div class="pl-footer-meta"><a href="faq.html">Ordering &amp; FAQ</a><a href="articles.html">Poker Articles</a><span>© <span data-pl-year>2026</span> Poker Life</span></div>
           </div>
         </footer>
