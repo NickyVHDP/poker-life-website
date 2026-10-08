@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Contact Poker Life — enquiries about books, gear, coaching, and courses. This form runs locally in your browser and is not connected to a mail service yet." />
+    <meta name="description" content="Email Larry McCracken directly for Poker Life books, Ripple preorders, order support, and general enquiries." />
     <title>Contact | Poker Life</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="logo-art.css" />
     <link rel="stylesheet" href="pages.css" />
     <link rel="stylesheet" href="theme-shared.css" />
+    <link rel="stylesheet" href="contact.css?v=1" />
     <script defer src="script.js?v=13"></script>
     <script defer src="theme-ui.js"></script>
   </head>
@@ -38,71 +39,48 @@
         </header>
     <main id="main">
       <section class="page-hero">
-        <h1>Contact <span>Poker Life</span></h1>
-        <p>Questions about a book, the gear line, coaching, or courses. Check the <a href="faq.html">FAQ</a> first — it covers most of what comes up about buying and delivery.</p>
+        <h1>Contact <span>Larry</span></h1>
+        <p>Questions about a book, a Ripple preorder, or Poker Life? Get in touch with Larry McCracken directly.</p>
       </section>
 
       <section class="section section-left">
-        <p class="notice"><strong>Contact service coming soon:</strong> the form is prepared for a future mail-service connection. Until that connection is active, entries remain in your browser and are not delivered or stored.</p>
-
         <div class="contact-grid">
-          <div>
-            <h2>Send a Message</h2>
-            <p class="section-subtitle">All fields stay on this page. Nothing leaves your browser.</p>
-            <form class="contact-form" data-local-form="contact" novalidate>
-              <div class="field">
-                <label for="contact-name">Your name</label>
-                <input id="contact-name" name="name" type="text" autocomplete="name" placeholder="Name" />
-              </div>
-              <div class="field">
-                <label for="contact-email">Email address</label>
-                <input id="contact-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" />
-              </div>
-              <div class="field">
-                <label for="contact-topic">What is this about?</label>
-                <select id="contact-topic" name="topic">
-                  <option value="books">A book or an order</option>
-                  <option value="gear">Poker Life gear</option>
-                  <option value="coaching">Coaching</option>
-                  <option value="courses">Courses</option>
-                  <option value="newsletter">Newsletter</option>
-                  <option value="other">Something else</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="contact-message">Message</label>
-                <textarea id="contact-message" name="message" placeholder="What would you like to ask?"></textarea>
-              </div>
-              <button class="button gold" type="submit">Preview message &nbsp; →</button>
-              <p class="form-status" role="status" aria-live="polite">Preview mode: messages are not delivered until the contact service is connected.</p>
-            </form>
+          <div class="panel pl-contact-card" id="email-larry">
+            <svg class="pl-contact-envelope" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="10" width="38" height="28" rx="3" /><path d="m6 12 18 14 18-14" /></svg>
+            <span class="eyebrow">A direct line to Poker Life</span>
+            <h2>Email Larry McCracken</h2>
+            <p>Book questions, order updates, preorder cancellations, or something else on your mind—send Larry an email.</p>
+            <a class="pl-contact-address" href="mailto:larrymccrackenjr@gmail.com">larrymccrackenjr@gmail.com</a>
+            <a class="button gold" href="mailto:larrymccrackenjr@gmail.com?subject=Poker%20Life%20enquiry">Email Larry <span aria-hidden="true">→</span></a>
+            <p class="pl-contact-hint">Opens your email app. Prefer webmail? Copy the address above and send from your inbox.</p>
+            <p class="pl-contact-order-note">For an existing order, include your order reference and the email used at checkout. Please don’t email card numbers or other payment details.</p>
           </div>
 
           <aside>
             <article class="panel" id="books-help">
               <span class="eyebrow">Books &amp; orders</span>
               <h3>Questions About a Book</h3>
-              <p>Formats, delivery, refunds, and anything specific to an order are confirmed during secure checkout. The <a href="faq.html#buying">FAQ</a> explains what is and is not published here.</p>
+              <p>Ask Larry about formats, delivery, or an existing order. For Ripple preorders, see the <a href="ripple.html#ripple-faq-title">preorder and cancellation details</a>. The <a href="faq.html#buying">FAQ</a> covers general ordering questions.</p>
               <a class="button outline" href="books.html">See the catalogue</a>
             </article>
 
             <article class="panel" id="gear">
               <span class="eyebrow">Gear enquiry</span>
               <h3>Poker Life Gear</h3>
-              <p>Apparel and accessories can be added to the cart, but their official prices and secure checkout products still need to be connected. Use the form and choose “Poker Life gear” if you would like availability information.</p>
+              <p>Apparel and accessories can be added to the cart, but their official prices and secure checkout products still need to be connected. Email Larry for availability information.</p>
               <a class="button outline" href="apparel.html">View the gear</a>
             </article>
 
             <article class="panel" id="coaching">
               <span class="eyebrow">Coming soon</span>
               <h3>Coaching</h3>
-              <p>Coaching is not open for booking. There are no sessions, rates, or waitlist behind this page — choosing “Coaching” in the form is a way to note your interest, nothing more.</p>
+              <p>Coaching is not open for booking. You can email Larry with questions or interest; sending an email does not reserve a session or join a waitlist.</p>
             </article>
 
             <article class="panel" id="courses">
               <span class="eyebrow">Coming soon</span>
               <h3>Courses</h3>
-              <p>No courses are available to enrol in, and no launch date has been announced on this site. Interest can be noted through the form in the same way.</p>
+              <p>No courses are available to enrol in, and no launch date has been announced on this site. Email Larry with any questions about future courses.</p>
             </article>
           </aside>
         </div>
