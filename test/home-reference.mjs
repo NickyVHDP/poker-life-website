@@ -1,10 +1,13 @@
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { mkdir } from 'node:fs/promises';
 
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || '/Users/nickydivine/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
 const base = (process.env.PREVIEW_URL || 'http://127.0.0.1:4176').replace(/\/$/, '');
 const origin = new URL(base).origin;
+const screenshotDir = '/private/tmp/poker-life-restored-home-qa';
+await mkdir(screenshotDir, { recursive: true });
 const browser = await chromium.launch({ executablePath: process.env.CHROME_BIN || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: true });
 const context = await browser.newContext();
 const page = await context.newPage();
@@ -50,37 +53,77 @@ async function checkDialog(trigger, expectedTitle) {
   await dialog.locator('[data-close-book-modal]').click();
   assert.equal(await dialog.isVisible(), false);
 }
+async function checkCarousel() {
+  const slide = index => page.locator(`[data-book-slide="${index}"]`);
+  const dot = index => page.locator(`[data-carousel-index="${index}"]`);
+  async function current(index) {
+    assert.equal(await page.locator('[data-book-slide]:visible').count(), 1);
+    assert.ok(await slide(index).isVisible());
+    assert.equal(await dot(index).getAttribute('aria-current'), 'true');
+    assert.equal(await page.locator('[data-carousel-index][aria-current="true"]').count(), 1);
+  }
+  await current(0);
+  await page.locator('[data-carousel-step="1"]').click();
+  await current(1);
+  await page.locator('[data-carousel-step="-1"]').click();
+  await current(0);
+  await page.locator('[data-carousel-step="-1"]').click();
+  await current(3);
+  await page.locator('[data-carousel-step="1"]').click();
+  await current(0);
+  await dot(2).click();
+  await current(2);
+  await slide(2).locator('button').first().focus();
+  await page.keyboard.press('ArrowRight');
+  await current(3);
+  assert.ok(await dot(3).evaluate(button => button === document.activeElement), 'Carousel must move focus out of a hidden slide');
+  await page.keyboard.press('ArrowLeft');
+  await current(2);
+  assert.ok(await dot(2).evaluate(button => button === document.activeElement));
+  assert.match(await page.locator('[data-carousel-status]').textContent(), /3 of 4/);
+  await dot(0).click();
+  await current(0);
+}
 try {
-  for (const width of [320, 390, 1024, 1440]) {
+  for (const width of [320, 390, 700, 720, 721, 770, 1024, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
     await home();
+    if ([390, 770, 1024, 1440].includes(width)) await page.screenshot({ path: `${screenshotDir}/home-${width}.png`, fullPage: true });
     await noOverflow('home-' + width);
-    assert.ok(await page.locator('.pl-menu-toggle').isVisible(), 'Hamburger must be visible at ' + width);
-    assert.equal(await page.locator('.pl-nav').isVisible(), false, 'Navigation must start closed at ' + width);
-    await page.locator('.pl-menu-toggle').click();
-    assert.ok(await page.locator('.pl-nav').isVisible());
-    assert.equal(await page.locator('.pl-menu-toggle').getAttribute('aria-expanded'), 'true');
-    await noOverflow('menu-' + width);
-    await page.keyboard.press('Escape');
-    assert.equal(await page.locator('.pl-nav').isVisible(), false);
-    assert.ok(await page.locator('.pl-menu-toggle').evaluate(button => button === document.activeElement));
-    await page.locator('.pl-menu-toggle').click();
-    const openMenu = await page.locator('.pl-nav').boundingBox();
-    await page.mouse.click(5, openMenu.y + openMenu.height + 8);
-    assert.equal(await page.locator('.pl-nav').isVisible(), false, 'Outside click must close navigation');
+    assert.deepEqual(await page.locator('main > section').evaluateAll(sections => sections.map(section => section.id || (section.classList.contains('pl-hero') ? 'hero' : 'unknown'))), ['hero', 'books', 'ripple', 'merch', 'coins', 'resources', 'community', 'story']);
+    assert.doesNotMatch(await page.locator('body').textContent(), /free\s+(?:Poker Life\s+)?t[ -]?shirt/i, 'Removed shirt offer must not return');
+    const mobileMenu = width <= 720;
+    assert.equal(await page.locator('.pl-menu-toggle').isVisible(), mobileMenu, 'Responsive hamburger at ' + width);
+    assert.equal(await page.locator('.pl-nav').isVisible(), !mobileMenu, 'Desktop navigation must remain visible at ' + width);
+    if (mobileMenu) {
+      await page.locator('.pl-menu-toggle').click();
+      assert.ok(await page.locator('.pl-nav').isVisible());
+      assert.equal(await page.locator('.pl-menu-toggle').getAttribute('aria-expanded'), 'true');
+      await noOverflow('menu-' + width);
+      await page.keyboard.press('Escape');
+      assert.equal(await page.locator('.pl-nav').isVisible(), false);
+      assert.ok(await page.locator('.pl-menu-toggle').evaluate(button => button === document.activeElement));
+      await page.locator('.pl-menu-toggle').click();
+      const openMenu = await page.locator('.pl-nav').boundingBox();
+      await page.mouse.click(5, openMenu.y + openMenu.height + 8);
+      assert.equal(await page.locator('.pl-nav').isVisible(), false, 'Outside click must close navigation');
+    }
     await page.locator('[data-search-toggle]').click();
     assert.ok(await page.locator('[data-site-search]').isVisible());
     assert.equal(await page.locator('[data-search-toggle]').getAttribute('aria-expanded'), 'true');
     assert.ok(await page.locator('[data-site-search] input').evaluate(input => input === document.activeElement));
     await noOverflow('search-' + width);
-    await page.locator('.pl-menu-toggle').click();
-    assert.equal(await page.locator('[data-site-search]').isVisible(), false, 'Menu must close search');
-    await page.locator('[data-search-toggle]').click();
-    assert.equal(await page.locator('.pl-nav').isVisible(), false, 'Search must close menu');
+    if (mobileMenu) {
+      await page.locator('.pl-menu-toggle').click();
+      assert.equal(await page.locator('[data-site-search]').isVisible(), false, 'Menu must close search');
+      await page.locator('[data-search-toggle]').click();
+      assert.equal(await page.locator('.pl-nav').isVisible(), false, 'Search must close menu');
+    }
     await page.keyboard.press('Escape');
     assert.equal(await page.locator('[data-site-search]').isVisible(), false);
     assert.ok(await page.locator('[data-search-toggle]').evaluate(button => button === document.activeElement));
 
+    await checkCarousel();
     await checkDialog('[data-book-details="patient-poker-player-win-more"]', 'The Patient Poker Player: Win More by Playing Less');
     await checkDialog('[data-book-details="patient-poker-player-advanced-tactics"]', 'The Patient Poker Player: Advanced Tactics to Outlast and Outplay');
     const previewButton = page.locator('[data-preview="behind-the-felt"]');
@@ -90,7 +133,7 @@ try {
     await page.keyboard.press('Escape');
     assert.equal(await page.locator('#pl-preview-dialog').isVisible(), false);
     assert.ok(await previewButton.evaluate(button => button === document.activeElement));
-    results.push('Responsive layout, menu, search and all three book controls at ' + width);
+    results.push('All eight sections, responsive navigation, search, carousel and book controls at ' + width);
   }
 
   await page.setViewportSize({ width: 1024, height: 1000 });
@@ -109,19 +152,22 @@ try {
     }
     if (hash) assert.ok(checked.get(url.href).includes('id="' + decodeURIComponent(hash.slice(1)) + '"'), 'Missing anchor ' + href);
   }
-  assert.deepEqual(await page.locator('.pl-category-links a').evaluateAll(anchors => anchors.map(anchor => anchor.getAttribute('href'))), ['books.html', 'apparel.html', 'card-protectors.html', 'resources.html']);
-  for (const [selector, destination] of [['.pl-books-link', 'books'], ['.pl-ripple-link', 'ripple'], ['.pl-apparel-link', 'apparel'], ['.pl-category-links a[href="card-protectors.html"]', 'card-protectors']]) {
+  assert.deepEqual(await page.locator('.pl-resource-links a').evaluateAll(anchors => anchors.map(anchor => ({ href: anchor.href, target: anchor.target, rel: anchor.rel }))), [
+    'https://www.worldpokertour.com/', 'https://www.pokeratlas.com/', 'https://www.acrpoker.eu/', 'https://www.pokerstars.com/'
+  ].map(href => ({ href, target: '_blank', rel: 'noopener noreferrer' })));
+  for (const [selector, destination] of [['#books .pl-cta', 'books'], ['.pl-ripple-link', 'ripple'], ['#merch .pl-cta', 'apparel'], ['#coins .pl-cta', 'card-protectors'], ['#resources .pl-cta', 'resources'], ['#community .pl-cta', 'community'], ['#story .pl-cta', 'about']]) {
     await home();
     await page.locator(selector).click();
     await page.waitForURL(url => pageName(url.href) === destination);
     assert.equal(pageName(page.url()), destination);
   }
+  await page.setViewportSize({ width: 390, height: 844 });
   await home();
   await page.locator('.pl-menu-toggle').click();
   await page.locator('.pl-nav a[href="resources.html"]').click();
   await page.waitForURL(url => pageName(url.href) === 'resources');
   assert.equal(await page.locator('.pl-menu-toggle').getAttribute('aria-expanded'), 'false');
-  results.push('All homepage local links resolve; Books, Ripple, Apparel, Card Protectors and menu navigate to separate pages');
+  results.push('All local links and anchors resolve; seven section CTAs and mobile menu navigate to separate pages; four external resource links have safe new-tab behavior');
 
   await home();
   await page.locator('[data-book-details="patient-poker-player-win-more"]').click();
@@ -156,7 +202,7 @@ try {
   assert.deepEqual(missing, [], 'Failed local HTTP responses');
   assert.deepEqual(failedRequests, [], 'Failed local network requests');
   assert.deepEqual(blockedWrites, [], 'Unexpected network mutation attempted');
-  console.log('PASS: supplied-reference homepage interactions and responsive layouts.');
+  console.log('PASS: restored full-reference homepage, Ripple placement, interactions and responsive layouts.');
 } finally {
   console.log(JSON.stringify({ results, measurements, errors, missing, failedRequests, blockedWrites }, null, 2));
   await browser.close();
