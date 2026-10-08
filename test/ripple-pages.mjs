@@ -236,7 +236,10 @@ async function checkCopy(page, name) {
     assert.match(await page.locator('.ripple-offer-pink .ripple-standard').textContent(), /\$29\.99\b/);
     assert.doesNotMatch(await page.locator('.ripple-offer-bundle').textContent(), /shirt/i);
     assert.equal(await page.locator('[data-shirt-field], [name="shirtSize"]').count(), 0, 'Removed shirt-size selector remains');
-    assert.match(await page.locator('[data-preorder-launch-notice]').textContent(), /No payment is taken yet/);
+    assert.match(await page.locator('[data-preorder-launch-notice]').textContent(), /no payment is taken yet/i);
+    assert.match(await page.locator('[data-pink-date]').textContent(), /December/);
+    assert.match(await page.locator('.ripple-offer-bundle').textContent(), /Free U\.S\. shipping included/);
+    assert.match(await page.locator('[data-release-faq]').textContent(), /have not been set yet/);
     assert.deepEqual((await page.locator('.ripple-volumes li').allTextContents()).map(normalize), ['Pink', 'Blue', 'Red', 'Yellow', 'Black']);
   }
 }
@@ -252,6 +255,8 @@ async function checkClosedPreorders(page, width, originalCart) {
     assert.ok(await page.locator('[data-preorder-checkout]').isDisabled(), 'Unconfigured paid preorder must be disabled');
     assert.ok(!(await page.locator('[data-preorder-consent]').isVisible()), 'Closed checkout must not request payment consent');
     assert.doesNotMatch(await page.locator('[data-preorder-terms]').textContent(), /shirt/i, 'Closed offer still advertises the removed shirt');
+    assert.match(await page.locator('[data-preorder-terms]').textContent(), /December/);
+    assert.match(await page.locator('[data-preorder-terms]').textContent(), /free U\.S\. shipping/i);
     const bounds = await dialog.evaluate(element => ({ width: element.getBoundingClientRect().width, left: element.getBoundingClientRect().left, right: element.getBoundingClientRect().right, scrollWidth: element.scrollWidth, clientWidth: element.clientWidth, height: element.getBoundingClientRect().height, viewport: innerWidth, viewportHeight: innerHeight }));
     assert.ok(bounds.left >= 0 && bounds.right <= bounds.viewport && bounds.scrollWidth <= bounds.clientWidth && bounds.height <= bounds.viewportHeight, 'Dialog overflows: ' + JSON.stringify(bounds));
     await page.locator('[data-preorder-form]').evaluate(form => form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })));

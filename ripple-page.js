@@ -1,4 +1,4 @@
-import { ripplePreorderConfig as config } from './ripple-preorder-config.js';
+import { ripplePreorderConfig as config } from './ripple-preorder-config.js?v=3';
 
 const dialog = document.querySelector('[data-preorder-dialog]');
 const form = dialog.querySelector('[data-preorder-form]');
@@ -8,7 +8,7 @@ const consent = form.elements.accepted;
 const money = (cents) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: cents % 100 ? 2 : 0 }).format(cents / 100);
 const date = (value) => new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(`${value}T12:00:00Z`));
 const validDate = (value) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(`${value}T12:00:00Z`));
-const closedMessage = 'Release and shipping dates will be announced before paid preorders open. No payment is taken yet.';
+const closedMessage = 'Preorder delivery details and terms are being finalized. Paid checkout is not open yet; no payment is taken.';
 let selected = null;
 let opener = null;
 let busy = false;
@@ -28,8 +28,8 @@ function isOpen(key) {
 function details(key) {
   const offer = config[key];
   if (!isOpen(key)) return key === 'pink'
-    ? 'An autographed copy of The Ripple: Pink for $25 with free preorder shipping. Standard book price: $29.99.'
-    : 'All five books for $100, each received one week before its official release. Shipping details will be confirmed before payment opens.';
+    ? `An autographed copy of The Ripple: Pink for $25 with free U.S. shipping. Planned release: ${offer.releaseWindow}. The exact release and shipping dates are to be announced. Standard book price: $29.99. Cancel before shipment for a full refund.`
+    : `All five books for $100 with free U.S. shipping, each received one week before its official release. Pink is planned for ${config.pink.releaseWindow}; release dates for Blue, Red, Yellow, and Black are to be announced. Cancel before the first shipment for a full refund; after shipments begin, cancel unshipped books for $20 per book.`;
   const schedule = key === 'pink'
     ? `Ships by ${date(offer.shipDate)}. Official release: ${date(offer.releaseDate)}.`
     : offer.schedule.map((item) => `${item.volume}: receive by ${date(item.arrivalDate)}; official release ${date(item.releaseDate)}.`).join('\n');
@@ -42,6 +42,9 @@ function updateSubmit() {
 
 const pinkOpen = isOpen('pink');
 const bundleOpen = isOpen('bundle');
+if (!pinkOpen && config.pink.releaseWindow) {
+  document.querySelector('[data-pink-date]').textContent = `Planned release: ${config.pink.releaseWindow} · Exact date to be announced`;
+}
 if (pinkOpen || bundleOpen) {
   document.querySelector('[data-preorder-launch-notice]').textContent = 'Paid preorders are open for the offers with confirmed delivery terms below. Review the dates and terms before continuing to secure checkout.';
 }

@@ -57,15 +57,34 @@ test('paid preorders are disabled by default and never contact Stripe', async ()
   assert.equal(ripplePreorderConfig.pink.amount, 2500);
   assert.equal(ripplePreorderConfig.pink.regularAmount, 2999);
   assert.equal(ripplePreorderConfig.bundle.amount, 10000);
-  assert.equal(ripplePreorderConfig.termsVersion, 'ripple-preorder-v2');
+  assert.equal(ripplePreorderConfig.termsVersion, 'ripple-preorder-v3');
+  assert.equal(ripplePreorderConfig.pink.releaseWindow, 'December');
+  assert.equal(ripplePreorderConfig.pink.shippingAmount, 0);
+  assert.equal(ripplePreorderConfig.bundle.shippingAmount, 0);
   assert.equal(Object.hasOwn(ripplePreorderConfig.bundle, 'shirtSizes'), false);
   assert.equal(ripplePreorderConfig.pink.releaseDate, null);
   assert.equal(ripplePreorderConfig.pink.purchaseCutoffAt, null);
   assert.equal(ripplePreorderConfig.bundle.purchaseCutoffAt, null);
-  assert.deepEqual(ripplePreorderConfig.countries, []);
-  const result = await checkout(payload(), { preorderConfig: ripplePreorderConfig });
-  assert.equal(result.status, 503);
-  assert.equal(result.calls, 0);
+  assert.deepEqual(ripplePreorderConfig.countries, ['US']);
+  assert.match(ripplePreorderConfig.pink.termsText, /Cancel before shipment for a full refund/);
+  assert.match(ripplePreorderConfig.bundle.termsText, /cancel unshipped books for \$20 per book/);
+  for (const slug of [ripplePreorderConfig.pink.slug, ripplePreorderConfig.bundle.slug]) {
+    const result = await checkout(payload(slug), { preorderConfig: ripplePreorderConfig });
+    assert.equal(result.status, 503);
+    assert.equal(result.calls, 0);
+  }
+});
+
+test('confirmed free bundle shipping stays free in Stripe and fulfillment metadata', async () => {
+  const config = configured();
+  config.bundle.shippingAmount = ripplePreorderConfig.bundle.shippingAmount;
+  config.bundle.termsText = 'Fixture terms: five-book preorder, free shipping, each book arrives seven days before release.';
+  const result = await checkout(payload(config.bundle.slug), { preorderConfig: config });
+  assert.equal(result.status, 200);
+  assert.equal(result.form.get('line_items[0][price_data][unit_amount]'), '10000');
+  assert.equal(result.form.get('shipping_options[0][shipping_rate_data][fixed_amount][amount]'), '0');
+  assert.equal(result.form.get('metadata[preorder_shipping_amount]'), '0');
+  assert.equal(result.form.get('payment_intent_data[metadata][preorder_shipping_amount]'), '0');
 });
 
 test('activation fails closed for incomplete or invalid dates, countries, terms, prices and shipping', async () => {
