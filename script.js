@@ -17,17 +17,17 @@ const books = [
 const covers = {
   'Texas Hold’em in Texas': 'assets/covers/clean/texas-holdem-in-texas.jpg',
   'Winning Tournament Poker': 'assets/covers/clean/winning-tournament-poker.jpg',
-  'Poker Math Made Easy': 'assets/covers/clean/poker-math-made-easy.jpg',
+  'Poker Math Made Easy': 'assets/covers/print-sharp/poker-math-made-easy.jpg',
   'Is He Bluffing?': 'assets/covers/clean/is-he-bluffing.jpg?v=20260909',
   'The Complete Guide to Poker for Women': 'assets/covers/clean/complete-guide-to-poker-for-women.jpg',
-  'The Patient Poker Player: Advanced Tactics to Outlast and Outplay': 'assets/covers/clean/patient-poker-player-advanced-tactics.jpg',
+  'The Patient Poker Player: Advanced Tactics to Outlast and Outplay': 'assets/covers/print-sharp/patient-poker-player-advanced-tactics.jpg',
   'I Just Ran Bad and Other Lies Poker Players Tell Themselves': 'assets/covers/clean/i-just-ran-bad.jpg',
   'Final Table Secrets': 'assets/covers/clean/final-table-secrets.jpg',
-  'Poker Tricks, Traps, and Mind Games': 'assets/covers/clean/poker-tricks-traps-and-mind-games.jpg',
+  'Poker Tricks, Traps, and Mind Games': 'assets/covers/print-sharp/poker-tricks-traps-and-mind-games.jpg',
   'Poker: What the Pros Don’t Want You to Know': 'assets/covers/clean/poker-what-the-pros-dont-want-you-to-know.jpg?v=20260909',
-  'Poker Life: The Complete Guide to Poker Culture': 'assets/covers/clean/poker-life-culture.jpg',
+  'Poker Life: The Complete Guide to Poker Culture': 'assets/covers/print-sharp/poker-life-culture.jpg',
   'The Only Poker Book You’ll Ever Need': 'assets/covers/clean/the-only-poker-book.jpg?v=20260909',
-  'The Patient Poker Player: Win More by Playing Less': 'assets/covers/clean/patient-poker-player-win-more.jpg',
+  'The Patient Poker Player: Win More by Playing Less': 'assets/covers/print-sharp/patient-poker-player-win-more.jpg',
   'F#@KED on the River': 'assets/covers/clean/f-ked-on-the-river.jpg'
 };
 

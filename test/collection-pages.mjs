@@ -21,7 +21,7 @@ const measurements = [];
 const checkedSvgAssets = new Set();
 const collectionPages = ['books', 'apparel', 'shop', 'card-protectors'];
 const destinations = [...collectionPages, 'resources', 'community', 'about'];
-const navDestinations = ['index', 'books', 'apparel', 'resources', 'community', 'about'];
+const navDestinations = ['index', 'books', 'ripple', 'apparel', 'resources', 'community', 'about'];
 page.on('pageerror', error => errors.push(error.message));
 page.on('response', response => {
   if (response.status() >= 400 && new URL(response.url()).origin === new URL(base).origin) {
@@ -99,7 +99,7 @@ async function checkShell(name) {
     const nav = page.locator('.pl-collection-nav, [data-collection-nav]');
     assert.equal(await nav.count(), 1, name + ' requires one collection navigation');
     const links = await nav.locator('a').evaluateAll(items => items.map(link => ({ href: link.href, current: link.getAttribute('aria-current') })));
-    assert.deepEqual(links.map(link => pageName(link.href)), ['books', 'apparel', 'card-protectors'], name + ' collection links are wrong');
+    assert.deepEqual(links.map(link => pageName(link.href)), ['books', 'ripple', 'apparel', 'card-protectors'], name + ' collection links are wrong');
     assert.deepEqual(links.filter(link => link.current === 'page').map(link => pageName(link.href)), [name === 'shop' ? 'apparel' : name], name + ' collection current-page state is wrong');
   }
 }

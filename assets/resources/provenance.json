@@ -1,0 +1,44 @@
+{
+  "retrieved": "2026-10-09",
+  "assets": [
+    {
+      "file": "wpt-logo.png",
+      "brand": "World Poker Tour",
+      "sourcePage": "https://www.worldpokertour.com/",
+      "sourceAsset": "https://images.worldpokertour.com/dxydtqlpr/image/fetch/f_auto%3Aimage/https%3A//www.worldpokertour.com/_astro/logo.C5edcOSc.png",
+      "dimensions": [483, 141],
+      "transparent": true,
+      "method": "Unmodified official site image."
+    },
+    {
+      "file": "pokeratlas-logo.png",
+      "brand": "PokerAtlas",
+      "sourcePage": "https://www.pokeratlas.com/las-vegas-nevada",
+      "sourceAsset": "https://www.pokeratlas.com/assets/pa-logo-2656cb6663a74175943b06629a8eea71c764d7004984782be9fbb775e2ce6a70.png",
+      "dimensions": [500, 70],
+      "transparent": true,
+      "method": "Unmodified official site image, exported from the rendered page's asset inventory."
+    },
+    {
+      "file": "acr-logo.png",
+      "brand": "Americas Cardroom (classic brand mark)",
+      "sourcePage": "https://www.acrpoker.eu/about-us/",
+      "sourceAsset": "https://www.acrpoker.eu/wp-content/uploads/2023/06/9-1200x800-THE-STORY-BEHIND-OUR-LOGO.gif",
+      "original": "originals/acr-logo-history.gif",
+      "dimensions": [768, 348],
+      "transparent": true,
+      "method": "Mechanical extraction of the official GIF's second frame. Cropped at x=214, y=223, width=768, height=348. Only pure black background pixels were made transparent. All other pixels and colors are preserved; no redraw or upscaling."
+    },
+    {
+      "file": "pokerstars-logo.svg",
+      "brand": "PokerStars",
+      "sourcePage": "https://www.pokerstars.com/",
+      "sourceAsset": "https://cms.rationalcdn.com/v3/assets/blteecf9626d9a38b03/blt85bdf57d1aad2694/5fda3c6bb529867fcec23bd5/poker.svg",
+      "original": "originals/pokerstars-native.svg",
+      "originalViewBox": [0, 0, 876, 220],
+      "viewBox": [0, 0, 668, 400],
+      "transparent": true,
+      "method": "Official site SVG geometry and colors preserved. The wordmark and spade groups were moved into a stacked placement with translation and uniform scaling only. Native horizontal source is preserved in originals/pokerstars-native.svg."
+    }
+  ]
+}

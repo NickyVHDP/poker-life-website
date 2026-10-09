@@ -1,0 +1,93 @@
+{
+  "fetchedOn": "2026-10-09",
+  "method": "Public Amazon paperback page landingImage data-old-hires URLs. Original downloaded JPEGs are preserved without resampling, sharpening, recoloring, or AI generation. Current low-resolution cover, page low-resolution image, and high-resolution image were visually inspected for identical lettering, photographs, and composition. Pixel correlation compares grayscale images normalized to 64x96; dHash compares 1024 horizontal luminance differences.",
+  "covers": [
+    {
+      "file": "poker-math-made-easy.jpg",
+      "pageUrl": "https://www.amazon.com/dp/B0GTG5WD6G",
+      "sourceUrl": "https://m.media-amazon.com/images/I/71CB9oHzP-L._SL1499_.jpg",
+      "comparisonUrl": "https://m.media-amazon.com/images/I/71CB9oHzP-L._SY522_.jpg",
+      "oldDimensions": [348, 522],
+      "newDimensions": [1000, 1499],
+      "oldSha256": "9a5d7e63e77172b08a81da888658ce61d4de1160e8915f1e2de3e328ee51e6a7",
+      "newSha256": "e4b5e0fe7caf738e44ca037d47cc8564cdbbb0b565de288a2e7534bd102466b7",
+      "comparisonSha256": "951518718fbeac114969bfa8bca38f54770c54190df64c07c060cc17a77f0f86",
+      "comparisonByteIdentical": false,
+      "comparisonGrayCorrelation": 0.997884437572225,
+      "comparisonDHashDifferentBitsOf1024": 38,
+      "identity": "Same cover artwork verified visually; JPEG encoding and pixel values differ."
+    },
+    {
+      "file": "patient-poker-player-advanced-tactics.jpg",
+      "pageUrl": "https://www.amazon.com/dp/B0GTG5TW56",
+      "sourceUrl": "https://m.media-amazon.com/images/I/71edSWfGqCL._SL1499_.jpg",
+      "comparisonUrl": "https://m.media-amazon.com/images/I/71edSWfGqCL._SY522_.jpg",
+      "oldDimensions": [348, 522],
+      "newDimensions": [1000, 1499],
+      "oldSha256": "fdafa5652c08a7350fda58a598d7cd4de016de8acfa7a886a88a852ec5f23cc1",
+      "newSha256": "07ad021778709847a8a132915e7e402cc7a251ece17c1cb9427d7f764257b6fd",
+      "comparisonSha256": "f4ae121b434e887e3146e669c49921e2856efbfe30f5f32cefc4eb89543fa1e9",
+      "comparisonByteIdentical": false,
+      "comparisonGrayCorrelation": 0.9997465086993342,
+      "comparisonDHashDifferentBitsOf1024": 12,
+      "identity": "Same current author-photo cover artwork verified visually; JPEG encoding and pixel values differ."
+    },
+    {
+      "file": "patient-poker-player-win-more.jpg",
+      "pageUrl": "https://www.amazon.com/dp/B0GT7541GL",
+      "sourceUrl": "https://m.media-amazon.com/images/I/71JqKcsu7IL._SL1421_.jpg",
+      "comparisonUrl": "https://m.media-amazon.com/images/I/71JqKcsu7IL._SY522_.jpg",
+      "oldDimensions": [367, 522],
+      "newDimensions": [1000, 1421],
+      "oldSha256": "08fd025583fb2812494a900da2ce3791517fd983af25c2fc93ccd8bb3d019d2d",
+      "newSha256": "183965bcbf12506eec3bea4b8e9341d8cb8a5a2edbcb324136e31e74e73d681e",
+      "comparisonSha256": "877126f25dbc3d1cdfef89b0b362ebe57c5b5c9e55014ccebf3839c6fa0d9787",
+      "comparisonByteIdentical": false,
+      "comparisonGrayCorrelation": 0.9941984095070333,
+      "comparisonDHashDifferentBitsOf1024": 36,
+      "identity": "Same current author-photo cover artwork verified visually; JPEG encoding and pixel values differ.",
+      "pageMetadataNote": "Amazon page title is Patience in Poker: How Discipline, Timing, and Folding More Wins You More Money, but its cover image is the matching The Patient Poker Player: Win More by Playing Less artwork."
+    },
+    {
+      "file": "poker-tricks-traps-and-mind-games.jpg",
+      "pageUrl": "https://www.amazon.com/dp/B0H7H8KW5J",
+      "sourceUrl": "https://m.media-amazon.com/images/I/7115la1FU9L._SL1499_.jpg",
+      "comparisonUrl": "https://m.media-amazon.com/images/I/7115la1FU9L._SY522_.jpg",
+      "oldDimensions": [348, 522],
+      "newDimensions": [1000, 1499],
+      "oldSha256": "f13537564fe97764493ae71b76c589830bc1bd30eb70af0207bd887224fde88b",
+      "newSha256": "c16a4a0f16ea963ec87633e98654338011163371e39ed3e74aefdf9e81430ac5",
+      "comparisonSha256": "f13537564fe97764493ae71b76c589830bc1bd30eb70af0207bd887224fde88b",
+      "comparisonByteIdentical": true,
+      "comparisonGrayCorrelation": 1.0,
+      "comparisonDHashDifferentBitsOf1024": 0,
+      "identity": "Current file is byte-identical to the 522-pixel version of the same high-resolution image ID supplied by the product page."
+    },
+    {
+      "file": "poker-life-culture.jpg",
+      "pageUrl": "https://www.amazon.com/dp/B0H9GTJXGP",
+      "sourceUrl": "https://m.media-amazon.com/images/I/71HlXsh-blL._SL1499_.jpg",
+      "comparisonUrl": "https://m.media-amazon.com/images/I/71HlXsh-blL._SY522_.jpg",
+      "oldDimensions": [348, 522],
+      "newDimensions": [1000, 1499],
+      "oldSha256": "a75b7fddaa79379db06a88a75dce82875be306575906fa96ced7c9202f7fe04d",
+      "newSha256": "47db85a16621566e3613b1e2c60d29a95434d8c2159557a50fa7510243b87108",
+      "comparisonSha256": "a75b7fddaa79379db06a88a75dce82875be306575906fa96ced7c9202f7fe04d",
+      "comparisonByteIdentical": true,
+      "comparisonGrayCorrelation": 1.0,
+      "comparisonDHashDifferentBitsOf1024": 0,
+      "identity": "Current file is byte-identical to the 522-pixel version of the same high-resolution image ID supplied by the product page."
+    }
+  ],
+  "notReplaced": [
+    {"file": "texas-holdem-in-texas.jpg", "reason": "Linked Amazon page returned 503 on both ordinary and exact existing query URLs. No verified source image."},
+    {"file": "winning-tournament-poker.jpg", "reason": "Linked Amazon page returned 503 on both ordinary and exact existing query URLs. No verified source image."},
+    {"file": "complete-guide-to-poker-for-women.jpg", "reason": "Linked Amazon page returned 503. Related-product thumbnail found but no verified matching larger cover."},
+    {"file": "is-he-bluffing.jpg", "reason": "Linked Amazon page returned 503. Related-product thumbnail found but no verified matching larger cover."},
+    {"file": "i-just-ran-bad.jpg", "reason": "Linked Amazon page returned 503 on both ordinary and exact existing query URLs. No verified source image."},
+    {"file": "final-table-secrets.jpg", "reason": "Linked Amazon page returned 503 on both ordinary and exact existing query URLs. No verified source image."},
+    {"file": "poker-what-the-pros-dont-want-you-to-know.jpg", "reason": "Linked Amazon page image ID 716TF3fwcZL depicts different artwork from current cover; rejected."},
+    {"file": "the-only-poker-book.jpg", "reason": "Linked Amazon page image ID 61NHdcX1GGL depicts different artwork from current cover; rejected."},
+    {"file": "f-ked-on-the-river.jpg", "reason": "No direct Amazon product URL or original image URL is recorded in the repository; current 696x1044 supplied artwork retained."}
+  ]
+}

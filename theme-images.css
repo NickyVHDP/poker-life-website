@@ -1,0 +1,111 @@
+/* Dedicated high-detail artwork replaces the enlarged full-page reference.
+   Layout, native headings, buttons and catalog product data stay independent. */
+.pl-home .pl-resource-links a {
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border:1px solid #d3a74a;
+  border-radius:1px;
+  background:linear-gradient(145deg,#0a1420,#030507 75%);
+  box-shadow:0 3px 8px #0008;
+}
+.pl-home .pl-resource-links .pl-resource-logo {
+  display:block;
+  box-sizing:border-box;
+  width:100%;
+  height:100%;
+  aspect-ratio:113/86;
+  padding:10%;
+  object-fit:contain;
+  opacity:1;
+}
+.pl-resource-card-art img {
+  display:block;
+  width:min(190px,100%);
+  height:130px;
+  object-fit:contain;
+}
+.pl-resources-editorial-hero {
+  background:linear-gradient(90deg,#050505ed,#050505d9,#050505e8),url("assets/poker-life-resources-photo-v2.webp") center 60%/cover no-repeat;
+}
+.pl-inner .pl-books-editorial-hero {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  align-items:center;
+  gap:clamp(28px,5vw,74px);
+  text-align:left;
+}
+.pl-books-editorial-copy { min-width:0; }
+.pl-books-editorial-copy h1 { margin:12px 0 19px; }
+.pl-books-editorial-copy > p:not(.kicker) {
+  max-width:58ch;
+  margin:0;
+  color:#c9c7c0;
+  font-size:14px;
+  line-height:1.75;
+}
+.pl-books-editorial-art {
+  width:100%;
+  min-width:0;
+  margin:0;
+}
+.pl-books-editorial-art svg {
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:532/293;
+  border:1px solid #80612c;
+  background:#030505;
+}
+.pl-books-editorial-art figcaption {
+  margin-top:11px;
+  max-width:66ch;
+  color:#aaa79d;
+  font-size:11px;
+  line-height:1.6;
+}
+
+@media (min-width:701px) {
+  .pl-home .pl-feature > .pl-feature-reference {
+    inset:0 0 0 auto;
+    height:100%;
+    /* Reference coordinates are retained as section-specific art bounds. */
+    width:69.090909%;
+  }
+  .pl-home .pl-books > .pl-feature-reference { width:69.090909%; }
+  .pl-home .pl-apparel > .pl-feature-reference { width:68.961039%; }
+  .pl-home .pl-coins > .pl-feature-reference { width:65.454545%; }
+  .pl-home .pl-resources > .pl-feature-reference { width:64.675325%; }
+  .pl-home .pl-community > .pl-feature-reference {
+    inset:0 auto 0 0;
+    width:63.246753%;
+  }
+  .pl-home .pl-story > .pl-feature-reference { inset:0; width:100%; }
+  .pl-home .pl-resource-links a:hover {
+    border-color:#ffe29c;
+    box-shadow:inset 0 0 0 1px #ffe29c;
+  }
+}
+
+@media (max-width:720px) {
+  .pl-inner .pl-books-editorial-hero {
+    grid-template-columns:minmax(0,1fr);
+    gap:26px;
+  }
+  .pl-books-editorial-art { max-width:600px; }
+  .pl-resource-card-art img { height:108px; }
+}
+@media (max-width:700px) {
+  .pl-home .pl-resource-links {
+    isolation:isolate;
+  }
+  .pl-home .pl-resource-links::before {
+    content:"";
+    position:absolute;
+    inset:-12px -24px -28px;
+    z-index:-1;
+    background:linear-gradient(#030505 0%,#03050555 45%),url("assets/poker-life-resources-photo-v2.webp") center/cover no-repeat;
+    pointer-events:none;
+  }
+  .pl-home .pl-resource-links .pl-resource-logo { height:auto; max-height:120px; }
+}
