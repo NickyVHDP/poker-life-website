@@ -1,0 +1,13 @@
+Mode: built-in image_gen edit (identity-preserve).
+Date: 2026-10-09.
+Image 1: assets/poker-life-story-photo.png — original warm banner, edit target.
+Image 2: assets/poker-life-hero-photo.png — approved top portrait, photographic realism and complexion reference only.
+Final assets: assets/poker-life-story-photo-v3.png and assets/poker-life-story-photo-v3.webp.
+The original, v2 story banner, and approved hero are preserved. WebP is a lossless encoding of the selected PNG with no color, sharpness, or composition filters.
+
+Use case: identity-preserve.
+Asset type: polished panoramic My Story portrait photograph for an existing website.
+Input images: Image 1 is the original warm My Story banner and the sole edit target. Image 2 is the approved top hero portrait of the same man, a reference only for photographic realism, healthy skin color, and detail; do NOT copy its pose or background.
+Primary request: Make the man in Image 1 look as genuinely photorealistic, vivid, alive and naturally warm as he does in Image 2. Restore the full healthy warm tan/peach complexion seen in Image 2, with believable subtle rosy circulation and luminous warm highlights. This is a photographic realism refinement, NOT a saturation reduction. The current website version looked gray, pale and ashen; the result must not look muted, gray, color-drained or desaturated. Keep his natural warm complexion, not artificial orange spray-tan.
+Details: render realistic fine pores, varied natural skin texture, forehead and smile lines, subtle natural cheek sheen, individually resolved beard and hair strands, sharp eyes with natural catchlights, and realistic white teeth. Preserve his actual age and lived-in features; do not beautify, smooth away wrinkles, change face shape or make him younger. Use photographic light and tonal depth rather than painted/CG texture. Improve the white hoodie fabric and gold pattern detail without changing their design.
+Invariants: preserve Image 1's exact Larry McCracken identity, facial proportions, frontal smiling expression, gaze, hairline, short hair, beard shape, earrings, neck tattoos, body size, white/gold hoodie, and placement. Preserve the full original panoramic approximately 3:1 composition, exact head scale and position, generous dark negative space left and right, and the unchanged black-and-white casino background with the large soft PL motif on the right. The background stays intentionally monochrome, but the man stays fully and warmly in color. No new objects, UI, text, logos, borders or watermark. Do not crop hair, ears, shoulders, or change pose. Output a high-detail photo refinement of Image 1 only.

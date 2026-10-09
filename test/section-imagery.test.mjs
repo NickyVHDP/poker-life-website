@@ -5,18 +5,19 @@ import {readFile,access} from 'node:fs/promises';
 const read=name=>readFile(new URL('../'+name,import.meta.url),'utf8');
 const exists=name=>access(new URL('../'+name,import.meta.url));
 const scenes={books:'books-scene',apparel:'apparel-photo',coins:'coins-photo',resources:'resources-photo',community:'community-photo',story:'story-photo'};
+const sceneVersion=section=>section==='story'?'v3':'v2';
 
 test('high-detail section art is shared with corresponding destinations',async()=>{
   const home=await read('index.html');
   const css=await read('theme-images.css');
   const pages={books:'books.html',apparel:'apparel.html',coins:'card-protectors.html',resources:'resources.html',community:'community.html',story:'about.html'};
   for(const [section,scene] of Object.entries(scenes)){
-    const asset='assets/poker-life-'+scene+'-v2.webp';
+    const asset='assets/poker-life-'+scene+'-'+sceneVersion(section)+'.webp';
     assert.ok(home.includes(asset),section+' homepage source missing');
     const page=await read(pages[section]);
     assert.ok(page.includes(asset)||(section==='resources'&&css.includes(asset)),section+' destination source missing');
     assert.match(page,/theme-images\.css/);
-    const master=await readFile(new URL('../assets/poker-life-'+scene+'-v2.png',import.meta.url));
+    const master=await readFile(new URL('../assets/poker-life-'+scene+'-'+sceneVersion(section)+'.png',import.meta.url));
     assert.equal(master.subarray(1,4).toString(),'PNG');
     assert.ok(master.readUInt32BE(16)>=1600,scene+' master must be high resolution');
     await exists(asset);
