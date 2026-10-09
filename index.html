@@ -9,11 +9,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="preload" href="assets/poker-life-portraits-sharp.png" as="image" />
+  <link rel="preload" href="assets/poker-life-hero-photo.png" as="image" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="pages.css" />
   <link rel="stylesheet" href="theme-shared.css" />
   <link rel="stylesheet" href="theme-home.css?v=full-reference-3" />
+  <link rel="stylesheet" href="theme-sharp.css?v=native-1" />
   <script defer src="script.js?v=13"></script>
   <script defer src="theme-ui.js"></script>
   <script defer src="theme-home.js?v=full-reference-3"></script>
@@ -38,8 +39,9 @@
     </header>
   <main id="main" class="pl-home">
     <section class="pl-hero" aria-labelledby="hero-title">
-      <svg class="pl-hero-image" viewBox="0 58 770 408" role="img" aria-label="Larry McCracken at the poker table in a white Poker Life hoodie, beside the Poker Life spade emblem." preserveAspectRatio="xMidYMid slice"><defs><mask id="hero-copy-mask" maskUnits="userSpaceOnUse" x="0" y="58" width="770" height="408"><rect x="0" y="58" width="770" height="408" fill="white" /><rect x="424" y="339" width="302" height="35" fill="black" /><rect x="487" y="385" width="172" height="36" fill="black" /></mask></defs><image href="assets/poker-life-portraits-sharp.png" width="770" height="2043" mask="url(#hero-copy-mask)" /></svg>
-      <svg class="pl-hero-image-mobile" viewBox="0 58 770 274" role="img" aria-label="Larry McCracken and the Poker Life spade emblem." preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-portraits-sharp.png" width="770" height="2043" /></svg>
+      <svg class="pl-hero-image" viewBox="0 0 770 408" role="img" aria-label="Larry McCracken at the poker table in a white Poker Life hoodie." preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-hero-photo.png" width="770" height="408" /></svg>
+      <svg class="pl-hero-image-mobile" viewBox="0 0 770 274" role="img" aria-label="Larry McCracken at the poker table." preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-hero-photo.png" width="770" height="408" /></svg>
+      <div class="pl-hero-brand" aria-hidden="true"><img class="pl-brand-mark" src="assets/poker-life-mark-transparent.png" alt="" width="1326" height="1187" /><div class="pl-hero-wordmark"><img class="pl-brand-wordmark" src="assets/poker-life-wordmark-detailed-transparent.png" alt="" width="1120" height="340" /></div></div>
       <div class="pl-hero-copy">
         <h1 id="hero-title">Poker Life</h1>
         <p class="pl-hero-categories">Books <span>•</span> Apparel <span>•</span> Accessories <span>•</span> Resources</p>
@@ -49,7 +51,7 @@
     </section>
 
     <section id="books" class="pl-feature pl-books" aria-labelledby="books-title">
-      <svg class="pl-feature-reference" viewBox="0 466 770 293" aria-hidden="true" focusable="false"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg>
+      <svg class="pl-feature-reference" viewBox="0 466 770 293" aria-hidden="true" focusable="false"><defs><mask id="books-live-copy" maskUnits="userSpaceOnUse" x="0" y="466" width="770" height="293"><rect x="0" y="466" width="770" height="293" fill="white" /><rect x="0" y="466" width="238" height="293" fill="black" /><rect x="239" y="585" width="23" height="56" fill="black" /><rect x="729" y="585" width="32" height="56" fill="black" /></mask></defs><image href="assets/poker-life-design-reference.png" width="770" height="2043" mask="url(#books-live-copy)" /></svg>
       <div class="pl-feature-copy">
         <h2 id="books-title">The <span class="pl-big-word">Books</span></h2>
         <p class="pl-eyebrow">Real strategy. Real stories.<br />Real poker life.</p>
@@ -96,8 +98,8 @@
     </section>
 
     <section id="ripple" class="pl-ripple pl-reference-section" aria-labelledby="ripple-home-title">
-      <svg class="pl-reference-art" viewBox="0 666 1024 598" aria-hidden="true" focusable="false"><image href="assets/home-reference-october.png" width="1024" height="1536" /></svg>
-      <h2 id="ripple-home-title" class="pl-sr-only">The Ripple</h2>
+      <svg class="pl-reference-art" viewBox="0 666 1024 598" aria-hidden="true" focusable="false"><defs><filter id="ripple-copy-feather" x="-10%" y="-50%" width="120%" height="200%"><feGaussianBlur stdDeviation="8" /></filter><mask id="ripple-live-copy" maskUnits="userSpaceOnUse" x="0" y="666" width="1024" height="598"><rect x="0" y="666" width="1024" height="598" fill="white" /><g filter="url(#ripple-copy-feather)" fill="black"><rect x="236" y="655" width="552" height="139" /><rect x="-40" y="778" width="1104" height="65" /><rect x="108" y="1118" width="808" height="72" /><rect x="326" y="1175" width="372" height="97" /></g></mask></defs><image href="assets/home-reference-october.png" width="1024" height="1536" mask="url(#ripple-live-copy)" /></svg>
+      <h2 id="ripple-home-title" class="pl-ripple-title"><span>The</span> Ripple</h2>
       <div class="pl-ripple-mobile-art" aria-hidden="true">
         <svg class="pl-ripple-title-art" viewBox="275 675 475 112" focusable="false"><image href="assets/home-reference-october.png" width="1024" height="1536" /></svg>
       </div>
@@ -108,7 +110,7 @@
     </section>
 
     <section id="merch" class="pl-feature pl-apparel" aria-labelledby="apparel-title">
-      <svg class="pl-feature-reference" viewBox="0 759 770 233" aria-hidden="true" focusable="false"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg>
+      <svg class="pl-feature-reference" viewBox="0 759 770 233" aria-hidden="true" focusable="false"><defs><mask id="apparel-live-copy" maskUnits="userSpaceOnUse" x="0" y="759" width="770" height="233"><rect x="0" y="759" width="770" height="233" fill="white" /><rect x="0" y="759" width="249" height="233" fill="black" /></mask></defs><image href="assets/poker-life-design-reference.png" width="770" height="2043" mask="url(#apparel-live-copy)" /></svg>
       <svg class="pl-art" viewBox="239 760 531 230" role="img" aria-label="Black and white Poker Life logo hoodies, a black cap, and patterned apparel." preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg>
       <div class="pl-feature-copy">
         <h2 id="apparel-title">Wear<br /> the Life</h2>
@@ -119,7 +121,7 @@
     </section>
 
     <section id="coins" class="pl-feature pl-coins" aria-labelledby="coins-title">
-      <svg class="pl-feature-reference" viewBox="0 992 770 235" aria-hidden="true" focusable="false"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg>
+      <svg class="pl-feature-reference" viewBox="0 992 770 235" aria-hidden="true" focusable="false"><defs><mask id="coins-live-copy" maskUnits="userSpaceOnUse" x="0" y="992" width="770" height="235"><rect x="0" y="992" width="770" height="235" fill="white" /><rect x="0" y="992" width="269" height="235" fill="black" /></mask></defs><image href="assets/poker-life-design-reference.png" width="770" height="2043" mask="url(#coins-live-copy)" /></svg>
       <svg class="pl-art" viewBox="266 992 504 235" role="img" aria-label="Two gold Poker Life card protector coins, with the PL spade and the words More Than Just a Game — It's a Lifestyle." preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg>
       <div class="pl-feature-copy">
         <h2 id="coins-title">Card<br /> Protectors</h2>
@@ -130,7 +132,7 @@
     </section>
 
     <section id="resources" class="pl-feature pl-resources" aria-labelledby="resources-title">
-      <svg class="pl-feature-reference" viewBox="0 1227 770 226" aria-hidden="true" focusable="false"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg>
+      <svg class="pl-feature-reference" viewBox="0 1227 770 226" aria-hidden="true" focusable="false"><defs><mask id="resources-live-copy" maskUnits="userSpaceOnUse" x="0" y="1227" width="770" height="226"><rect x="0" y="1227" width="770" height="226" fill="white" /><rect x="0" y="1227" width="274" height="226" fill="black" /></mask></defs><image href="assets/poker-life-design-reference.png" width="770" height="2043" mask="url(#resources-live-copy)" /></svg>
       <svg class="pl-resource-background" viewBox="272 1229 498 223" role="img" aria-label="A dark poker table with black and gold chips." preserveAspectRatio="xMidYMid slice"><defs><mask id="resource-tiles-mask" maskUnits="userSpaceOnUse" x="272" y="1229" width="498" height="223"><rect x="272" y="1229" width="498" height="223" fill="white" /><rect x="281" y="1280" width="476" height="93" fill="black" /></mask></defs><image href="assets/poker-life-design-reference.png" width="770" height="2043" mask="url(#resource-tiles-mask)" /></svg>
       <div class="pl-feature-copy">
         <h2 id="resources-title">Poker<br /> Resources</h2>
@@ -147,26 +149,26 @@
     </section>
 
     <section id="community" class="pl-feature pl-community" aria-labelledby="community-title">
-      <svg class="pl-feature-reference" viewBox="0 1453 770 205" aria-hidden="true" focusable="false"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg>
+      <svg class="pl-feature-reference" viewBox="0 1453 770 205" aria-hidden="true" focusable="false"><defs><mask id="community-live-copy" maskUnits="userSpaceOnUse" x="0" y="1453" width="770" height="205"><rect x="0" y="1453" width="770" height="205" fill="white" /><rect x="487" y="1453" width="283" height="205" fill="black" /></mask></defs><image href="assets/poker-life-design-reference.png" width="770" height="2043" mask="url(#community-live-copy)" /></svg>
       <svg class="pl-art" viewBox="0 1453 487 203" role="img" aria-label="Larry at a poker table wearing a black Poker Life hoodie, photographed from behind." preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-design-reference.png" width="770" height="2043" /></svg>
       <div class="pl-feature-copy">
         <h2 id="community-title">Poker Life<br /> Community</h2>
         <p class="pl-eyebrow">More than just a game.</p>
-        <p>Poker is a lifestyle — a community of players, dreamers, and grinders who love the game and everything that comes with it.</p>
+        <p>Poker Life is a lifestyle — a community of players, dreamers, and grinders who love the game and everything that comes with it.</p>
         <a href="community.html" class="pl-cta">Join the community <span aria-hidden="true">→</span></a>
       </div>
     </section>
 
     <section id="story" class="pl-feature pl-story" aria-labelledby="story-title">
-      <svg class="pl-feature-reference" viewBox="0 1658 770 207" aria-hidden="true" focusable="false"><image href="assets/poker-life-portraits-sharp.png" width="770" height="2043" /></svg>
-      <svg class="pl-art" viewBox="302 1659 468 205" role="img" aria-label="Larry McCracken smiling in a white Poker Life hoodie, against a black and white poker-room portrait." preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-portraits-sharp.png" width="770" height="2043" /></svg>
+      <svg class="pl-feature-reference pl-story-scene" viewBox="0 0 770 207" aria-hidden="true" focusable="false"><image href="assets/poker-life-story-photo.png" width="770" height="207" preserveAspectRatio="xMidYMid slice" /></svg>
+      <svg class="pl-art" viewBox="302 0 468 207" role="img" aria-label="Larry McCracken smiling in a white Poker Life hoodie, against a black and white poker-room portrait." preserveAspectRatio="xMidYMid slice"><image href="assets/poker-life-story-photo.png" width="770" height="207" preserveAspectRatio="xMidYMid slice" /></svg>
       <div class="pl-feature-copy">
         <h2 id="story-title">My Story</h2>
         <p class="pl-eyebrow">Larry McCracken</p>
         <p>From the poker rooms to the books, from the DJ booth to the road, this is my journey. Learn more about who I am, how Poker Life started, and what keeps me focused, patient, and always looking for the next opportunity.</p>
         <a href="about.html" class="pl-cta">Read my story <span aria-hidden="true">→</span></a>
       </div>
-      <blockquote class="pl-visually-hidden">“More than just a game, it’s a lifestyle.” — Larry McCracken</blockquote>
+      <blockquote class="pl-story-quote"><p>“More than<br />just a game…<br />it’s a lifestyle.”</p><cite>Larry McCracken</cite></blockquote>
     </section>
   </main>
     <footer class="pl-footer">

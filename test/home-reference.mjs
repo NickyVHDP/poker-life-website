@@ -90,6 +90,28 @@ try {
     await home();
     if ([390, 770, 1024, 1440].includes(width)) await page.screenshot({ path: `${screenshotDir}/home-${width}.png`, fullPage: true });
     await noOverflow('home-' + width);
+    for (const id of ['books', 'merch', 'coins', 'resources', 'community', 'story']) {
+      const copy = await page.locator('#' + id + ' .pl-feature-copy').evaluate(element => {
+        const title = element.querySelector('h2');
+        const body = element.querySelector('p:last-of-type');
+        const button = element.querySelector('.pl-cta');
+        const titleBox = title.getBoundingClientRect();
+        const bodyBox = body.getBoundingClientRect();
+        const buttonBox = button.getBoundingClientRect();
+        return { titleWidth: titleBox.width, titleHeight: titleBox.height, fontSize: getComputedStyle(button).fontSize, bodyBottom: bodyBox.bottom, buttonTop: buttonBox.top };
+      });
+      assert.ok(copy.titleWidth > 10 && copy.titleHeight > 10 && parseFloat(copy.fontSize) > 0, id + ': native text and CTA must remain visible at ' + width);
+      assert.ok(copy.bodyBottom <= copy.buttonTop + 2, id + ': body text overlaps the CTA at ' + width);
+    }
+    const rippleCopy = await page.locator('#ripple').evaluate(section => {
+      const title = section.querySelector('.pl-ripple-title').getBoundingClientRect();
+      const heading = section.querySelector('.pl-ripple-heading').getBoundingClientRect();
+      const description = section.querySelector('.pl-ripple-description').getBoundingClientRect();
+      const button = section.querySelector('.pl-ripple-link').getBoundingClientRect();
+      return { titleBottom: title.bottom, headingTop: heading.top, descriptionBottom: description.bottom, buttonTop: button.top };
+    });
+    assert.ok(rippleCopy.titleBottom <= rippleCopy.headingTop + 2, 'Ripple title overlaps its subtitle at ' + width);
+    assert.ok(rippleCopy.descriptionBottom <= rippleCopy.buttonTop + 2, 'Ripple description overlaps its CTA at ' + width);
     assert.deepEqual(await page.locator('main > section').evaluateAll(sections => sections.map(section => section.id || (section.classList.contains('pl-hero') ? 'hero' : 'unknown'))), ['hero', 'books', 'ripple', 'merch', 'coins', 'resources', 'community', 'story']);
     assert.doesNotMatch(await page.locator('body').textContent(), /free\s+(?:Poker Life\s+)?t[ -]?shirt/i, 'Removed shirt offer must not return');
     const mobileMenu = width <= 720;

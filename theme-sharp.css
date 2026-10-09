@@ -1,0 +1,298 @@
+/* Keep the approved photographs and composition, but render every interface
+   label, headline and call-to-action as live browser text rather than pixels
+   enlarged from the design reference. Loaded after theme-home.css. */
+.pl-homepage .pl-home :is(h1, h2, p, a, button, cite) {
+  text-shadow:none;
+}
+.pl-home .pl-hero-brand {
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+}
+.pl-home .pl-hero-brand > .pl-brand-mark {
+  position:absolute;
+  left:60%;
+  top:2.7%;
+  width:27%;
+  height:auto;
+  display:block;
+}
+.pl-home .pl-hero-wordmark {
+  position:absolute;
+  left:52%;
+  top:47%;
+  width:45%;
+  aspect-ratio:1120/235;
+  overflow:hidden;
+}
+.pl-home .pl-hero-wordmark .pl-brand-wordmark {
+  display:block;
+  width:100%;
+  max-width:none;
+  height:auto;
+}
+.pl-home .pl-hero-copy {
+  z-index:2;
+}
+.pl-home .pl-story-scene {
+  position:absolute;
+  inset:0;
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  pointer-events:none;
+}
+.pl-home .pl-story-quote {
+  position:absolute;
+  z-index:2;
+  right:2.5%;
+  top:36%;
+  width:18.5%;
+  margin:0;
+  text-align:center;
+  color:#ebc875;
+  pointer-events:none;
+}
+.pl-home .pl-story-quote p {
+  margin:0;
+  color:inherit;
+  font:400 2.1cqw/1.3 Georgia,'Times New Roman',serif;
+}
+.pl-home .pl-story-quote cite {
+  display:block;
+  margin-top:1.45cqw;
+  color:#e0b757;
+  font:italic 1.55cqw/1.2 Georgia,'Times New Roman',serif;
+}
+
+@media (min-width:701px) {
+  .pl-home .pl-feature .pl-feature-copy {
+    --pl-copy-width:26.2cqw;
+    position:absolute;
+    inset:0;
+    z-index:2;
+    width:100%;
+    height:100%;
+    padding:2cqw 0 0 5.3%;
+    margin:0;
+    pointer-events:none;
+  }
+  .pl-home .pl-feature .pl-feature-copy :is(h2,p) {
+    position:static;
+    width:var(--pl-copy-width);
+    height:auto;
+    padding:0;
+    overflow:visible;
+    clip:auto;
+    white-space:normal;
+  }
+  .pl-home .pl-feature .pl-feature-copy h2 {
+    font:500 4.3cqw/.96 'Cormorant Garamond',Georgia,'Times New Roman',serif;
+    color:#edc47d;
+    text-transform:uppercase;
+    letter-spacing:.025em;
+    margin:0 0 1.35cqw;
+  }
+  .pl-home .pl-feature .pl-feature-copy h2 .pl-big-word {
+    display:block;
+    font-size:1.44em;
+    line-height:.88;
+  }
+  .pl-home .pl-feature .pl-feature-copy p {
+    font:400 1.45cqw/1.35 Inter,Arial,sans-serif;
+    color:#e4e4dc;
+    margin:0 0 1.55cqw;
+  }
+  .pl-home .pl-feature .pl-feature-copy .pl-eyebrow {
+    margin:0 0 1.15cqw;
+    font:400 1.36cqw/1.4 Inter,Arial,sans-serif;
+    letter-spacing:.065em;
+    text-transform:uppercase;
+    color:#f0f0ea;
+  }
+  .pl-home .pl-feature .pl-feature-copy .pl-cta {
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:1.5cqw;
+    min-height:0;
+    padding:0 .8cqw;
+    border:1px solid #deb965;
+    border-radius:2px;
+    background:linear-gradient(115deg,#f9d77c 0%,#eabe58 48%,#b87521 100%);
+    box-shadow:inset 0 1px 0 #fff7,0 2px 9px #0006;
+    color:#100d06;
+    font:700 1.45cqw/1.1 Inter,Arial,sans-serif;
+    letter-spacing:.01em;
+    white-space:nowrap;
+    pointer-events:auto;
+  }
+  .pl-home .pl-feature .pl-feature-copy .pl-cta span {
+    opacity:1;
+    color:inherit;
+    font-size:2.15cqw;
+    font-weight:400;
+    line-height:1;
+  }
+  .pl-home .pl-feature .pl-feature-copy .pl-cta:hover {
+    transform:none;
+    filter:brightness(1.08);
+    box-shadow:inset 0 1px 0 #fff9,0 2px 9px #0006;
+  }
+  .pl-home .pl-carousel-arrow svg { opacity:1; width:100%; height:46%; }
+  .pl-home .pl-books .pl-feature-copy {
+    --pl-copy-width:24.2cqw;
+    padding-top:1.8cqw;
+  }
+  .pl-home .pl-books .pl-feature-copy h2 { margin-bottom:1.45cqw; }
+  .pl-home .pl-coins .pl-feature-copy {
+    --pl-copy-width:27.2cqw;
+    padding-top:1.9cqw;
+  }
+  .pl-home .pl-coins .pl-feature-copy h2 { font-size:4.1cqw; }
+  .pl-home .pl-resources .pl-feature-copy {
+    --pl-copy-width:27.2cqw;
+    padding-top:1.9cqw;
+  }
+  .pl-home .pl-resources .pl-feature-copy h2 { font-size:4.15cqw; }
+  .pl-home .pl-resources .pl-feature-copy > p:not(.pl-eyebrow) { margin-bottom:1cqw; }
+  .pl-home .pl-resources .pl-feature-copy > p:not(.pl-eyebrow) { font-size:1.4cqw; line-height:1.3; }
+  .pl-home .pl-community .pl-feature-copy {
+    --pl-copy-width:93%;
+    padding:1.7cqw 2.4% 0 65.3%;
+  }
+  .pl-home .pl-community .pl-feature-copy h2 {
+    font-size:3.8cqw;
+    margin-bottom:.8cqw;
+  }
+  .pl-home .pl-community .pl-feature-copy p { margin-bottom:1.35cqw; }
+  .pl-home .pl-story .pl-feature-copy {
+    --pl-copy-width:34.7cqw;
+    padding-top:1.6cqw;
+  }
+  .pl-home .pl-story .pl-feature-copy h2 { margin-bottom:1cqw; }
+  .pl-home .pl-story .pl-feature-copy p { margin-bottom:1.4cqw; }
+  .pl-home .pl-story .pl-feature-copy > p:not(.pl-eyebrow) { font-size:1.4cqw; line-height:1.3; }
+  .pl-home .pl-story .pl-feature-copy .pl-eyebrow { margin-bottom:1cqw; }
+  .pl-home .pl-story .pl-feature-copy::before {
+    content:"";
+    display:block;
+    position:absolute;
+    inset:0 auto 0 0;
+    width:44%;
+    z-index:-1;
+    background:linear-gradient(90deg,#030505eb 0%,#030505c7 70%,#03050500 100%);
+    pointer-events:none;
+  }
+  .pl-home .pl-ripple .pl-ripple-title {
+    position:absolute;
+    left:20%;
+    top:1.5%;
+    width:60%;
+    height:auto;
+    padding:0;
+    margin:0;
+    color:#eeeae4;
+    text-align:center;
+    font:500 9cqw/.85 'Cormorant Garamond',Georgia,'Times New Roman',serif;
+    text-transform:uppercase;
+    letter-spacing:.035em;
+  }
+  .pl-home .pl-ripple .pl-ripple-title > span { display:block; margin-bottom:.25cqw; font-size:2.5cqw; line-height:1; letter-spacing:.13em; }
+  .pl-home .pl-ripple :is(.pl-reference-copy,.pl-ripple-link > span) {
+    height:auto;
+    margin:0;
+    overflow:visible;
+    clip:auto;
+    white-space:normal;
+  }
+  .pl-home .pl-ripple .pl-ripple-heading {
+    position:absolute;
+    left:2%;
+    top:20.4%;
+    width:96%;
+    padding:0;
+    text-align:center;
+  }
+  .pl-home .pl-ripple .pl-eyebrow {
+    margin:0 0 .9cqw;
+    color:#eeeae2;
+    font:400 1.36cqw/1.4 Inter,Arial,sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.21em;
+  }
+  .pl-home .pl-ripple .pl-ripple-tagline {
+    margin:0;
+    color:#f0cb75;
+    font:700 2.3cqw/1.2 Inter,Arial,sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.075em;
+  }
+  .pl-home .pl-ripple .pl-ripple-description {
+    position:absolute;
+    left:10%;
+    top:77.25%;
+    width:80%;
+    padding:0;
+    text-align:center;
+  }
+  .pl-home .pl-ripple-description p {
+    margin:0;
+    color:#eeeae2;
+    font:400 1.75cqw/1.25 Inter,Arial,sans-serif;
+  }
+  .pl-home .pl-ripple-link {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0 2cqw;
+    border:1px solid #e6c678;
+    border-radius:3px;
+    background:linear-gradient(110deg,#ffe28b,#d3972f);
+    color:#100c02;
+    font:700 2.05cqw/1.2 Inter,Arial,sans-serif;
+    text-decoration:none;
+    text-transform:uppercase;
+  }
+  .pl-home .pl-ripple-link > span {
+    position:static;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:2.4cqw;
+    width:auto;
+    padding:0;
+  }
+  .pl-home .pl-ripple-link b { font-size:3cqw; font-weight:400; line-height:1; }
+}
+
+@media (max-width:700px) {
+  .pl-home .pl-hero-brand > .pl-brand-mark {
+    top:2.7cqw;
+  }
+  .pl-home .pl-hero-wordmark {
+    top:24.9cqw;
+  }
+  .pl-home .pl-story-scene { display:none; }
+  .pl-home .pl-story-quote { display:none; }
+  .pl-home .pl-ripple-mobile-art { display:none; }
+  .pl-home .pl-ripple .pl-ripple-title {
+    position:static;
+    width:auto;
+    height:auto;
+    padding:0 16px;
+    margin:0 0 10px;
+    overflow:visible;
+    clip:auto;
+    white-space:normal;
+    color:#eeeae4;
+    font:500 clamp(38px,11vw,65px)/1 'Cormorant Garamond',Georgia,'Times New Roman',serif;
+    letter-spacing:.035em;
+    text-transform:uppercase;
+  }
+  .pl-home .pl-feature .pl-feature-copy :is(h2,p) { text-shadow:none; }
+  .pl-home .pl-ripple-title > span { display:inline; }
+  .pl-home .pl-feature .pl-cta { box-shadow:inset 0 1px 0 #fff7,0 2px 9px #0006; }
+}
