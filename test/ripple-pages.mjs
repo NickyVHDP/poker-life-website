@@ -1,7 +1,7 @@
 import { createRequire } from 'node:module';
 import assert from 'node:assert/strict';
 import { mkdir } from 'node:fs/promises';
-import { ripplePreorderConfig } from '../ripple-preorder-config.js';
+import { ripplePreorderConfig, preorderCutoff, validShipMonth } from '../ripple-preorder-config.js';
 
 // All checkout requests are intercepted; this suite cannot place a real order.
 const require = createRequire(import.meta.url);
@@ -68,20 +68,56 @@ const biography = [
   "Welcome to Poker Life USA.",
   "The cards are only the beginning."
 ];
+const seriesIntroduction = [
+  'ONE POKER HAND. FIVE OUTCOMES. FIVE COMPLETELY DIFFERENT LIVES.',
+  'At a poker table in San Antonio, a group of players sit down for what should be just another night of cards.',
+  'Then one extraordinary hand changes everything.',
+  'The cards are the same. The players are the same. The night is the same.',
+  'But one decision changes.',
+  'And with it, so does everything that follows.',
+  'THE RIPPLE is a five-book suspense series built around a unique idea: PINK, BLUE, RED, YELLOW, and BLACK each begin with the same pivotal poker hand—but the hand ends differently in every book.',
+  'A different player wins. A different player loses. Someone leaves the poker room earlier. Someone stays longer. A decision that never mattered in one version becomes life-changing in another.',
+  'And the ripple begins.',
+  'Love, money, betrayal, opportunity, crime, mystery, heartbreak and second chances all grow from those tiny changes. People who appear to lose may discover that losing was the best thing that ever happened to them. A winner may learn that getting exactly what they wanted comes with consequences they never imagined.',
+  'Each book is its own complete story, following the dramatically different lives created by that version of the hand. You can experience each novel on its own, but readers who follow the entire series will begin noticing connections, recurring moments and unanswered questions that take on entirely new meanings as the five realities unfold.',
+  'At the center of them all is Larry Legend, a longtime poker player who has spent years learning how to read people. Larry can spot nervousness, confidence, desperation and deception across a poker table.',
+  'Then there’s Samantha.',
+  'She’s the one person he can’t read.',
+  'Their slow-burning relationship follows Larry through all five versions of the story, along with a small detail that’s easy to overlook—until eventually it isn’t.',
+  'Because in THE RIPPLE, the smallest things can matter the most.',
+  'A few seconds.',
+  'One decision.',
+  'One card.',
+  'One person walking through the wrong door.',
+  'And sometimes the difference between the life you have and the life you could have had is nothing more than the turn of a card.',
+  'Five books. Five realities. One unforgettable poker hand.',
+  'Welcome to THE RIPPLE.'
+];
 const synopsis = [
-  'One poker hand. Four players. One winner. And consequences no one at the table could possibly see coming.',
-  'At a San Antonio poker table, four players collide in a hand big enough to change everything.',
-  'Delinda walks away the winner, but the money she takes from the table is only the beginning. What seems like a lucky night soon leads her toward a disturbing mystery buried inside the walls of a house she never would have purchased without those winnings—a mystery involving a little girl named Emily who, according to the official story, shouldn’t be there at all.',
-  'For Eddie, losing the hand couldn’t come at a worse time. He has secretly gambled away money that he and his wife, Lisa, were supposed to use toward their future, and desperation leaves him vulnerable to a temptation that could solve his problem almost perfectly. Unfortunately, the money he finds comes with consequences far more dangerous than the debt he was trying to hide.',
-  'Ryan leaves the poker room frustrated and climbs into what he believes is his Uber. By the time he realizes he’s in the wrong car, the driver believes he’s someone else—and Ryan is being taken somewhere he was never supposed to know existed.',
-  'Then there’s Bernard, an older player carrying a painful history of his own and a promise he desperately wants to keep. What happens during that poker hand forces him to confront choices he thought he’d left buried years ago.',
-  'And sitting just outside the center of it all is Larry Legend, the smart-mouthed poker player who manages to miss the biggest hand of the night at exactly the wrong time. Larry thinks he simply missed one hell of a poker story.',
-  'He has no idea what that hand has actually set in motion.',
-  'THE RIPPLE: PINK is the first novel in The Ripple series, a collection of interconnected standalone thrillers built around one unforgettable poker hand. Each book asks the same question:',
-  'What if one card—or one decision—changed everything?',
-  'Suspenseful, sexy, funny, and filled with unexpected turns, PINK follows the ripple effect of a single night as ordinary decisions become secrets, secrets become danger, and four lives begin moving down paths none of them could have predicted.',
-  'Because sometimes the biggest gamble isn’t the money you put on the table.',
-  'It’s what happens after the cards are dealt.'
+  'SOMETIMES WINNING THE HAND IS ONLY THE BEGINNING.',
+  'Delinda came to the poker room expecting to play cards.',
+  'She never expected one hand to change her life.',
+  'When a massive pot falls her way at Table Seven, Delinda suddenly has the freedom to do something she’s wanted to do for years: take the Vegas poker trip she’s always talked herself out of.',
+  'For once, she doesn’t talk herself out of anything.',
+  'Vegas brings poker, nightlife, bad decisions, great stories—and Cole, a confident stranger who doesn’t seem particularly interested in chasing her.',
+  'Which, naturally, makes Delinda want to know why.',
+  'What begins as a carefree Vegas adventure becomes something neither of them planned when one outrageous night leaves Delinda waking up with considerably more than a hangover.',
+  'She’s married.',
+  'Her solution is simple: get divorced and return to real life.',
+  'Then Cole agrees.',
+  'And somehow, hearing him say “Okay” bothers her more than waking up married to him did.',
+  'While Delinda tries to figure out whether the craziest mistake of her life might actually be something worth keeping, the other players from Table Seven are experiencing ripples of their own.',
+  'Eddie leaves the game carrying a secret that could destroy his marriage. Desperation leads him to a decision involving a forgotten backpack and money that doesn’t belong to him—a decision that forces him to confront the difference between knowing the right thing and actually doing it.',
+  'Ryan leaves the poker room after losing with pocket queens and accidentally gets into the wrong car. That simple mistake delivers him somewhere he was never supposed to be, where an embarrassing misunderstanding introduces him to people who could change the direction of his entire life.',
+  'And Bernard is carrying something heavier than a poker loss. Haunted by what gambling once did to his family, he’s determined to protect the people he loves—even when protecting them may mean making decisions they never asked him to make.',
+  'Four lives begin moving in completely different directions.',
+  'All because of one poker hand.',
+  'But beneath everything that follows is a question no one at Table Seven realizes they should be asking.',
+  'What if Delinda didn’t win because she had the best hand?',
+  'Funny, sexy, emotional and filled with poker, romance, difficult choices and unexpected second chances, THE RIPPLE: PINK is a story about the strange ways our lives can change when one moment sends us somewhere we never intended to go.',
+  'Because winning and losing aren’t always what they look like.',
+  'And sometimes the hand that changes your life isn’t the hand you were supposed to win.',
+  'THE RIPPLE: PINK One poker hand changes everything.'
 ];
 const money = cents => '$' + (cents / 100).toFixed(2);
 const normalize = text => text.replace(/\s+/g, ' ').trim();
@@ -110,7 +146,7 @@ async function makeContext(label, fixtureConfig) {
   });
   if (fixtureConfig) {
     await context.route('**/ripple-preorder-config.js*', route => route.fulfill({
-      contentType: 'text/javascript', body: 'export const ripplePreorderConfig = ' + JSON.stringify(fixtureConfig) + ';'
+      contentType: 'text/javascript', body: 'export const ripplePreorderConfig = ' + JSON.stringify(fixtureConfig) + ';\nexport const validShipMonth = ' + validShipMonth.toString() + ';\nexport const preorderCutoff = ' + preorderCutoff.toString() + ';'
     }));
   }
   const page = await context.newPage();
@@ -229,21 +265,26 @@ async function checkCopy(page, name) {
     assert.equal(await page.locator('.pl-author-portrait svg').getAttribute('viewBox'), '316 1659 295 205', 'Author crop must exclude source lettering');
   }
   if (name === 'ripple') {
-    const paragraphs = (await page.locator('.ripple-pink-hook, .ripple-pink-intro > p:not(.ripple-kicker):not(.ripple-pink-hook), .ripple-prose > p, .ripple-prose > blockquote').allTextContents()).map(normalize);
+    const seriesParagraphs = (await page.locator('#series-introduction .ripple-introduction-deck, #series-introduction .ripple-prose > p, #series-introduction .ripple-story-beats > p').allTextContents()).map(normalize);
+    assert.deepEqual(seriesParagraphs, seriesIntroduction, 'Series introduction was shortened or changed');
+    const paragraphs = (await page.locator('.ripple-pink-hook, .ripple-pink-intro > p:not(.ripple-kicker):not(.ripple-pink-hook), #pink-synopsis .ripple-prose > p, #pink-synopsis .ripple-prose > blockquote').allTextContents()).map(normalize);
     assert.deepEqual(paragraphs, synopsis, 'Pink synopsis was shortened or changed');
+    assert.doesNotMatch(await page.locator('#pink-synopsis').textContent(), /little girl named Emily|walls of a house/);
+    assert.equal(await page.locator('.ripple-hero-art img').getAttribute('src'), 'assets/ripple-series-suspense-promo.png');
     assert.match(await page.locator('.ripple-offer-pink .ripple-price').textContent(), /\$25\b/);
     assert.match(await page.locator('.ripple-offer-bundle .ripple-price').textContent(), /\$100\b/);
     assert.match(await page.locator('.ripple-offer-pink .ripple-standard').textContent(), /\$29\.99\b/);
     assert.doesNotMatch(await page.locator('.ripple-offer-bundle').textContent(), /shirt/i);
     assert.equal(await page.locator('[data-shirt-field], [name="shirtSize"]').count(), 0, 'Removed shirt-size selector remains');
-    assert.match(await page.locator('[data-preorder-launch-notice]').textContent(), /no payment is taken yet/i);
-    assert.match(await page.locator('[data-pink-date]').textContent(), /December/);
+    assert.match(await page.locator('[data-preorder-launch-notice]').textContent(), /Payment is collected now/i);
+    assert.match(await page.locator('[data-preorder-launch-notice]').textContent(), /bundle is not open for payment/i);
+    assert.match(await page.locator('[data-pink-date]').textContent(), /Estimated shipping: December 2026/);
     assert.match(await page.locator('.ripple-offer-bundle').textContent(), /Free U\.S\. shipping included/);
     assert.match(await page.locator('[data-release-faq]').textContent(), /have not been set yet/);
     assert.deepEqual((await page.locator('.ripple-volumes li').allTextContents()).map(normalize), ['Pink', 'Blue', 'Red', 'Yellow', 'Black']);
   }
 }
-async function checkClosedPreorders(page, width, originalCart) {
+async function checkProductionPreorders(page, width, originalCart) {
   await page.setViewportSize({ width, height: 950 });
   await goto(page, 'ripple');
   const dialog = page.locator('[data-preorder-dialog]');
@@ -252,15 +293,26 @@ async function checkClosedPreorders(page, width, originalCart) {
     await trigger.click();
     assert.ok(await dialog.isVisible(), offer + ': preorder dialog did not open');
     assert.match(await page.locator('[data-preorder-price]').textContent(), new RegExp(price.replace('$', '\\$')));
-    assert.ok(await page.locator('[data-preorder-checkout]').isDisabled(), 'Unconfigured paid preorder must be disabled');
-    assert.ok(!(await page.locator('[data-preorder-consent]').isVisible()), 'Closed checkout must not request payment consent');
+    assert.ok(await page.locator('[data-preorder-checkout]').isDisabled(), 'Checkout must wait for consent or remain closed');
+    assert.equal(await page.locator('[data-preorder-consent]').isVisible(), offer === 'pink', 'Only Pink should accept payment consent');
     assert.doesNotMatch(await page.locator('[data-preorder-terms]').textContent(), /shirt/i, 'Closed offer still advertises the removed shirt');
     assert.match(await page.locator('[data-preorder-terms]').textContent(), /December/);
     assert.match(await page.locator('[data-preorder-terms]').textContent(), /free U\.S\. shipping/i);
     const bounds = await dialog.evaluate(element => ({ width: element.getBoundingClientRect().width, left: element.getBoundingClientRect().left, right: element.getBoundingClientRect().right, scrollWidth: element.scrollWidth, clientWidth: element.clientWidth, height: element.getBoundingClientRect().height, viewport: innerWidth, viewportHeight: innerHeight }));
     assert.ok(bounds.left >= 0 && bounds.right <= bounds.viewport && bounds.scrollWidth <= bounds.clientWidth && bounds.height <= bounds.viewportHeight, 'Dialog overflows: ' + JSON.stringify(bounds));
+    const before = checkoutRequests.filter(request => request.label === 'default').length;
     await page.locator('[data-preorder-form]').evaluate(form => form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })));
-    assert.equal(checkoutRequests.filter(request => request.label === 'default').length, 0, 'Disabled preorder attempted a backend request');
+    assert.equal(checkoutRequests.filter(request => request.label === 'default').length, before, 'Checkout without consent attempted a backend request');
+    if (offer === 'pink') {
+      assert.match(await page.locator('[data-preorder-terms]').textContent(), /Estimated shipping: December 2026/);
+      assert.match(await page.locator('[data-preorder-status]').textContent(), /Payment is collected now/);
+      await page.locator('[name="accepted"]').check();
+      assert.ok(!(await page.locator('[data-preorder-checkout]').isDisabled()), 'Approved month estimate must enable signed Pink checkout');
+      await page.locator('[data-preorder-checkout]').click();
+      await page.locator('[data-preorder-error]').filter({ hasText: 'QA fixture:' }).waitFor();
+      assert.equal(checkoutRequests.filter(request => request.label === 'default').length, before + 1);
+      assert.deepEqual(checkoutRequests.at(-1).body, { items: [{ slug: 'ripple-pink-preorder', quantity: 1 }], preorder: { accepted: true, termsVersion: 'ripple-preorder-v4' } });
+    }
     await page.screenshot({ path: out + '/dialog-' + offer + '-' + width + '.png', fullPage: false });
     if (offer === 'pink') await page.keyboard.press('Escape');
     else await page.locator('[data-preorder-close]').click();
@@ -274,8 +326,8 @@ function enabledFixture() {
   const year = new Date().getUTCFullYear() + 1;
   config.enabled = true;
   config.countries = ['US'];
-  Object.assign(config.pink, { releaseDate: year + '-02-01', shipDate: year + '-01-25', purchaseCutoffAt: year + '-01-20T18:00:00Z', termsText: 'QA fixture: paid signed Pink preorder, free US shipping; ships January 25.' });
-  Object.assign(config.bundle, { shippingAmount: 700, purchaseCutoffAt: year + '-01-20T18:00:00Z', termsText: 'QA fixture: all five books, $7 shipping, each arrives seven days before release.' });
+  Object.assign(config.pink, { enabled: true, estimatedShipMonth: null, releaseDate: year + '-02-01', shipDate: year + '-01-25', purchaseCutoffAt: year + '-01-20T18:00:00Z', termsText: 'QA fixture: paid signed Pink preorder, free US shipping; ships January 25.' });
+  Object.assign(config.bundle, { enabled: true, shippingAmount: 700, purchaseCutoffAt: year + '-01-20T18:00:00Z', termsText: 'QA fixture: all five books, $7 shipping, each arrives seven days before release.' });
   config.bundle.schedule = config.bundle.volumes.map((volume, index) => {
     const releaseDate = year + '-0' + (index + 2) + '-01';
     const arrivalDate = new Date(Date.parse(releaseDate + 'T00:00:00Z') - 7 * 86400000).toISOString().slice(0, 10);
@@ -317,7 +369,7 @@ try {
   await page.waitForURL(url => pageName(url) === 'checkout');
   assert.equal(await page.locator('.cart-line').count(), expectedBooks.length);
   assert.equal(normalize(await page.locator('.cart-total strong').textContent()), money(expectedBooks.reduce((total, [, amount]) => total + amount, 0)), 'Regular cart subtotal changed');
-  for (const width of [320, 1440]) await checkClosedPreorders(page, width, originalCart);
+  for (const width of [320, 1440]) await checkProductionPreorders(page, width, originalCart);
   await page.setViewportSize({ width: 390, height: 844 });
   await goto(page, 'apparel');
   await page.locator('.pl-menu-toggle').click();
@@ -325,7 +377,20 @@ try {
   await page.waitForURL(url => pageName(url) === 'ripple');
   assert.equal(await page.locator('.pl-nav a[aria-current="page"]').getAttribute('href'), 'ripple.html');
   assert.equal(await page.locator('.pl-menu-toggle').getAttribute('aria-expanded'), 'false');
-  assert.equal(checkoutRequests.filter(request => request.label === 'default').length, 0, 'Default configuration contacted checkout');
+  assert.equal(checkoutRequests.filter(request => request.label === 'default').length, 2, 'Only explicitly consented Pink requests should contact the intercepted backend');
+
+  for (const estimate of ['2020-12', '2026-13']) {
+    const expiredConfig = structuredClone(ripplePreorderConfig);
+    expiredConfig.pink.estimatedShipMonth = estimate;
+    const expired = await makeContext('expired-' + estimate, expiredConfig);
+    await goto(expired.page, 'ripple');
+    await expired.page.locator('[data-preorder-offer="pink"]').click();
+    assert.ok(await expired.page.locator('[data-preorder-checkout]').isDisabled(), 'Expired or invalid month must not allow a paid preorder');
+    assert.ok(!(await expired.page.locator('[data-preorder-consent]').isVisible()));
+    await expired.page.locator('[data-preorder-form]').evaluate(form => form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })));
+    assert.equal(checkoutRequests.filter(request => request.label === 'expired-' + estimate).length, 0);
+    await expired.context.close();
+  }
 
   // Enable public offer terms only in this fresh browser context; no production file changes.
   const fixtureConfig = enabledFixture();
@@ -454,6 +519,19 @@ try {
     assert.ok(size.width <= size.viewport, 'Preorder confirmation overflows at ' + width);
     await confirmation.page.screenshot({ path: out + '/confirmation-preorder-' + width + '.png', fullPage: true });
   }
+  confirmedPreorder = {
+    slug: 'ripple-pink-preorder', title: 'Ripple: Pink — Autographed Preorder', termsVersion: 'ripple-preorder-v4',
+    termsText: ripplePreorderConfig.pink.termsText, shippingAmount: 0,
+    schedule: [{ volume: 'Pink', estimatedShipMonth: '2026-12' }]
+  };
+  for (const width of [320, 1440]) {
+    await confirmation.page.setViewportSize({ width, height: 950 });
+    await gotoUrl(confirmation.page, base + '/order-confirmed.html?session_id=cs_month_ui_fixture');
+    assert.deepEqual(await confirmation.page.locator('[data-confirmed-preorder-schedule] li').allTextContents(), ['Pink: estimated shipping December 2026.']);
+    assert.equal(await confirmation.page.locator('[data-confirmed-preorder-terms]').textContent(), confirmedPreorder.termsText);
+    assert.equal(await confirmation.page.evaluate(key => localStorage.getItem(key), cartKey), originalCart);
+    assert.ok(await confirmation.page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+  }
   // Historical paid orders must still show their captured terms, even if the
   // current offer no longer includes the original shirt bonus.
   confirmedPreorder = {
@@ -498,7 +576,7 @@ try {
   assert.deepEqual(failedRequests, [], 'Failed site requests');
   assert.deepEqual(unexpectedWrites, [], 'Unexpected mutation attempts');
   assert.deepEqual(layoutIssues, [], 'Page layout/content issues');
-  console.log('PASS: 20 responsive page checks, complete biography/synopsis, original 14-book cart, inactive paid preorders, focus restoration, intercepted enabled checkout fixtures, stale-response race protection, and captured preorder schedules/shipping.');
+  console.log('PASS: 20 responsive page checks, complete biography/synopsis, original 14-book cart, Pink month-based paid checkout with consent, closed bundle, expired-window protection, focus restoration, intercepted exact-date checkout fixtures, stale-response race protection, and captured preorder schedules/shipping.');
 } finally {
   console.log(JSON.stringify({ errors, missing, failedRequests, recoveredNetworkRetries, unexpectedWrites, layoutIssues, measurements, checkoutRequests, screenshots: out }, null, 2));
   await browser.close();

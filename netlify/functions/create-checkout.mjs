@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { ripplePreorderConfig } from '../../ripple-preorder-config.js';
+import { ripplePreorderConfig, validShipMonth, preorderCutoff } from '../../ripple-preorder-config.js';
 
 const maxQuantity = 10;
 
@@ -75,7 +75,9 @@ function cutoffTimestamp(value) {
 }
 
 function preorderCheckoutDisclosure(offer, schedule, countries) {
-  const dates = schedule.map(entry => entry.arrivalDate
+  const dates = schedule.map(entry => entry.estimatedShipMonth
+    ? `${entry.volume}: estimated shipping ${new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${entry.estimatedShipMonth}-01T00:00:00Z`))}.`
+    : entry.arrivalDate
     ? `${entry.volume}: arrives ${entry.arrivalDate}; release ${entry.releaseDate}.`
     : `${entry.volume}: ships ${entry.shipDate}; release ${entry.releaseDate}.`).join('\n');
   const shipping = offer.shippingAmount === 0
@@ -89,11 +91,13 @@ function configuredPreorder(config, slug) {
   if (!Array.isArray(config.countries) || !config.countries.length || config.countries.some(country => typeof country !== 'string' || !/^[A-Z]{2}$/.test(country))) return null;
   const bundle = slug === 'ripple-series-preorder';
   const offer = bundle ? config.bundle : config.pink;
-  if (!offer || offer.slug !== slug || offer.amount !== (bundle ? 10000 : 2500)) return null;
+  if (!offer || offer.enabled !== true || offer.slug !== slug || offer.amount !== (bundle ? 10000 : 2500)) return null;
   if (typeof offer.title !== 'string' || !offer.title.trim() || offer.title.length > 120) return null;
   if (typeof offer.termsText !== 'string' || !offer.termsText.trim() || offer.termsText.length > 500) return null;
-  const cutoff = cutoffTimestamp(offer.purchaseCutoffAt);
-  if (cutoff === null) return null;
+  const estimated = !bundle && offer.estimatedShipMonth != null;
+  if (estimated && !validShipMonth(offer.estimatedShipMonth)) return null;
+  const cutoff = estimated && offer.purchaseCutoffAt == null ? preorderCutoff(offer) : cutoffTimestamp(offer.purchaseCutoffAt);
+  if (cutoff === null || !Number.isFinite(cutoff)) return null;
   let schedule;
   if (bundle) {
     if (!Array.isArray(offer.volumes) || offer.volumes.join(',') !== 'Pink,Blue,Red,Yellow,Black') return null;
@@ -110,6 +114,12 @@ function configuredPreorder(config, slug) {
     }
     // The owner chooses sufficient delivery lead time; never infer it here.
     if (cutoff >= Math.min(...schedule.map(entry => dateTimestamp(entry.arrivalDate)))) return null;
+  } else if (estimated) {
+    // An approved month is sufficient; never invent exact release/shipping days.
+    if (offer.shippingAmount !== 0 || offer.releaseDate != null || offer.shipDate != null) return null;
+    const windowEnd = preorderCutoff({ estimatedShipMonth: offer.estimatedShipMonth });
+    if (cutoff > windowEnd) return null;
+    schedule = [{ volume: 'Pink', estimatedShipMonth: offer.estimatedShipMonth }];
   } else {
     const release = dateTimestamp(offer.releaseDate), ship = dateTimestamp(offer.shipDate);
     if (release === null || ship === null || ship > release || offer.shippingAmount !== 0) return null;

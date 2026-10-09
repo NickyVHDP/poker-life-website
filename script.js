@@ -314,9 +314,12 @@ if (orderPage) {
             terms.hidden = false;
             const schedule = orderPage.querySelector('[data-confirmed-preorder-schedule]');
             const formatDate = (value) => new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(`${value}T12:00:00Z`));
+            const formatMonth = (value) => new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${value}-01T12:00:00Z`));
+            schedule.replaceChildren();
             for (const item of result.preorder.schedule || []) {
               const row = document.createElement('li');
               const dates = [];
+              if (/^\d{4}-(0[1-9]|1[0-2])$/.test(item.estimatedShipMonth || '')) dates.push(`estimated shipping ${formatMonth(item.estimatedShipMonth)}`);
               if (item.shipDate) dates.push(`ships by ${formatDate(item.shipDate)}`);
               if (item.arrivalDate) dates.push(`receive by ${formatDate(item.arrivalDate)}`);
               if (item.releaseDate) dates.push(`official release ${formatDate(item.releaseDate)}`);

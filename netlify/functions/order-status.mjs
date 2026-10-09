@@ -1,4 +1,5 @@
 import { isSiteSession, orderStore, recordPaidOrder } from '../lib/order-record.mjs';
+import { validShipMonth } from '../../ripple-preorder-config.js';
 
 const preorderTitles = {
   'ripple-pink-preorder': 'Ripple: Pink — Autographed Preorder',
@@ -16,6 +17,7 @@ function publicPreorderSummary(session) {
     if (Array.isArray(parsed) && parsed.length <= 5) {
       schedule = parsed.filter(entry => ['Pink', 'Blue', 'Red', 'Yellow', 'Black'].includes(entry?.volume)).map(entry => {
         const safe = { volume: entry.volume };
+        if (validShipMonth(entry.estimatedShipMonth)) safe.estimatedShipMonth = entry.estimatedShipMonth;
         for (const key of ['releaseDate', 'shipDate', 'arrivalDate']) {
           const date = entry[key];
           if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) continue;

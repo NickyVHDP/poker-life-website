@@ -52,15 +52,21 @@
 .ripple-pink-intro h2 { font-size:clamp(46px,4.9vw,75px); }
 .ripple-pink-intro h2 em { color:#ed90ba; }
 .ripple-pink-intro p:not(.ripple-kicker) { color:#bfb3b9; font-size:15px; }
-.ripple-pink-intro .ripple-pink-hook { color:#f0dce6; font:400 23px/1.5 Georgia,serif; margin:25px 0; }
+.ripple-pink-intro p.ripple-pink-hook { color:#f0dce6; font:400 23px/1.5 Georgia,serif; margin:25px 0; }
 .ripple-synopsis { display:grid; grid-template-columns:.8fr 1.5fr; gap:60px; padding:80px 8%; }
 .ripple-synopsis-title { align-self:start; }
 .ripple-synopsis-title > p:not(.ripple-kicker) { color:#a29792; font-size:13px; }
+.ripple-series-introduction { border-top:1px solid #8f6b323f; background:radial-gradient(ellipse at 8% 24%,#98703112,transparent 60%); }
+.ripple-series-introduction .ripple-synopsis-title .ripple-introduction-deck { color:#dfc58e; font-size:14px; line-height:1.9; letter-spacing:.06em; margin-top:25px; }
 .ripple-prose { max-width:70ch; color:#bfb7b3; font-size:15px; }
 .ripple-prose p { margin:0 0 23px; line-height:1.85; }
 .ripple-prose strong { color:#efe3df; font-weight:600; }
 .ripple-prose blockquote { margin:32px 0; padding:8px 0 8px 25px; border-left:2px solid #c06893; color:#ecc3d8; font:400 26px/1.5 Georgia,serif; }
 .ripple-prose .ripple-final-line { color:#f0d5e3; font:400 27px/1.45 Georgia,serif; }
+.ripple-series-introduction .ripple-final-line { color:#e7ce9d; }
+.ripple-story-beats { border-left:1px solid #a88b5155; padding-left:23px; margin:28px 0; }
+.ripple-story-beats p { margin-bottom:9px; color:#dac9b2; }
+.ripple-prose .ripple-book-signoff { margin-top:30px; color:#a89c97; font-size:12px; line-height:1.9; letter-spacing:.045em; }
 .ripple-faq { display:grid; grid-template-columns:.8fr 1.5fr; gap:60px; padding:60px 8% 80px; border-top:1px solid #8f6b323f; }
 .ripple-faq-items details { padding:19px 0; border-bottom:1px solid #84734b44; }
 .ripple-faq-items summary { color:#e5d3b7; font-size:14px; line-height:1.5; cursor:pointer; }

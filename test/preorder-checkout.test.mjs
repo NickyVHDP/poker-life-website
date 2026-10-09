@@ -19,8 +19,8 @@ function configured() {
   const config = structuredClone(ripplePreorderConfig);
   config.enabled = true;
   config.countries = ['US'];
-  Object.assign(config.pink, { releaseDate: '2030-02-01', shipDate: '2030-01-25', purchaseCutoffAt: '2030-01-20T23:59:59Z', termsText: 'Fixture terms: paid Pink preorder, signed copy, ships January 25, free US shipping.' });
-  Object.assign(config.bundle, { shippingAmount: 700, purchaseCutoffAt: '2030-01-15T23:59:59Z', termsText: 'Fixture terms: five-book preorder, $7 shipping, each volume arrives seven days before release.' });
+  Object.assign(config.pink, { enabled: true, estimatedShipMonth: null, releaseDate: '2030-02-01', shipDate: '2030-01-25', purchaseCutoffAt: '2030-01-20T23:59:59Z', termsText: 'Fixture terms: paid Pink preorder, signed copy, ships January 25, free US shipping.' });
+  Object.assign(config.bundle, { enabled: true, shippingAmount: 700, purchaseCutoffAt: '2030-01-15T23:59:59Z', termsText: 'Fixture terms: five-book preorder, $7 shipping, each volume arrives seven days before release.' });
   config.bundle.schedule = config.bundle.volumes.map((volume, index) => {
     const releaseDate = `2030-0${index + 2}-01`;
     const arrivalDate = new Date(Date.parse(releaseDate + 'T00:00:00Z') - 7 * 86400000).toISOString().slice(0, 10);
@@ -52,13 +52,16 @@ async function checkout(body, options = {}) {
   return { status: response.status, body: await response.json(), calls, form };
 }
 
-test('paid preorders are disabled by default and never contact Stripe', async () => {
-  assert.equal(ripplePreorderConfig.enabled, false);
+test('approved Pink month-based preorder opens independently while the bundle stays closed', async () => {
+  assert.equal(ripplePreorderConfig.enabled, true);
+  assert.equal(ripplePreorderConfig.pink.enabled, true);
+  assert.equal(ripplePreorderConfig.bundle.enabled, false);
   assert.equal(ripplePreorderConfig.pink.amount, 2500);
   assert.equal(ripplePreorderConfig.pink.regularAmount, 2999);
   assert.equal(ripplePreorderConfig.bundle.amount, 10000);
-  assert.equal(ripplePreorderConfig.termsVersion, 'ripple-preorder-v3');
-  assert.equal(ripplePreorderConfig.pink.releaseWindow, 'December');
+  assert.equal(ripplePreorderConfig.termsVersion, 'ripple-preorder-v4');
+  assert.equal(ripplePreorderConfig.pink.releaseWindow, 'December 2026');
+  assert.equal(ripplePreorderConfig.pink.estimatedShipMonth, '2026-12');
   assert.equal(ripplePreorderConfig.pink.shippingAmount, 0);
   assert.equal(ripplePreorderConfig.bundle.shippingAmount, 0);
   assert.equal(Object.hasOwn(ripplePreorderConfig.bundle, 'shirtSizes'), false);
@@ -68,9 +71,50 @@ test('paid preorders are disabled by default and never contact Stripe', async ()
   assert.deepEqual(ripplePreorderConfig.countries, ['US']);
   assert.match(ripplePreorderConfig.pink.termsText, /Cancel before shipment for a full refund/);
   assert.match(ripplePreorderConfig.bundle.termsText, /cancel unshipped books for \$20 per book/);
-  for (const slug of [ripplePreorderConfig.pink.slug, ripplePreorderConfig.bundle.slug]) {
-    const result = await checkout(payload(slug), { preorderConfig: ripplePreorderConfig });
+  const result = await checkout(payload(), { preorderConfig: ripplePreorderConfig, now: () => new Date('2026-10-08T12:00:00Z') });
+  assert.equal(result.status, 200);
+  assert.equal(result.calls, 1);
+  assert.equal(result.form.get('line_items[0][price_data][unit_amount]'), '2500');
+  assert.equal(result.form.get('shipping_options[0][shipping_rate_data][fixed_amount][amount]'), '0');
+  assert.equal(result.form.get('shipping_address_collection[allowed_countries][0]'), 'US');
+  assert.equal(result.form.has('shipping_address_collection[allowed_countries][1]'), false);
+  assert.deepEqual(JSON.parse(result.form.get('metadata[preorder_schedule]')), [{ volume: 'Pink', estimatedShipMonth: '2026-12' }]);
+  assert.match(result.form.get('custom_text[submit][message]'), /Estimated shipping: December 2026/);
+  assert.match(result.form.get('custom_text[submit][message]'), /charged now/);
+  assert.equal(result.form.get('metadata[preorder_purchase_cutoff_at]'), '2027-01-01T00:00:00.000Z');
+  const closedBundle = await checkout(payload(ripplePreorderConfig.bundle.slug), { preorderConfig: ripplePreorderConfig, now: () => new Date('2026-10-08T12:00:00Z') });
+  assert.equal(closedBundle.status, 503);
+  assert.equal(closedBundle.calls, 0);
+});
+
+test('global and per-offer switches prevent Stripe sessions', async () => {
+  for (const change of [config => { config.enabled = false; }, config => { config.pink.enabled = false; }, config => { delete config.pink.enabled; }]) {
+    const config = configured(); change(config);
+    const result = await checkout(payload(), { preorderConfig: config });
     assert.equal(result.status, 503);
+    assert.equal(result.calls, 0);
+  }
+});
+
+test('month-based shipping rejects invalid, conflicting or expired promises before contacting Stripe', async () => {
+  for (const change of [
+    config => { config.pink.estimatedShipMonth = '2026-13'; },
+    config => { config.pink.estimatedShipMonth = '2026-2'; },
+    config => { config.pink.estimatedShipMonth = '2026-12-01'; },
+    config => { config.pink.estimatedShipMonth = null; },
+    config => { config.pink.shipDate = '2026-12-02'; },
+    config => { config.pink.releaseDate = '2026-12-20'; },
+    config => { config.pink.purchaseCutoffAt = '2027-01-02T00:00:00Z'; },
+    config => { config.pink.purchaseCutoffAt = '2026-12-01'; }
+  ]) {
+    const config = structuredClone(ripplePreorderConfig); change(config);
+    const result = await checkout(payload(), { preorderConfig: config, now: () => new Date('2026-10-08T12:00:00Z') });
+    assert.equal(result.status, 503);
+    assert.equal(result.calls, 0);
+  }
+  for (const now of ['2026-12-31T23:30:00Z', '2027-01-01T00:00:00Z', '2027-04-01T00:00:00Z']) {
+    const result = await checkout(payload(), { preorderConfig: ripplePreorderConfig, now: () => new Date(now) });
+    assert.equal(result.status, 409);
     assert.equal(result.calls, 0);
   }
 });
@@ -317,6 +361,36 @@ test('historical paid orders retain their originally agreed T-shirt fulfillment'
   assert.equal(record.preorder.tshirtIncluded, true);
   assert.equal(record.preorder.tshirtSize, 'M');
   assert.deepEqual(record.preorder.schedule, configured().bundle.schedule);
+});
+
+test('paid Pink confirmation and private fulfillment retain the approved month estimate', async () => {
+  const { form } = await checkout(payload(), { preorderConfig: ripplePreorderConfig, now: () => new Date('2026-10-08T12:00:00Z') });
+  const metadata = Object.fromEntries([...form].filter(([key]) => key.startsWith('metadata[')).map(([key, value]) => [key.slice(9, -1), value]));
+  const session = {
+    id: 'cs_test_pinkmonth', object: 'checkout.session', metadata,
+    client_reference_id: form.get('client_reference_id'), payment_status: 'paid',
+    amount_total: 2500, currency: 'usd', payment_intent: 'pi_pinkmonth',
+    customer_details: { email: 'buyer@example.invalid' },
+    collected_information: { shipping_details: { name: 'Private Buyer', address: { country: 'US' } } }
+  };
+  const records = new Map();
+  const store = { async setJSON(key, value) { records.set(key, value); } };
+  const handler = createOrderStatusHandler({ env, storeFactory: () => store, fetchImpl: async () => Response.json(session) });
+  const summary = await (await handler(new Request(`https://pokerlifeusa.com/.netlify/functions/order-status?session_id=${session.id}`))).json();
+  assert.equal(summary.status, 'paid');
+  assert.equal(summary.recorded, true);
+  assert.deepEqual(summary.preorder.schedule, [{ volume: 'Pink', estimatedShipMonth: '2026-12' }]);
+  assert.equal(summary.preorder.termsText, ripplePreorderConfig.pink.termsText);
+  assert.equal(summary.preorder.shippingAmount, 0);
+  assert.doesNotMatch(JSON.stringify(summary), /Private Buyer|buyer@example/);
+  const record = records.get(`paid/${session.id}`);
+  assert.deepEqual(record.preorder.schedule, summary.preorder.schedule);
+  assert.equal(record.preorder.autographed, true);
+  assert.equal(record.preorder.purchaseCutoffAt, '2027-01-01T00:00:00.000Z');
+  assert.equal(record.preorder.customerEmail, 'buyer@example.invalid');
+  session.metadata.preorder_schedule = JSON.stringify([{ volume: 'Pink', estimatedShipMonth: '2026-99', privateEmail: 'secret@example.invalid' }]);
+  const malformed = await (await handler(new Request(`https://pokerlifeusa.com/.netlify/functions/order-status?session_id=${session.id}`))).json();
+  assert.deepEqual(malformed.preorder.schedule, [{ volume: 'Pink' }]);
 });
 
 test('verified preorder payment persists privately without exposing fulfillment details', async () => {

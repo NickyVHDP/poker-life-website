@@ -30,11 +30,13 @@ test('contact page replaces the inactive form with direct, accessible email inst
   assert.match(html, /data-local-form="newsletter"/);
 });
 
-test('FAQ no longer claims email is unavailable and payment gates are unaffected', async () => {
+test('FAQ email remains available alongside the independently gated offers', async () => {
   const html = await read('faq.html');
   assert.doesNotMatch(html, /No email address|Does the contact form actually send|There is no published refund/);
   assert.match(html, /Clicking the button does not send anything automatically/);
-  assert.equal(ripplePreorderConfig.enabled, false);
+  assert.equal(ripplePreorderConfig.enabled, true);
+  assert.equal(ripplePreorderConfig.pink.enabled, true);
+  assert.equal(ripplePreorderConfig.bundle.enabled, false);
   assert.equal(ripplePreorderConfig.pink.amount, 2500);
   assert.equal(ripplePreorderConfig.bundle.amount, 10000);
 });

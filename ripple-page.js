@@ -1,4 +1,4 @@
-import { ripplePreorderConfig as config } from './ripple-preorder-config.js?v=3';
+import { ripplePreorderConfig as config, preorderCutoff } from './ripple-preorder-config.js?v=4';
 
 const dialog = document.querySelector('[data-preorder-dialog]');
 const form = dialog.querySelector('[data-preorder-form]');
@@ -8,6 +8,8 @@ const consent = form.elements.accepted;
 const money = (cents) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: cents % 100 ? 2 : 0 }).format(cents / 100);
 const date = (value) => new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(`${value}T12:00:00Z`));
 const validDate = (value) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(`${value}T12:00:00Z`));
+const validMonth = (value) => typeof value === 'string' && /^\d{4}-(0[1-9]|1[0-2])$/.test(value);
+const month = (value) => new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${value}-01T12:00:00Z`));
 const closedMessage = 'Preorder delivery details and terms are being finalized. Paid checkout is not open yet; no payment is taken.';
 let selected = null;
 let opener = null;
@@ -19,21 +21,23 @@ let requestController = null;
 // timing and prices before it creates a Stripe Checkout session.
 function isOpen(key) {
   const offer = config[key];
-  if (!config.enabled || !offer || !config.countries?.length || !offer.termsText || !config.termsVersion) return false;
-  if (!offer.purchaseCutoffAt || Date.parse(offer.purchaseCutoffAt) <= Date.now() + 31 * 60 * 1000 || !Number.isFinite(Date.parse(offer.purchaseCutoffAt))) return false;
-  if (key === 'pink') return validDate(offer.releaseDate) && validDate(offer.shipDate) && offer.shippingAmount === 0;
+  if (!config.enabled || !offer || offer.enabled !== true || !config.countries?.length || !offer.termsText || !config.termsVersion) return false;
+  const cutoff = preorderCutoff(offer);
+  if (!Number.isFinite(cutoff) || cutoff <= Date.now() + 31 * 60 * 1000) return false;
+  if (key === 'pink') return (validMonth(offer.estimatedShipMonth) || (validDate(offer.releaseDate) && validDate(offer.shipDate))) && offer.shippingAmount === 0;
   return Number.isInteger(offer.shippingAmount) && offer.shippingAmount >= 0 && offer.schedule?.length === 5 && offer.schedule.every((item) => validDate(item.releaseDate) && validDate(item.arrivalDate));
 }
 
 function details(key) {
   const offer = config[key];
   if (!isOpen(key)) return key === 'pink'
-    ? `An autographed copy of The Ripple: Pink for $25 with free U.S. shipping. Planned release: ${offer.releaseWindow}. The exact release and shipping dates are to be announced. Standard book price: $29.99. Cancel before shipment for a full refund.`
+    ? `An autographed copy of The Ripple: Pink for $25 with free U.S. shipping. ${validMonth(offer.estimatedShipMonth) ? `Estimated shipping: ${month(offer.estimatedShipMonth)}.` : `Planned release: ${offer.releaseWindow}. The exact release and shipping dates are to be announced.`} Standard book price: $29.99. Cancel before shipment for a full refund.`
     : `All five books for $100 with free U.S. shipping, each received one week before its official release. Pink is planned for ${config.pink.releaseWindow}; release dates for Blue, Red, Yellow, and Black are to be announced. Cancel before the first shipment for a full refund; after shipments begin, cancel unshipped books for $20 per book.`;
   const schedule = key === 'pink'
-    ? `Ships by ${date(offer.shipDate)}. Official release: ${date(offer.releaseDate)}.`
+    ? (validMonth(offer.estimatedShipMonth) ? `Estimated shipping: ${month(offer.estimatedShipMonth)}. This is an estimate, not a guaranteed arrival date.` : `Ships by ${date(offer.shipDate)}. Official release: ${date(offer.releaseDate)}.`)
     : offer.schedule.map((item) => `${item.volume}: receive by ${date(item.arrivalDate)}; official release ${date(item.releaseDate)}.`).join('\n');
-  return `${offer.termsText}\n\n${schedule}\nShipping: ${offer.shippingAmount === 0 ? 'Free' : money(offer.shippingAmount)}. Available to: ${config.countries.join(', ')}.\nPreorders close: ${new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeStyle: 'short', timeZone: 'UTC' }).format(new Date(offer.purchaseCutoffAt))} UTC.`;
+  const cutoff = offer.purchaseCutoffAt ? `\nPreorders close: ${new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeStyle: 'short', timeZone: 'UTC' }).format(new Date(offer.purchaseCutoffAt))} UTC.` : '';
+  return `${offer.termsText}\n\n${schedule}\nShipping: ${offer.shippingAmount === 0 ? 'Free' : money(offer.shippingAmount)}. Available to: ${config.countries.join(', ')}.${cutoff}`;
 }
 
 function updateSubmit() {
@@ -46,9 +50,13 @@ if (!pinkOpen && config.pink.releaseWindow) {
   document.querySelector('[data-pink-date]').textContent = `Planned release: ${config.pink.releaseWindow} · Exact date to be announced`;
 }
 if (pinkOpen || bundleOpen) {
-  document.querySelector('[data-preorder-launch-notice]').textContent = 'Paid preorders are open for the offers with confirmed delivery terms below. Review the dates and terms before continuing to secure checkout.';
+  document.querySelector('[data-preorder-launch-notice]').textContent = pinkOpen && !bundleOpen
+    ? 'Signed Pink preorders are open: $25 with free U.S. shipping. Payment is collected now. Estimated shipping: ' + (validMonth(config.pink.estimatedShipMonth) ? month(config.pink.estimatedShipMonth) : date(config.pink.shipDate)) + '. The five-book bundle is not open for payment yet.'
+    : 'Paid preorders are open for the offers with confirmed delivery terms below. Payment is collected now. Review the delivery terms before continuing to secure checkout.';
 }
-if (pinkOpen) document.querySelector('[data-pink-date]').textContent = `Ships by ${date(config.pink.shipDate)} · Release ${date(config.pink.releaseDate)}`;
+if (pinkOpen) document.querySelector('[data-pink-date]').textContent = validMonth(config.pink.estimatedShipMonth)
+  ? `Estimated shipping: ${month(config.pink.estimatedShipMonth)} · U.S. only`
+  : `Ships by ${date(config.pink.shipDate)} · Release ${date(config.pink.releaseDate)}`;
 if (bundleOpen) {
   document.querySelector('[data-bundle-date]').textContent = `Five early deliveries · ${config.bundle.shippingAmount === 0 ? 'Free shipping' : `${money(config.bundle.shippingAmount)} shipping`}`;
   const schedule = document.querySelector('[data-release-schedule]');
@@ -60,7 +68,7 @@ if (bundleOpen) {
   schedule.hidden = false;
 }
 if (pinkOpen || bundleOpen) document.querySelector('[data-release-faq]').textContent = pinkOpen
-  ? `Pink releases ${date(config.pink.releaseDate)}. Signed Pink preorders ship by ${date(config.pink.shipDate)}. ${bundleOpen ? 'The complete series schedule is below.' : 'The remaining release schedule will be announced.'}`
+  ? `${validMonth(config.pink.estimatedShipMonth) ? `Signed Pink preorders are estimated to ship in ${month(config.pink.estimatedShipMonth)}; the exact release day is to be announced. This is not a guaranteed arrival date.` : `Pink releases ${date(config.pink.releaseDate)}. Signed Pink preorders ship by ${date(config.pink.shipDate)}.`} ${bundleOpen ? 'The complete series schedule is below.' : 'Release dates for Blue, Red, Yellow, and Black have not been set yet. The bundle is not open for payment.'}`
   : 'The confirmed release and early bundle arrival dates are listed below.';
 
 for (const button of document.querySelectorAll('[data-preorder-offer]')) {
@@ -73,7 +81,7 @@ for (const button of document.querySelectorAll('[data-preorder-offer]')) {
     error.textContent = '';
     dialog.querySelector('#ripple-dialog-title').textContent = offer.title;
     dialog.querySelector('[data-preorder-price]').textContent = money(offer.amount);
-    dialog.querySelector('[data-preorder-status]').textContent = open ? 'This is a paid preorder, not an in-stock shipment. Please review the delivery dates and terms.' : closedMessage;
+    dialog.querySelector('[data-preorder-status]').textContent = open ? 'This is a paid preorder, not an in-stock shipment. Payment is collected now. Please review the estimated shipping and terms.' : closedMessage;
     dialog.querySelector('[data-preorder-terms]').textContent = details(selected);
     dialog.querySelector('[data-preorder-consent]').hidden = !open;
     consent.disabled = !open;

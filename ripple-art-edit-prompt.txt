@@ -1,0 +1,11 @@
+Tool: built-in image generation / editing.
+Edit target: assets/ripple-series-promo.png
+Final asset: assets/ripple-series-suspense-promo.png
+
+Use case: text-localization.
+Asset type: existing 1024 by 1536 portrait poster for The Ripple book series.
+Replace ONLY the small white genre/byline text directly beneath the giant gold COMING SOON heading and directly above LARRY McCRACKEN near the bottom.
+Old text: A POKER CRIME THRILLER SERIES BY
+Replacement text (verbatim): A Poker Suspense Thriller Series by
+Match the original white serif type, letter spacing, centered alignment, and single-line placement; size it to fit cleanly.
+Preserve the portrait framing, man in the chair, San Antonio skyline, poker chips, whiskey glass, five book covers and their lettering, THE RIPPLE title, COMING SOON heading, author name, and footer icons/copy. No restyling, extra words, cropping, or new design. Preserve original dimensions, sharpness and visual quality.
