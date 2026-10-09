@@ -1,0 +1,18 @@
+Tool: built-in image generation / editing.
+Source: assets/poker-life-portraits-retouched.png
+Final asset: assets/poker-life-portraits-sharp.png
+
+Second detail restoration pass used the first edit prepared on a 1280x3396 canvas:
++Use case: identity-preserve. Image 1 is the edit target, an existing 1280x3396 tall Poker Life design.
+Perform a stronger professional photographic restoration ONLY of the man's exposed skin and facial detail in the two white-hoodie portraits: the top hero and bottom MY STORY.
+The specific defects to fix are the uneven dark/reddish mottled patches and smeared texture on the forehead, temples, cheeks and neck. Give him smooth, evenly lit natural skin tone with fine realistic texture and age-appropriate expression lines; remove the coarse blotchy patches. Bring back crisp, realistic eyes, eyebrows, beard strands, hairline and smile. Do not just increase contrast or sharpen the mottled texture. His skin should look like a clear professional photo at desktop display size.
+Preserve his exact identity, age, face shape, nose, eye shape/color, smile, beard, hair, tattoos, earrings, hand positions, white hoodie and pose. No glamorization or waxy/plastic effect.
+Preserve every panel, text, logo, emblem, book cover, background and all framing exactly as the input. The original design is approved. Change only the quality/skin detail of the two portraits. Retain the 1280x3396 canvas size and proportions with no cropping, no reflow and no composition shift.
+
++Use case: identity-preserve.
+Image 1 is the edit target: a tall Poker Life website design containing two front-facing portraits of Larry McCracken in a white branded hoodie.
+Primary request: professionally retouch and restore ONLY Larry's visible skin/face and facial detail in BOTH portraits: the large seated hero portrait near the top, and the smiling portrait in the MY STORY panel near the bottom.
+Remove the blotchy, patchy red/orange skin artifacts, muddy mottling and painterly smearing. Make his skin look naturally even and photographic, with real pores and age-appropriate wrinkles. Improve clarity of eyes, eyebrows, hair, beard, smile and teeth with restrained, clean sharpening. Clean up exposed neck and hands naturally as appropriate, without changing tattoos.
+Strict identity lock: preserve the exact same person, age, facial shape, nose, eyes, expression, smile, beard style, hair, earrings, tattoos, pose, hand placement, hoodie and its logos. Do not beautify into a different man; no plastic skin, no blur, no halo edges, no heavy contrast, no new wrinkles or tattoos.
+Everything outside the two portraits must remain unchanged: every panel boundary and its placement, all words, all book covers, all logos and PL emblems, apparel/coins, poker table, background lighting, colors and design. The rear-facing black-hoodie community portrait stays unchanged.
+Preserve the entire tall canvas and original proportions of 770:2043. Output a higher-detail version around 1024x2720 while keeping ALL layout coordinates proportionally identical. No cropping, reflow, redesign or new text.
