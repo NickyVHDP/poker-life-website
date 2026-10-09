@@ -15,10 +15,10 @@
     <link rel="stylesheet" href="logo-art.css" />
     <link rel="stylesheet" href="pages.css" />
     <link rel="stylesheet" href="theme-shared.css" />
-    <link rel="stylesheet" href="ripple.css?v=3" />
+    <link rel="stylesheet" href="ripple.css?v=4" />
     <script defer src="script.js?v=14"></script>
     <script defer src="theme-ui.js"></script>
-    <script type="module" src="ripple-page.js?v=4"></script>
+    <script type="module" src="ripple-page.js?v=5"></script>
   </head>
   <body class="pl-inner pl-destination">
     <a class="skip-link" href="#main">Skip to content</a>
@@ -48,9 +48,9 @@
           <h1 id="ripple-title">One hand.<br />Five different <em>lives.</em></h1>
           <p class="ripple-series-name">The Ripple <span>by Larry McCracken</span></p>
           <p class="ripple-lead">Same table. Same players. Same night. Pink, Blue, Red, Yellow, and Black begin with the same pivotal poker hand—but a different outcome sends each story into a completely different life.</p>
-          <div class="ripple-actions"><a class="ripple-button" href="#preorders">Explore the preorder offers <span aria-hidden="true">→</span></a><a class="ripple-text-link" href="#series-introduction">Discover the five-book story <span aria-hidden="true">↓</span></a><a class="ripple-text-link" href="#pink">Meet Pink, book one</a></div>
+          <div class="ripple-actions"><a class="ripple-button" href="#preorders">Preorder signed Pink <span aria-hidden="true">→</span></a><a class="ripple-text-link" href="#series-introduction">Discover the five-book story <span aria-hidden="true">↓</span></a><a class="ripple-text-link" href="#pink">Meet Pink, book one</a></div>
           <ul class="ripple-volumes" aria-label="Five books in The Ripple series"><li class="volume-pink">Pink</li><li class="volume-blue">Blue</li><li class="volume-red">Red</li><li class="volume-yellow">Yellow</li><li class="volume-black">Black</li></ul>
-          <p class="ripple-fine">Standard price: $29.99 per book. Special pricing is reserved for preorders.</p>
+          <p class="ripple-fine">Standard price: $29.99 per book. Signed Pink preorder: $25 with free U.S. shipping.</p>
         </div>
         <figure class="ripple-hero-art"><img src="assets/ripple-series-suspense-promo.png" width="1024" height="1536" alt="The Ripple, a poker suspense thriller series by Larry McCracken. Pink, Blue, Red, Yellow, and Black: five books, one pivotal poker hand, five different outcomes. Coming soon." fetchpriority="high" /></figure>
       </section>
@@ -77,13 +77,13 @@
           <p>And sometimes the difference between the life you have and the life you could have had is nothing more than the turn of a card.</p>
           <p><strong>Five books. Five realities. One unforgettable poker hand.</strong></p>
           <p class="ripple-final-line">Welcome to THE RIPPLE.</p>
-          <div class="ripple-actions"><a class="ripple-button" href="#pink">Meet Pink, book one <span aria-hidden="true">↓</span></a><a class="ripple-text-link" href="#preorders">View preorder offers</a></div>
+          <div class="ripple-actions"><a class="ripple-button" href="#pink">Meet Pink, book one <span aria-hidden="true">↓</span></a><a class="ripple-text-link" href="#preorders">Preorder signed Pink</a></div>
         </div>
       </section>
 
       <section class="ripple-offers" id="preorders" aria-labelledby="preorder-title">
-        <div class="ripple-section-heading"><p class="ripple-kicker">Be part of the first chapter</p><h2 id="preorder-title">Your first look.<br /><em>Your preorder advantage.</em></h2><p>Choose the signed first book, or follow every ripple with the complete five-book series.</p></div>
-        <p class="ripple-launch-notice" data-preorder-launch-notice>Signed Pink preorders: $25 with free U.S. shipping. Estimated shipping: December 2026. Payment is collected at checkout. The five-book bundle is not open for payment yet.</p>
+        <div class="ripple-section-heading"><p class="ripple-kicker">Be part of the first chapter</p><h2 id="preorder-title">Your first look.<br /><em>Your preorder advantage.</em></h2><p>Begin with a personally signed copy of Pink. The rest of the five-book series is coming soon.</p></div>
+        <p class="ripple-launch-notice" data-preorder-launch-notice>Signed Pink preorders: $25 with free U.S. shipping. Estimated shipping: December 2026. Payment is collected at checkout.</p>
         <noscript><p class="ripple-launch-notice">Please enable JavaScript to view preorder checkout details.</p></noscript>
         <div class="ripple-offer-grid">
           <article class="ripple-offer ripple-offer-pink">
@@ -95,17 +95,15 @@
             <p class="ripple-offer-date" data-pink-date>Estimated shipping: December 2026 · U.S. only</p>
             <button class="ripple-button ripple-button-pink" type="button" data-preorder-offer="pink">Preorder signed Pink <span aria-hidden="true">→</span></button>
           </article>
-          <article class="ripple-offer ripple-offer-bundle">
-            <p class="ripple-offer-label">The complete journey · Five-book bundle</p>
-            <h3>The Ripple Collection</h3>
-            <p class="ripple-price">$100 <span>for the entire series</span></p>
-            <p class="ripple-standard">Five books at $29.99 each would be $149.95</p>
-            <ul><li>All five books: Pink, Blue, Red, Yellow, and Black</li><li>Receive each book one week before its official release</li><li>Free U.S. shipping included with the $100 bundle</li></ul>
-            <p class="ripple-offer-date" data-bundle-date>Pink planned for December · Remaining release dates to be announced</p>
-            <button class="ripple-button" type="button" data-preorder-offer="bundle">View bundle · Coming soon <span aria-hidden="true">→</span></button>
+          <article class="ripple-offer ripple-series-coming-soon" aria-labelledby="ripple-coming-soon-title">
+            <p class="ripple-offer-label">The complete journey · Five-book series</p>
+            <h3 id="ripple-coming-soon-title">The Ripple Series</h3>
+            <p class="ripple-coming-soon-status">Coming soon</p>
+            <p class="ripple-coming-soon-copy">One unforgettable hand. Five different outcomes. Discover the interconnected worlds of Pink, Blue, Red, Yellow, and Black.</p>
+            <p class="ripple-offer-date">Release dates for the remaining books are to be announced. Only Pink is currently available to preorder.</p>
           </article>
         </div>
-        <p class="ripple-offer-footnote">Both offers are available to U.S. delivery addresses only. These are upcoming releases, not in-stock books. Each preorder is checked out separately from the regular book cart, so its offer and delivery terms stay clear.</p>
+        <p class="ripple-offer-footnote">Pink preorders are available to U.S. delivery addresses only. This is an upcoming release, not an in-stock book. Your Pink preorder uses a separate checkout from the regular book cart, so its delivery terms stay clear.</p>
         <p class="ripple-offer-footnote">Questions about the series or a preorder? <a class="ripple-text-link" href="mailto:larrymccrackenjr@gmail.com?subject=The%20Ripple%20preorder">Email Larry directly <span aria-hidden="true">→</span></a></p>
       </section>
 
@@ -145,18 +143,18 @@
           <p>Because winning and losing aren’t always what they look like.</p>
           <p class="ripple-final-line">And sometimes the hand that changes your life isn’t the hand you were supposed to win.</p>
           <p class="ripple-book-signoff"><strong>THE RIPPLE: PINK</strong><br /> One poker hand changes everything.</p>
-          <div class="ripple-actions"><a class="ripple-button" href="#preorders">View preorder offers <span aria-hidden="true">↑</span></a><a class="ripple-text-link" href="about.html">About Larry McCracken</a></div>
+          <div class="ripple-actions"><a class="ripple-button" href="#preorders">Preorder signed Pink <span aria-hidden="true">↑</span></a><a class="ripple-text-link" href="about.html">About Larry McCracken</a></div>
         </div>
       </section>
 
       <section class="ripple-faq" aria-labelledby="ripple-faq-title">
         <div><p class="ripple-kicker">Before you preorder</p><h2 id="ripple-faq-title">A few things<br />to know.</h2></div>
         <div class="ripple-faq-items">
-          <details open><summary>When will the books be released?</summary><p data-release-faq>Signed Pink preorders are estimated to ship in December 2026; the exact release day is to be announced. This is not a guaranteed arrival date. Release dates for Blue, Red, Yellow, and Black have not been set yet. The bundle is not open for payment.</p><ol class="ripple-release-schedule" data-release-schedule hidden></ol></details>
+          <details open><summary>When will the books be released?</summary><p data-release-faq>Signed Pink preorders are estimated to ship in December 2026; the exact release day is to be announced. This is not a guaranteed arrival date. Blue, Red, Yellow, and Black are coming soon; their release dates have not been set yet.</p></details>
           <details><summary>What is included in the $25 Pink offer?</summary><p>An autographed copy of <em>The Ripple: Pink</em> for $25, with free U.S. shipping during the preorder period. Payment is collected now, with estimated shipping in December 2026. Its standard book price is $29.99.</p></details>
           <details><summary>What if shipping is delayed?</summary><p>We will contact you if the December 2026 shipping estimate changes. You can consent to the revised shipping estimate or cancel for a full refund before shipment. Questions? <a href="mailto:larrymccrackenjr@gmail.com?subject=The%20Ripple%20shipping">Email Larry</a>.</p></details>
-          <details><summary>What is included in the $100 series offer?</summary><p>All five Ripple books for $100 with free U.S. shipping, received one week before each book’s official release. The delivery schedule will be shown before payment opens.</p></details>
-          <details><summary>Can I cancel my preorder?</summary><p>Cancel before shipment for a full refund. For the series bundle, cancel before the first shipment for a full $100 refund; after shipments begin, cancel any unshipped books for a refund of $20 per book. For cancellations, damaged items, or incorrect deliveries, <a href="mailto:larrymccrackenjr@gmail.com?subject=The%20Ripple%20order%20support">email Larry</a> with your order reference. This policy applies to Ripple preorders and does not limit your statutory rights or change terms agreed on earlier purchases.</p></details>
+          <details><summary>Can I preorder the whole series?</summary><p>Not yet. The full series is coming soon, with release dates for the remaining books to be announced. Only the signed Pink preorder is available now.</p></details>
+          <details><summary>Can I cancel my preorder?</summary><p>Cancel your Pink preorder before shipment for a full refund. For cancellations, damaged items, or incorrect deliveries, <a href="mailto:larrymccrackenjr@gmail.com?subject=The%20Ripple%20order%20support">email Larry</a> with your order reference. This policy does not limit your statutory rights or change terms agreed on earlier purchases.</p></details>
           <details><summary>Can I combine a preorder with in-stock books?</summary><p>Preorders use a separate checkout. Your regular Poker Life cart remains unchanged, and your preorder’s delivery details are shown separately.</p></details>
         </div>
       </section>

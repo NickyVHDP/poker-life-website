@@ -39,6 +39,9 @@
 .ripple-offer h3 { font-size:clamp(27px,2.8vw,39px); }
 .ripple-price { font:400 50px/1.1 Georgia,serif; color:#f1dfbc; margin:23px 0 0; }
 .ripple-price span { display:block; font:400 12px/1.4 Inter,Arial,sans-serif; color:#b5aa9e; margin-top:5px; }
+.ripple-coming-soon-status { font:400 clamp(32px,4vw,48px)/1.15 Georgia,serif; color:#e5c887; margin:23px 0 20px; }
+.ripple-coming-soon-copy { color:#d4ccc4; font-size:14px; line-height:1.7; padding-block:20px; border-top:1px solid #a88b5130; margin:0 0 24px; }
+.ripple-series-coming-soon .ripple-offer-date { line-height:1.65; margin-bottom:0; }
 .ripple-standard { color:#998e86; font-size:11px; margin:11px 0 20px; }
 .ripple-offer ul { padding:19px 0 5px; border-top:1px solid #a88b5130; list-style:none; margin:0 0 18px; }
 .ripple-offer li { position:relative; padding-left:20px; color:#d4ccc4; font-size:13px; line-height:1.65; margin:0 0 12px; }
@@ -83,6 +86,7 @@
 .ripple-checkout-dialog .ripple-button { width:100%; margin-top:15px; }
 .ripple-button:disabled { opacity:.5; cursor:not-allowed; filter:none; }
 .ripple-dialog-note { font-size:11px; line-height:1.6; color:#93887d; }
+.ripple-dialog-note a, .ripple-faq-items a { color:#e2c28b; text-underline-offset:3px; }
 .ripple-checkout-error { color:#ffb0b0; font-size:13px; line-height:1.6; }
 @media(max-width:900px) { .ripple-hero { gap:30px; padding-inline:5%; }.ripple-hero h1 { font-size:49px; }.ripple-synopsis,.ripple-faq { gap:35px; padding-inline:6%; }.ripple-pink-section { padding-inline:7%; gap:40px; } }
 @media(max-width:680px) { .ripple-hero { grid-template-columns:1fr; padding:35px 23px 45px; gap:32px; }.ripple-hero h1 { font-size:clamp(44px,11vw,66px); }.ripple-hero-copy { padding:0; }.ripple-hero-art { max-width:390px; }.ripple-hero .ripple-kicker { font-size:9px; }.ripple-lead { font-size:14px; }.ripple-hero .ripple-actions { gap:12px; }.ripple-offers { padding:45px 20px; }.ripple-offer-grid { grid-template-columns:1fr; }.ripple-offer { padding:26px; }.ripple-pink-section { display:flex; flex-direction:column-reverse; padding:45px 24px; gap:32px; }.ripple-pink-art { max-width:350px; }.ripple-pink-intro h2 { font-size:48px; }.ripple-synopsis,.ripple-faq { grid-template-columns:1fr; gap:25px; padding:45px 24px; }.ripple-prose { font-size:14px; }.ripple-prose blockquote { font-size:24px; }.ripple-checkout-dialog { padding:30px 24px; }.ripple-section-heading h2 { font-size:34px; } }

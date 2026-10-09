@@ -257,12 +257,14 @@ async function checkLinks(context, page, name) {
 async function checkCopy(page, name) {
   if (name === 'ripple' || name === 'books') {
     assert.doesNotMatch(await page.locator('main').textContent(), /(?:free|included)\s+(?:Poker Life\s+)?T-shirt|shirt sizes/i, name + ': removed T-shirt offer remains');
+    assert.doesNotMatch(await page.locator('main').textContent(), /\$100|one week before|seven days before|preorder the (?:full|complete) series|five early deliveries/i, name + ': removed full-series preorder offer remains');
+    assert.equal(await page.locator('[data-preorder-offer="bundle"]').count(), 0, name + ': removed bundle checkout control remains');
   }
   if (name === 'about') {
     const paragraphs = await page.locator('.pl-author-intro, .pl-author-chapter p').allTextContents();
     assert.deepEqual(paragraphs.map(normalize), biography, 'Author biography was shortened or changed');
     assert.deepEqual((await page.locator('main h1, main h2').allTextContents()).map(normalize), ['About Larry McCracken', 'The Poker Life', 'More Than One Story']);
-    assert.equal(await page.locator('.pl-author-portrait svg').getAttribute('viewBox'), '316 1659 295 205', 'Author crop must exclude source lettering');
+    assert.equal(await page.locator('.pl-author-portrait svg').getAttribute('viewBox'), '316 0 295 207', 'Author crop must preserve the current dedicated portrait scene');
   }
   if (name === 'ripple') {
     const seriesParagraphs = (await page.locator('#series-introduction .ripple-introduction-deck, #series-introduction .ripple-prose > p, #series-introduction .ripple-story-beats > p').allTextContents()).map(normalize);
@@ -272,14 +274,14 @@ async function checkCopy(page, name) {
     assert.doesNotMatch(await page.locator('#pink-synopsis').textContent(), /little girl named Emily|walls of a house/);
     assert.equal(await page.locator('.ripple-hero-art img').getAttribute('src'), 'assets/ripple-series-suspense-promo.png');
     assert.match(await page.locator('.ripple-offer-pink .ripple-price').textContent(), /\$25\b/);
-    assert.match(await page.locator('.ripple-offer-bundle .ripple-price').textContent(), /\$100\b/);
+    assert.ok(await page.locator('.ripple-series-coming-soon').isVisible());
+    assert.match(await page.locator('.ripple-series-coming-soon').textContent(), /coming soon/i);
+    assert.equal(await page.locator('.ripple-series-coming-soon .ripple-price, .ripple-series-coming-soon button, .ripple-series-coming-soon [data-preorder-offer]').count(), 0, 'Series coming-soon panel must not include a price or payment control');
     assert.match(await page.locator('.ripple-offer-pink .ripple-standard').textContent(), /\$29\.99\b/);
-    assert.doesNotMatch(await page.locator('.ripple-offer-bundle').textContent(), /shirt/i);
+    assert.doesNotMatch(await page.locator('.ripple-series-coming-soon').textContent(), /shirt|free shipping|early deliver/i);
     assert.equal(await page.locator('[data-shirt-field], [name="shirtSize"]').count(), 0, 'Removed shirt-size selector remains');
     assert.match(await page.locator('[data-preorder-launch-notice]').textContent(), /Payment is collected now/i);
-    assert.match(await page.locator('[data-preorder-launch-notice]').textContent(), /bundle is not open for payment/i);
     assert.match(await page.locator('[data-pink-date]').textContent(), /Estimated shipping: December 2026/);
-    assert.match(await page.locator('.ripple-offer-bundle').textContent(), /Free U\.S\. shipping included/);
     assert.match(await page.locator('[data-release-faq]').textContent(), /have not been set yet/);
     assert.deepEqual((await page.locator('.ripple-volumes li').allTextContents()).map(normalize), ['Pink', 'Blue', 'Red', 'Yellow', 'Black']);
   }
@@ -288,7 +290,8 @@ async function checkProductionPreorders(page, width, originalCart) {
   await page.setViewportSize({ width, height: 950 });
   await goto(page, 'ripple');
   const dialog = page.locator('[data-preorder-dialog]');
-  for (const [offer, price] of [['pink', '$25'], ['bundle', '$100']]) {
+  assert.deepEqual(await page.locator('[data-preorder-offer]').evaluateAll(buttons => buttons.map(button => button.dataset.preorderOffer)), ['pink'], 'Only Pink has a public preorder trigger');
+  for (const [offer, price] of [['pink', '$25']]) {
     const trigger = page.locator('[data-preorder-offer="' + offer + '"]');
     await trigger.click();
     assert.ok(await dialog.isVisible(), offer + ': preorder dialog did not open');
@@ -327,12 +330,6 @@ function enabledFixture() {
   config.enabled = true;
   config.countries = ['US'];
   Object.assign(config.pink, { enabled: true, estimatedShipMonth: null, releaseDate: year + '-02-01', shipDate: year + '-01-25', purchaseCutoffAt: year + '-01-20T18:00:00Z', termsText: 'QA fixture: paid signed Pink preorder, free US shipping; ships January 25.' });
-  Object.assign(config.bundle, { enabled: true, shippingAmount: 700, purchaseCutoffAt: year + '-01-20T18:00:00Z', termsText: 'QA fixture: all five books, $7 shipping, each arrives seven days before release.' });
-  config.bundle.schedule = config.bundle.volumes.map((volume, index) => {
-    const releaseDate = year + '-0' + (index + 2) + '-01';
-    const arrivalDate = new Date(Date.parse(releaseDate + 'T00:00:00Z') - 7 * 86400000).toISOString().slice(0, 10);
-    return { volume, releaseDate, arrivalDate };
-  });
   return config;
 }
 const { context, page } = await makeContext('default');
@@ -398,7 +395,8 @@ try {
   await fixture.context.addInitScript(({ key, cart }) => localStorage.setItem(key, cart), { key: cartKey, cart: originalCart });
   await fixture.page.setViewportSize({ width: 390, height: 844 });
   await goto(fixture.page, 'ripple');
-  for (const [offer, slug] of [['pink', 'ripple-pink-preorder'], ['bundle', 'ripple-series-preorder']]) {
+  assert.equal(await fixture.page.locator('[data-preorder-offer="bundle"]').count(), 0);
+  for (const [offer, slug] of [['pink', 'ripple-pink-preorder']]) {
     await fixture.page.locator('[data-preorder-offer="' + offer + '"]').click();
     const form = fixture.page.locator('[data-preorder-form]');
     const submit = fixture.page.locator('[data-preorder-checkout]');
@@ -427,7 +425,7 @@ try {
   await fixture.context.close();
 
   // Resolve a decoded Pink response after that dialog has been dismissed and
-  // bundle checkout is pending. This intentionally ignores abort in the fixture
+  // a second Pink checkout is pending. This intentionally ignores abort in the fixture
   // so both the abort signal and stale-attempt guard are exercised independently.
   const race = await makeContext('race-fixture', fixtureConfig);
   const staleRedirects = [];
@@ -458,9 +456,10 @@ try {
   assert.ok(await race.page.locator('[data-preorder-checkout]').isDisabled());
   await race.page.locator('[data-preorder-close]').click();
   await race.page.waitForFunction(() => window.__qaPreorderRace.requests[0].signal?.aborted);
-  await race.page.locator('[data-preorder-offer="bundle"]').click();
-  assert.equal(await race.page.locator('#ripple-dialog-title').textContent(), fixtureConfig.bundle.title);
-  assert.equal(await race.page.locator('[data-preorder-price]').textContent(), '$100');
+  await race.page.locator('[data-preorder-offer="pink"]').click();
+  assert.equal(await race.page.locator('#ripple-dialog-title').textContent(), fixtureConfig.pink.title);
+  assert.equal(await race.page.locator('[data-preorder-price]').textContent(), '$25');
+  assert.ok(await race.page.locator('[data-preorder-checkout]').isDisabled(), 'Reopened Pink requires fresh consent');
   await race.page.locator('[name="accepted"]').check();
   await race.page.locator('[data-preorder-checkout]').click();
   await race.page.waitForFunction(() => window.__qaPreorderRace.requests.length === 2);
@@ -471,16 +470,16 @@ try {
   assert.deepEqual(staleRedirects, [], 'Dismissed Pink response must never redirect to checkout');
   assert.equal(pageName(race.page.url()), 'ripple');
   assert.ok(await race.page.locator('[data-preorder-dialog]').isVisible());
-  assert.equal(await race.page.locator('#ripple-dialog-title').textContent(), fixtureConfig.bundle.title);
-  assert.ok(await race.page.locator('[data-preorder-checkout]').isDisabled(), 'Stale Pink completion must not unlock a pending bundle request');
+  assert.equal(await race.page.locator('#ripple-dialog-title').textContent(), fixtureConfig.pink.title);
+  assert.ok(await race.page.locator('[data-preorder-checkout]').isDisabled(), 'Stale Pink completion must not unlock a newer Pink request');
   assert.match(await race.page.locator('[data-preorder-checkout]').textContent(), /Opening secure checkout/);
   assert.equal(await race.page.locator('[data-preorder-error]').textContent(), '');
-  await race.page.evaluate(() => window.__qaPreorderRace.requests[1].release({ ok: false, body: { error: 'QA race fixture: bundle response retained.' } }));
-  await race.page.locator('[data-preorder-error]').filter({ hasText: 'QA race fixture: bundle response retained.' }).waitFor();
-  assert.ok(!(await race.page.locator('[data-preorder-checkout]').isDisabled()), 'The current bundle request must recover independently');
-  assert.deepEqual(await race.page.evaluate(() => window.__qaPreorderRace.requests.map(request => request.body.items[0].slug)), ['ripple-pink-preorder', 'ripple-series-preorder']);
+  await race.page.evaluate(() => window.__qaPreorderRace.requests[1].release({ ok: false, body: { error: 'QA race fixture: current Pink response retained.' } }));
+  await race.page.locator('[data-preorder-error]').filter({ hasText: 'QA race fixture: current Pink response retained.' }).waitFor();
+  assert.ok(!(await race.page.locator('[data-preorder-checkout]').isDisabled()), 'The current Pink request must recover independently');
+  assert.deepEqual(await race.page.evaluate(() => window.__qaPreorderRace.requests.map(request => request.body.items[0].slug)), ['ripple-pink-preorder', 'ripple-pink-preorder']);
   assert.equal(await race.page.evaluate(key => localStorage.getItem(key), cartKey), originalCart);
-  await race.page.screenshot({ path: out + '/race-bundle-390.png', fullPage: false });
+  await race.page.screenshot({ path: out + '/race-pink-reopened-390.png', fullPage: false });
   await race.context.close();
 
   // Paid order-status responses are browser fixtures, including literal markup
@@ -576,7 +575,7 @@ try {
   assert.deepEqual(failedRequests, [], 'Failed site requests');
   assert.deepEqual(unexpectedWrites, [], 'Unexpected mutation attempts');
   assert.deepEqual(layoutIssues, [], 'Page layout/content issues');
-  console.log('PASS: 20 responsive page checks, complete biography/synopsis, original 14-book cart, Pink month-based paid checkout with consent, closed bundle, expired-window protection, focus restoration, intercepted exact-date checkout fixtures, stale-response race protection, and captured preorder schedules/shipping.');
+  console.log('PASS: 20 responsive page checks, complete biography/synopsis, original 14-book cart, Pink-only paid checkout with consent, series coming soon without a sales offer, expired-window protection, focus restoration, intercepted exact-date checkout fixtures, reopened-Pink stale-response protection, and historical preorder schedules/shipping.');
 } finally {
   console.log(JSON.stringify({ errors, missing, failedRequests, recoveredNetworkRetries, unexpectedWrites, layoutIssues, measurements, checkoutRequests, screenshots: out }, null, 2));
   await browser.close();
