@@ -1,4 +1,4 @@
-import { isSiteSession, orderStore, recordPaidOrder } from '../lib/order-record.mjs';
+import { isSiteSession, orderStore, recordPaidOrder, preorderShippingAmount } from '../lib/order-record.mjs';
 import { validShipMonth } from '../../ripple-preorder-config.js';
 
 const preorderTitles = {
@@ -28,8 +28,7 @@ function publicPreorderSummary(session) {
       });
     }
   } catch { /* A missing historical summary must not hide a confirmed payment. */ }
-  const amount = typeof metadata.preorder_shipping_amount === 'string' && /^\d{1,6}$/.test(metadata.preorder_shipping_amount)
-    ? Number(metadata.preorder_shipping_amount) : null;
+  const amount = preorderShippingAmount(session);
   const countries = [...new Set((text(metadata.preorder_countries, 500) || '').split(',').filter(country => /^[A-Z]{2}$/.test(country)))];
   // Whitelist only public offer terms. Do not return customer or fulfillment PII.
   return {

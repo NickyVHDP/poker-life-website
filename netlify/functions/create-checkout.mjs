@@ -80,7 +80,9 @@ function preorderCheckoutDisclosure(offer, schedule, countries) {
     : entry.arrivalDate
     ? `${entry.volume}: arrives ${entry.arrivalDate}; release ${entry.releaseDate}.`
     : `${entry.volume}: ships ${entry.shipDate}; release ${entry.releaseDate}.`).join('\n');
-  const shipping = offer.shippingAmount === 0
+  const shipping = offer.shippingPolicy === 'standard-book'
+    ? 'Standard one-book shipping, added at checkout and shown before payment'
+    : offer.shippingAmount === 0
     ? 'Free (USD $0.00)'
     : `USD $${(offer.shippingAmount / 100).toFixed(2)}`;
   return `Paid preorder. ${offer.termsText.trim()}\n\n${dates}\nShipping: ${shipping}. Eligible countries: ${countries.join(', ')} only.`;
@@ -92,6 +94,8 @@ function configuredPreorder(config, slug) {
   const bundle = slug === 'ripple-series-preorder';
   const offer = bundle ? config.bundle : config.pink;
   if (!offer || offer.enabled !== true || offer.slug !== slug || offer.amount !== (bundle ? 10000 : 2500)) return null;
+  const standardShipping = !bundle && offer.shippingPolicy === 'standard-book';
+  if (standardShipping ? offer.shippingAmount !== null : offer.shippingPolicy && offer.shippingPolicy !== 'fixed') return null;
   if (typeof offer.title !== 'string' || !offer.title.trim() || offer.title.length > 120) return null;
   if (typeof offer.termsText !== 'string' || !offer.termsText.trim() || offer.termsText.length > 500) return null;
   const estimated = !bundle && offer.estimatedShipMonth != null;
@@ -116,13 +120,13 @@ function configuredPreorder(config, slug) {
     if (cutoff >= Math.min(...schedule.map(entry => dateTimestamp(entry.arrivalDate)))) return null;
   } else if (estimated) {
     // An approved month is sufficient; never invent exact release/shipping days.
-    if (offer.shippingAmount !== 0 || offer.releaseDate != null || offer.shipDate != null) return null;
+    if ((!standardShipping && offer.shippingAmount !== 0) || offer.releaseDate != null || offer.shipDate != null) return null;
     const windowEnd = preorderCutoff({ estimatedShipMonth: offer.estimatedShipMonth });
     if (cutoff > windowEnd) return null;
     schedule = [{ volume: 'Pink', estimatedShipMonth: offer.estimatedShipMonth }];
   } else {
     const release = dateTimestamp(offer.releaseDate), ship = dateTimestamp(offer.shipDate);
-    if (release === null || ship === null || ship > release || offer.shippingAmount !== 0) return null;
+    if (release === null || ship === null || ship > release || (!standardShipping && offer.shippingAmount !== 0)) return null;
     schedule = [{ volume: 'Pink', releaseDate: offer.releaseDate, shipDate: offer.shipDate }];
     if (cutoff > ship || cutoff >= release) return null;
   }
@@ -132,7 +136,7 @@ function configuredPreorder(config, slug) {
   // Stripe custom_text.submit.message allows 1,200 characters. Never truncate
   // agreed terms or dates to fit: keep checkout closed until the copy is concise.
   if (checkoutDisclosure.length > 1200) return null;
-  return { offer, bundle, schedule, cutoff, countries, checkoutDisclosure, termsVersion: config.termsVersion };
+  return { offer, bundle, standardShipping, schedule, cutoff, countries, checkoutDisclosure, termsVersion: config.termsVersion };
 }
 
 function setMetadata(form, metadata) {
@@ -180,8 +184,10 @@ export function createCheckoutHandler({ env = process.env, fetchImpl = fetch, pr
     } else if (body.preorder !== undefined) {
       return response({ error: 'Preorder terms cannot be used for regular cart purchases.' }, 400);
     }
-    const shipping = preorder ? { countries: preorder.countries } : shippingConfiguration(env);
+    const shipping = preorder && !preorder.standardShipping ? { countries: preorder.countries } : shippingConfiguration(env);
     if (!shipping) return response({ error: 'Secure shipping is still being configured. Please try again shortly.' }, 503);
+    // Pink keeps its U.S.-only offer eligibility while sharing regular-book rates.
+    if (preorder) shipping.countries = preorder.countries;
     const orderCatalog = preorder ? { [preorder.offer.slug]: { name: preorder.offer.title, amount: preorder.offer.amount } } : catalog;
 
     const quantities = new Map();
@@ -215,7 +221,11 @@ export function createCheckoutHandler({ env = process.env, fetchImpl = fetch, pr
         order_type: 'preorder', preorder_slug: offer.slug, preorder_title: offer.title, preorder_terms_version: termsVersion,
         preorder_terms_text: offer.termsText, preorder_accepted_at: acceptedAt,
         preorder_purchase_cutoff_at: new Date(preorder.cutoff).toISOString(),
-        preorder_schedule: JSON.stringify(schedule), preorder_shipping_amount: offer.shippingAmount,
+        preorder_schedule: JSON.stringify(schedule),
+        preorder_shipping_policy: preorder.standardShipping ? 'standard-book' : 'fixed',
+        ...(preorder.standardShipping
+          ? { preorder_shipping_rate: shipping.rates.oneBook }
+          : { preorder_shipping_amount: offer.shippingAmount }),
         preorder_countries: preorder.countries.join(','), preorder_autographed: bundle ? 'not-specified' : 'true',
         // New offers are books-only; historical orders retain their own terms.
         preorder_tshirt_included: 'false'
@@ -223,10 +233,14 @@ export function createCheckoutHandler({ env = process.env, fetchImpl = fetch, pr
       form.set('expires_at', String(preorder.expiresAt));
       form.set('custom_text[submit][message]', preorder.checkoutDisclosure);
       form.set('line_items[0][price_data][product_data][description]', preorder.checkoutDisclosure);
-      form.set('shipping_options[0][shipping_rate_data][type]', 'fixed_amount');
-      form.set('shipping_options[0][shipping_rate_data][display_name]', offer.shippingAmount === 0 ? 'Free preorder shipping' : 'Preorder shipping');
-      form.set('shipping_options[0][shipping_rate_data][fixed_amount][amount]', String(offer.shippingAmount));
-      form.set('shipping_options[0][shipping_rate_data][fixed_amount][currency]', 'usd');
+      if (preorder.standardShipping) {
+        form.set('shipping_options[0][shipping_rate]', shippingRateForOrder(shipping.rates, totalQuantity, subtotal));
+      } else {
+        form.set('shipping_options[0][shipping_rate_data][type]', 'fixed_amount');
+        form.set('shipping_options[0][shipping_rate_data][display_name]', offer.shippingAmount === 0 ? 'Free preorder shipping' : 'Preorder shipping');
+        form.set('shipping_options[0][shipping_rate_data][fixed_amount][amount]', String(offer.shippingAmount));
+        form.set('shipping_options[0][shipping_rate_data][fixed_amount][currency]', 'usd');
+      }
     } else {
       form.set('shipping_options[0][shipping_rate]', shippingRateForOrder(shipping.rates, totalQuantity, subtotal));
     }

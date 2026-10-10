@@ -1,4 +1,4 @@
-import { ripplePreorderConfig as config, preorderCutoff } from './ripple-preorder-config.js?v=4';
+import { ripplePreorderConfig as config, preorderCutoff } from './ripple-preorder-config.js?v=5';
 
 const dialog = document.querySelector('[data-preorder-dialog]');
 const form = dialog.querySelector('[data-preorder-form]');
@@ -26,15 +26,19 @@ function isOpen(key) {
   if (!config.enabled || !offer || offer.enabled !== true || !config.countries?.length || !offer.termsText || !config.termsVersion) return false;
   const cutoff = preorderCutoff(offer);
   if (!Number.isFinite(cutoff) || cutoff <= Date.now() + 31 * 60 * 1000) return false;
-  return (validMonth(offer.estimatedShipMonth) || (validDate(offer.releaseDate) && validDate(offer.shipDate))) && offer.shippingAmount === 0;
+  const shippingConfirmed = offer.shippingPolicy === 'standard-book'
+    ? offer.shippingAmount === null
+    : (!offer.shippingPolicy || offer.shippingPolicy === 'fixed') && offer.shippingAmount === 0;
+  return (validMonth(offer.estimatedShipMonth) || (validDate(offer.releaseDate) && validDate(offer.shipDate))) && shippingConfirmed;
 }
 
 function details(key) {
   const offer = config[key];
-  if (!isOpen(key)) return `An autographed copy of The Ripple: Pink for $25 with free U.S. shipping. ${validMonth(offer.estimatedShipMonth) ? `Estimated shipping: ${month(offer.estimatedShipMonth)}.` : `Planned release: ${offer.releaseWindow}. The exact release and shipping dates are to be announced.`} Standard book price: $29.99. Cancel before shipment for a full refund.`;
+  if (!isOpen(key)) return `An autographed copy of The Ripple: Pink for $25 plus standard one-book shipping, shown in Stripe before payment. ${validMonth(offer.estimatedShipMonth) ? `Estimated shipping: ${month(offer.estimatedShipMonth)}.` : `Planned release: ${offer.releaseWindow}. The exact release and shipping dates are to be announced.`} Standard book price: $29.99. Cancel before shipment for a full refund.`;
   const schedule = validMonth(offer.estimatedShipMonth) ? `Estimated shipping: ${month(offer.estimatedShipMonth)}. This is an estimate, not a guaranteed arrival date.` : `Ships by ${date(offer.shipDate)}. Official release: ${date(offer.releaseDate)}.`;
   const cutoff = offer.purchaseCutoffAt ? `\nPreorders close: ${new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeStyle: 'short', timeZone: 'UTC' }).format(new Date(offer.purchaseCutoffAt))} UTC.` : '';
-  return `${offer.termsText}\n\n${schedule}\nShipping: ${offer.shippingAmount === 0 ? 'Free' : money(offer.shippingAmount)}. Available to: ${config.countries.join(', ')}.${cutoff}`;
+  const shipping = offer.shippingPolicy === 'standard-book' ? 'Standard one-book shipping, added at checkout and shown before payment' : offer.shippingAmount === 0 ? 'Free' : money(offer.shippingAmount);
+  return `${offer.termsText}\n\n${schedule}\nShipping: ${shipping}. Available to: ${config.countries.join(', ')}.${cutoff}`;
 }
 
 function updateSubmit() {
@@ -46,7 +50,7 @@ if (!pinkOpen && config.pink.releaseWindow) {
   document.querySelector('[data-pink-date]').textContent = `Planned release: ${config.pink.releaseWindow} · Exact date to be announced`;
 }
 if (pinkOpen) {
-  document.querySelector('[data-preorder-launch-notice]').textContent = 'Signed Pink preorders are open: $25 with free U.S. shipping. Payment is collected now. Estimated shipping: ' + (validMonth(config.pink.estimatedShipMonth) ? month(config.pink.estimatedShipMonth) : date(config.pink.shipDate)) + '.';
+  document.querySelector('[data-preorder-launch-notice]').textContent = 'Signed Pink preorders are open: $25 plus standard one-book shipping, shown in Stripe before payment. Payment is collected now. Estimated shipping: ' + (validMonth(config.pink.estimatedShipMonth) ? month(config.pink.estimatedShipMonth) : date(config.pink.shipDate)) + '.';
 }
 if (pinkOpen) document.querySelector('[data-pink-date]').textContent = validMonth(config.pink.estimatedShipMonth)
   ? `Estimated shipping: ${month(config.pink.estimatedShipMonth)} · U.S. only`

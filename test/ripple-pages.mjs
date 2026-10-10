@@ -259,6 +259,9 @@ async function checkCopy(page, name) {
     assert.doesNotMatch(await page.locator('main').textContent(), /(?:free|included)\s+(?:Poker Life\s+)?T-shirt|shirt sizes/i, name + ': removed T-shirt offer remains');
     assert.doesNotMatch(await page.locator('main').textContent(), /\$100|one week before|seven days before|preorder the (?:full|complete) series|five early deliveries/i, name + ': removed full-series preorder offer remains');
     assert.equal(await page.locator('[data-preorder-offer="bundle"]').count(), 0, name + ': removed bundle checkout control remains');
+    const pinkCopy = await page.locator(name === 'books' ? '.pl-ripple-book-banner' : 'main').textContent();
+    assert.doesNotMatch(pinkCopy, /free\s+(?:U\.?S\.?\s+)?shipping/i, name + ': Pink must not promise free shipping');
+    assert.match(pinkCopy, /standard.*shipping|shipping.*checkout/i, name + ': Pink standard shipping disclosure missing');
   }
   if (name === 'about') {
     const paragraphs = await page.locator('.pl-author-intro, .pl-author-chapter p').allTextContents();
@@ -300,7 +303,9 @@ async function checkProductionPreorders(page, width, originalCart) {
     assert.equal(await page.locator('[data-preorder-consent]').isVisible(), offer === 'pink', 'Only Pink should accept payment consent');
     assert.doesNotMatch(await page.locator('[data-preorder-terms]').textContent(), /shirt/i, 'Closed offer still advertises the removed shirt');
     assert.match(await page.locator('[data-preorder-terms]').textContent(), /December/);
-    assert.match(await page.locator('[data-preorder-terms]').textContent(), /free U\.S\. shipping/i);
+    assert.match(await page.locator('[data-preorder-terms]').textContent(), /standard.*shipping|shipping.*checkout/i);
+    assert.doesNotMatch(await page.locator('[data-preorder-terms]').textContent(), /free\s+(?:U\.?S\.?\s+)?shipping/i);
+    assert.match(await page.locator('[data-preorder-terms]').textContent(), /shown before payment|shown in Stripe before payment/i);
     const bounds = await dialog.evaluate(element => ({ width: element.getBoundingClientRect().width, left: element.getBoundingClientRect().left, right: element.getBoundingClientRect().right, scrollWidth: element.scrollWidth, clientWidth: element.clientWidth, height: element.getBoundingClientRect().height, viewport: innerWidth, viewportHeight: innerHeight }));
     assert.ok(bounds.left >= 0 && bounds.right <= bounds.viewport && bounds.scrollWidth <= bounds.clientWidth && bounds.height <= bounds.viewportHeight, 'Dialog overflows: ' + JSON.stringify(bounds));
     const before = checkoutRequests.filter(request => request.label === 'default').length;
@@ -314,7 +319,7 @@ async function checkProductionPreorders(page, width, originalCart) {
       await page.locator('[data-preorder-checkout]').click();
       await page.locator('[data-preorder-error]').filter({ hasText: 'QA fixture:' }).waitFor();
       assert.equal(checkoutRequests.filter(request => request.label === 'default').length, before + 1);
-      assert.deepEqual(checkoutRequests.at(-1).body, { items: [{ slug: 'ripple-pink-preorder', quantity: 1 }], preorder: { accepted: true, termsVersion: 'ripple-preorder-v4' } });
+      assert.deepEqual(checkoutRequests.at(-1).body, { items: [{ slug: 'ripple-pink-preorder', quantity: 1 }], preorder: { accepted: true, termsVersion: 'ripple-preorder-v5' } });
     }
     await page.screenshot({ path: out + '/dialog-' + offer + '-' + width + '.png', fullPage: false });
     if (offer === 'pink') await page.keyboard.press('Escape');
@@ -329,7 +334,7 @@ function enabledFixture() {
   const year = new Date().getUTCFullYear() + 1;
   config.enabled = true;
   config.countries = ['US'];
-  Object.assign(config.pink, { enabled: true, estimatedShipMonth: null, releaseDate: year + '-02-01', shipDate: year + '-01-25', purchaseCutoffAt: year + '-01-20T18:00:00Z', termsText: 'QA fixture: paid signed Pink preorder, free US shipping; ships January 25.' });
+  Object.assign(config.pink, { enabled: true, shippingPolicy: 'fixed', shippingAmount: 0, estimatedShipMonth: null, releaseDate: year + '-02-01', shipDate: year + '-01-25', purchaseCutoffAt: year + '-01-20T18:00:00Z', termsText: 'QA fixture: paid signed Pink preorder, free US shipping; ships January 25.' });
   return config;
 }
 const { context, page } = await makeContext('default');
@@ -487,7 +492,7 @@ try {
   const confirmation = await makeContext('confirmation-fixture');
   let confirmedPreorder = {
     slug: 'ripple-pink-preorder', title: 'The Ripple: Pink <em>QA</em>',
-    termsVersion: fixtureConfig.termsVersion,
+    termsVersion: 'ripple-preorder-v4',
     termsText: 'QA delivery terms: <strong>signed Pink preorder</strong>, free US shipping, ships January 25.',
     schedule: [{ volume: 'Pink', shipDate: '2032-01-25', releaseDate: '2032-02-01' }],
     shippingAmount: 0
@@ -520,7 +525,7 @@ try {
   }
   confirmedPreorder = {
     slug: 'ripple-pink-preorder', title: 'Ripple: Pink — Autographed Preorder', termsVersion: 'ripple-preorder-v4',
-    termsText: ripplePreorderConfig.pink.termsText, shippingAmount: 0,
+    termsText: 'Captured v4 terms: signed Pink preorder, free U.S. shipping, estimated shipping December 2026.', shippingAmount: 0,
     schedule: [{ volume: 'Pink', estimatedShipMonth: '2026-12' }]
   };
   for (const width of [320, 1440]) {
@@ -528,8 +533,27 @@ try {
     await gotoUrl(confirmation.page, base + '/order-confirmed.html?session_id=cs_month_ui_fixture');
     assert.deepEqual(await confirmation.page.locator('[data-confirmed-preorder-schedule] li').allTextContents(), ['Pink: estimated shipping December 2026.']);
     assert.equal(await confirmation.page.locator('[data-confirmed-preorder-terms]').textContent(), confirmedPreorder.termsText);
+    assert.equal(await confirmation.page.locator('[data-confirmed-preorder-shipping]').textContent(), 'Your preorder includes free shipping.', 'Historical free Pink shipping must remain free');
     assert.equal(await confirmation.page.evaluate(key => localStorage.getItem(key), cartKey), originalCart);
     assert.ok(await confirmation.page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+  }
+  // New Pink orders show the shipping amount actually captured by Stripe,
+  // rather than the earlier free-shipping promise or a guessed flat price.
+  confirmedPreorder = {
+    slug: 'ripple-pink-preorder', title: 'Ripple: Pink — Autographed Preorder', termsVersion: 'ripple-preorder-v5',
+    termsText: ripplePreorderConfig.pink.termsText, shippingAmount: 700,
+    schedule: [{ volume: 'Pink', estimatedShipMonth: '2026-12' }]
+  };
+  for (const width of [320, 1440]) {
+    await confirmation.page.setViewportSize({ width, height: 950 });
+    await gotoUrl(confirmation.page, base + '/order-confirmed.html?session_id=cs_standardshipping_ui_fixture');
+    assert.equal(await confirmation.page.locator('[data-confirmed-preorder-terms]').textContent(), confirmedPreorder.termsText);
+    assert.equal(await confirmation.page.locator('[data-confirmed-preorder-shipping]').textContent(), 'Preorder shipping: $7.00.');
+    assert.doesNotMatch(await confirmation.page.locator('[data-confirmed-preorder-terms]').textContent(), /free\s+(?:U\.?S\.?\s+)?shipping/i);
+    assert.deepEqual(await confirmation.page.locator('[data-confirmed-preorder-schedule] li').allTextContents(), ['Pink: estimated shipping December 2026.']);
+    assert.equal(await confirmation.page.evaluate(key => localStorage.getItem(key), cartKey), originalCart);
+    assert.ok(await confirmation.page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+    await confirmation.page.screenshot({ path: out + '/confirmation-standard-shipping-' + width + '.png', fullPage: true });
   }
   // Historical paid orders must still show their captured terms, even if the
   // current offer no longer includes the original shirt bonus.
@@ -575,7 +599,7 @@ try {
   assert.deepEqual(failedRequests, [], 'Failed site requests');
   assert.deepEqual(unexpectedWrites, [], 'Unexpected mutation attempts');
   assert.deepEqual(layoutIssues, [], 'Page layout/content issues');
-  console.log('PASS: 20 responsive page checks, complete biography/synopsis, original 14-book cart, Pink-only paid checkout with consent, series coming soon without a sales offer, expired-window protection, focus restoration, intercepted exact-date checkout fixtures, reopened-Pink stale-response protection, and historical preorder schedules/shipping.');
+  console.log('PASS: 20 responsive page checks, complete biography/synopsis, original 14-book cart, Pink-only paid checkout with v5 consent and standard shipping disclosures, series coming soon without a sales offer, expired-window protection, focus restoration, intercepted exact-date checkout fixtures, reopened-Pink stale-response protection, current paid shipping confirmation, and historical free preorder shipping.');
 } finally {
   console.log(JSON.stringify({ errors, missing, failedRequests, recoveredNetworkRetries, unexpectedWrites, layoutIssues, measurements, checkoutRequests, screenshots: out }, null, 2));
   await browser.close();

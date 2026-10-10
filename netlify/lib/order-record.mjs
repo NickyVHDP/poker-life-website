@@ -19,6 +19,16 @@ export function isSitePaymentIntent(intent) {
     && /^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/.test(intent.metadata.order_id || '');
 }
 
+export function preorderShippingAmount(session) {
+  const metadata = session.metadata || {};
+  // New rate-based orders capture Stripe's actual charge. Never infer free
+  // shipping from a missing amount, or rewrite a historical order's terms.
+  const amount = metadata.preorder_shipping_policy === 'standard-book'
+    ? session.total_details?.amount_shipping
+    : /^\d{1,6}$/.test(metadata.preorder_shipping_amount || '') ? Number(metadata.preorder_shipping_amount) : null;
+  return Number.isInteger(amount) && amount >= 0 && amount <= 100000 ? amount : null;
+}
+
 export function orderRecord(session, source, eventId = null) {
   const metadata = session.metadata || {};
   let preorder = null;
@@ -35,7 +45,7 @@ export function orderRecord(session, source, eventId = null) {
       termsText: metadata.preorder_terms_text || null,
       acceptedAt: metadata.preorder_accepted_at || null,
       purchaseCutoffAt: metadata.preorder_purchase_cutoff_at || null,
-      shippingAmount: /^\d+$/.test(metadata.preorder_shipping_amount || '') ? Number(metadata.preorder_shipping_amount) : null,
+      shippingAmount: preorderShippingAmount(session),
       countries: (metadata.preorder_countries || '').split(',').filter(Boolean),
       autographed: metadata.preorder_autographed === 'true',
       tshirtIncluded: metadata.preorder_tshirt_included === 'true',
