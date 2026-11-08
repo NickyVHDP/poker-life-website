@@ -16,6 +16,7 @@
   align-items:center;
   justify-content:center;
   min-width:0;
+  container-type:size;
 }
 .pl-home .pl-books-native .pl-featured-book img {
   width:100%;
@@ -43,6 +44,37 @@
   aspect-ratio:2/3;
   object-fit:contain;
   filter:drop-shadow(4px 10px 8px #000b);
+}
+/* Presentation-only trim of the supplied Behind the Felt original: the
+   936×1446 artwork window starts at (44,35) in the 1024×1536 source.
+   The original cover file stays untouched; only its white scanner frame is hidden. */
+.pl-cover-trim {
+  display:block;
+  position:relative;
+  flex:none;
+  overflow:hidden;
+  aspect-ratio:936/1446;
+  filter:drop-shadow(4px 10px 8px #000b);
+}
+.pl-home .pl-books-native .pl-cover-trim {
+  width:min(100cqw,calc(100cqh * 936 / 1446));
+}
+.pl-editorial-covers > .pl-cover-trim {
+  width:min(100%,calc(290px * 936 / 1446));
+  justify-self:center;
+}
+.pl-home .pl-books-native .pl-featured-book .pl-cover-trim > img,
+.pl-editorial-covers .pl-cover-trim > img {
+  position:absolute;
+  left:-4.700855%;
+  top:-2.420470%;
+  width:109.401709%;
+  height:106.224066%;
+  max-width:none;
+  max-height:none;
+  aspect-ratio:auto;
+  object-fit:fill;
+  filter:none;
 }
 .pl-home .pl-ripple-native {
   isolation:isolate;

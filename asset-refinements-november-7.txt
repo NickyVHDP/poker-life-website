@@ -1,0 +1,25 @@
+Poker Life precise artwork refinements — November 7, 2026
+Mode: built-in image editing tool; no CLI/API fallback.
+
+Final assets:
+assets/poker-life-hero-photo-v3.png
+assets/poker-life-coins-photo-v4.png
+assets/poker-life-coins-photo-v4.webp (delivery encoding of the PNG)
+
+Generated sources, retained unchanged:
+/Users/nickydivine/.codex/generated_images/01a02bc7-f479-7f61-a906-9842ae831aa2/exec-1556870d-12db-47c5-8a94-e80a09c8e526.png
+/Users/nickydivine/.codex/generated_images/01a02bc7-f479-7f61-a906-9842ae831aa2/exec-7c40bd8f-9407-4de9-9276-311b5f859c6f.png
+
+COIN PROMPT
+Use case: precise-object-edit.
+Asset type: existing website product photograph.
+Image 1 is the edit target. Make one tiny localized correction on the lying coin at the right: remove ONLY the lower upside-down gold A and the small inverted spade on the rear black Ace card, immediately to the left of and behind the overlapping white King card. Replace those two lower index marks with seamless unprinted black card texture. Keep the upper-left gold A/spade and large central gold spade exactly as they are. Keep the white King of Spades, its correct K/spade indices and mirrored court illustration unchanged. Preserve both coins, all lettering ("POKER LIFE", "EST. 2026", "More Than Just a Game", "It's a Lifestyle"), rim, perspective, metallic grain, blue glow, chips, background, lighting and canvas composition unchanged. No other changes, no new objects, no reframing.
+
+HERO PROMPT
+Use case: precise-object-edit.
+Asset type: existing website hero photograph.
+Image 1 is the edit target. Correct ONLY the two large black playing cards in the far upper-right, so they clearly belong to the SAME premium black-and-gold deck. Keep the Ace of Spades behind the King of Spades, both in exactly the same positions, sizes, perspective and overlap. Give BOTH cards matching thin metallic gold border lines and identical black textured stock; change the blue/cyan edge of the rear Ace to a gold edge matching the front King. Harmonize the gold A and K indices, gold spade symbols, line weights and gold tone. Preserve the existing correct King court illustration. Maintain a subtle blue ambient reflection, but not a different blue border on one card. Do not change Larry at all: keep his exact face, skin texture, smile, hair, pose, hand, tattoos, hoodie and logos, as well as the chips, background, blue smoke, lighting, empty center space, crop and canvas composition completely unchanged. No text added, no new objects.
+
+Behind the Felt: the original cover file remains unmodified. A precise browser-native crop hides only the external white frame on the homepage and Books page.
+Commerce, prices, shipping, preorder availability and all book designs are unchanged.
+
