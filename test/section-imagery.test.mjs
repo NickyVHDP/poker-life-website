@@ -5,7 +5,7 @@ import {readFile,access} from 'node:fs/promises';
 const read=name=>readFile(new URL('../'+name,import.meta.url),'utf8');
 const exists=name=>access(new URL('../'+name,import.meta.url));
 const scenes={books:'books-backdrop',apparel:'apparel-photo',coins:'coins-photo',resources:'resources-photo',community:'community-photo',story:'story-photo'};
-const sceneVersion=section=>section==='coins'?'v4':['books','story'].includes(section)?'v3':'v2';
+const sceneVersion=section=>['coins','story'].includes(section)?'v4':section==='books'?'v3':'v2';
 
 test('high-detail section art is shared with corresponding destinations',async()=>{
   const home=await read('index.html');

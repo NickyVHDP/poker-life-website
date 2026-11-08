@@ -1,0 +1,20 @@
+Story background logo refinement — November 7, 2026
+Mode: built-in image editing tool; no CLI/API fallback.
+Final asset: assets/poker-life-story-photo-v4.png
+Delivery asset: assets/poker-life-story-photo-v4.webp
+Previous v3 image is preserved unchanged.
+
+Edit target: assets/poker-life-story-photo-v3.png
+Geometry reference: assets/poker-life-logo.png
+Generated source: /Users/nickydivine/.codex/generated_images/01a02bc7-f479-7f61-a906-9842ae831aa2/exec-2d45276d-d084-43f7-9e88-9b56578a7018.png
+
+Final prompt:
+Use case: precise-object-edit.
+Asset type: existing website My Story portrait banner.
+Input images: Image 1 is the edit target. Image 2 is a logo geometry reference only, NOT a replacement color palette or new layout.
+Primary request: repair ONLY the large blurry/choppy Poker Life spade-and-PL emblem on the background wall behind and to the right of Larry's head in Image 1. Recreate that same large emblem with smooth continuous spade contours, a clean pointed top and stem, elegant accurately interlocked P and L serif letters, consistent line weight and refined black/silver edges. Use Image 2's clean spade and PL monogram geometry as reference. Keep the wall emblem monochrome black and silver/gray, integrated naturally with the existing background and mild photographic depth of field; it should be clean, high resolution and readable, not smeared, jagged, pixelated or artificially over-sharpened. Do not include the words POKER LIFE or slogan from reference Image 2.
+Invariants: change only the background wall emblem; keep its position, approximate scale and perspective. Keep Larry's exact identity, face, natural skin texture and color, expression, hair, smile, teeth, eyes, body, hands, hoodie and printed details unchanged. Keep the rest of the monochrome poker-room background, dark left negative space, original lighting, subject framing and original wide canvas composition unchanged. No new objects, no gold or blue logo glow, no added text, no portrait retouch.
+
+Consumers: homepage My Story image (desktop and mobile); About Larry page portrait.
+No layout, book, pricing, checkout, shipping or preorder changes.
+
