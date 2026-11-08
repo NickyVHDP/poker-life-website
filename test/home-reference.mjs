@@ -56,6 +56,8 @@ async function checkDialog(trigger, expectedTitle) {
 async function checkCarousel() {
   const slide = index => page.locator(`[data-book-slide="${index}"]`);
   const dot = index => page.locator(`[data-carousel-index="${index}"]`);
+  assert.ok(await page.locator('.pl-carousel-arrow svg').evaluateAll(arrows => arrows.every(arrow => getComputedStyle(arrow).opacity === '1')),
+    'Native carousel arrows must remain visible after removing baked-in controls');
   async function current(index) {
     assert.equal(await page.locator('[data-book-slide]:visible').count(), 1);
     assert.ok(await slide(index).isVisible());
@@ -63,6 +65,12 @@ async function checkCarousel() {
     assert.equal(await page.locator('[data-carousel-index][aria-current="true"]').count(), 1);
   }
   await current(0);
+  assert.deepEqual(await slide(0).locator('img').evaluateAll(images => images.map(image => image.getAttribute('src'))), [
+    'assets/covers/print-sharp/patient-poker-player-win-more.jpg',
+    'assets/covers/print-sharp/patient-poker-player-advanced-tactics.jpg',
+    'assets/covers/approved-november/behind-the-felt.png'
+  ], 'The initial showcase must display the real cover corresponding to each book');
+  assert.equal(await slide(0).locator('svg image').count(), 0, 'Composite-cropped covers must not return');
   await page.locator('[data-carousel-step="1"]').click();
   await current(1);
   await page.locator('[data-carousel-step="-1"]').click();
@@ -90,6 +98,10 @@ try {
     await home();
     if ([390, 770, 1024, 1440].includes(width)) await page.screenshot({ path: `${screenshotDir}/home-${width}.png`, fullPage: true });
     await noOverflow('home-' + width);
+    assert.match(await page.locator('.pl-ripple-description').textContent(), /Five players\. One unforgettable poker hand\./);
+    assert.deepEqual(await page.locator('.pl-ripple-cover-row img').evaluateAll(images => images.map(image => image.getAttribute('src'))),
+      ['pink', 'blue', 'red', 'yellow', 'black'].map(volume => `assets/covers/approved-november/ripple-${volume}.png`),
+      'Homepage Ripple cover row must use all five approved covers in sequence');
     for (const id of ['books', 'merch', 'coins', 'resources', 'community', 'story']) {
       const copy = await page.locator('#' + id + ' .pl-feature-copy').evaluate(element => {
         const title = element.querySelector('h2');

@@ -1,0 +1,270 @@
+/* Approved cover originals stay separate from the cinematic photography.
+   Never bake book titles, playing-card ranks, or interface text into a scene. */
+.pl-home .pl-books-native .pl-book-backdrop {
+  object-fit:cover;
+  object-position:center;
+  opacity:.8;
+}
+.pl-home .pl-books-native .pl-book-showcase { z-index:1; }
+.pl-home .pl-books-native .pl-book-slide {
+  align-items:center;
+  background:transparent;
+  box-shadow:none;
+}
+.pl-home .pl-books-native .pl-featured-book {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-width:0;
+}
+.pl-home .pl-books-native .pl-featured-book img {
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  filter:drop-shadow(5px 10px 8px #000b);
+}
+.pl-home .pl-books-native .pl-featured-book:hover { background:transparent; }
+.pl-home .pl-books-native .pl-carousel-arrow { background:#02040380; }
+.pl-home .pl-books-native .pl-carousel-dots { background:transparent; }
+.pl-editorial-covers {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  align-items:center;
+  gap:4%;
+  padding:7% 6%;
+  border:1px solid #80612c;
+  background:linear-gradient(#03060633,#02040460),url("assets/poker-life-books-backdrop-v3.webp") center/cover no-repeat;
+}
+.pl-editorial-covers img {
+  display:block;
+  width:100%;
+  height:100%;
+  max-height:290px;
+  aspect-ratio:2/3;
+  object-fit:contain;
+  filter:drop-shadow(4px 10px 8px #000b);
+}
+.pl-home .pl-ripple-native {
+  isolation:isolate;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  aspect-ratio:auto;
+  padding:2.5cqw 3.5% 2.8cqw;
+  text-align:center;
+  background:linear-gradient(#03030360,#02030316 38%,#020303b8),url("assets/poker-life-ripple-backdrop-v2.webp") center/cover no-repeat;
+}
+.pl-home .pl-ripple-native .pl-ripple-title {
+  position:static;
+  width:auto;
+  height:auto;
+  padding:0;
+  margin:0 0 1.15cqw;
+  overflow:visible;
+  clip:auto;
+  color:#eeeae4;
+  font:500 8.3cqw/.84 'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  text-transform:uppercase;
+  letter-spacing:.035em;
+}
+.pl-home .pl-ripple-native .pl-ripple-title > span {
+  display:block;
+  margin:0 0 .5cqw;
+  font-size:2.6cqw;
+  line-height:1;
+  letter-spacing:.13em;
+}
+.pl-home .pl-ripple-native :is(.pl-ripple-heading,.pl-ripple-description) {
+  position:static;
+  width:100%;
+  height:auto;
+  margin:0;
+  padding:0 !important;
+  overflow:visible;
+  clip:auto;
+  white-space:normal;
+}
+.pl-home .pl-ripple-native .pl-eyebrow {
+  margin:0 0 1.1cqw;
+  color:#eeeae2;
+  font:400 1.25cqw/1.5 Inter,Arial,sans-serif;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+.pl-home .pl-ripple-native .pl-ripple-tagline {
+  margin:0;
+  color:#f0cb75;
+  font:700 2.15cqw/1.35 Inter,Arial,sans-serif;
+  letter-spacing:.055em;
+  text-transform:uppercase;
+}
+.pl-ripple-cover-row {
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  align-items:end;
+  gap:1.5%;
+  width:100%;
+  margin:2.2cqw 0 2cqw;
+}
+.pl-ripple-cover-row a {
+  display:block;
+  min-width:0;
+  border:1px solid #b6904c77;
+  box-shadow:3px 11px 18px #000a;
+  background:#060606;
+  transition:transform .2s,box-shadow .2s;
+}
+.pl-ripple-cover-row a:hover {
+  transform:translateY(-4px);
+  box-shadow:3px 15px 23px #000d;
+}
+.pl-ripple-cover-row img {
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:2/3;
+  object-fit:contain;
+}
+.pl-home .pl-ripple-native .pl-ripple-description p {
+  margin:0;
+  color:#eeeae2;
+  font:400 1.75cqw/1.4 Inter,Arial,sans-serif;
+}
+.pl-home .pl-ripple-native .pl-ripple-link {
+  position:static;
+  display:inline-flex;
+  width:auto;
+  min-width:32cqw;
+  height:auto;
+  min-height:5.5cqw;
+  padding:1.2cqw 2.5cqw;
+  margin:1.55cqw 0 0;
+  border:1px solid #e6c678;
+  border-radius:3px;
+  background:linear-gradient(110deg,#ffe28b,#d3972f);
+  color:#100c02;
+  font:700 2cqw/1.2 Inter,Arial,sans-serif;
+  text-transform:uppercase;
+  text-decoration:none;
+}
+.pl-home .pl-ripple-native .pl-ripple-link > span {
+  position:static;
+  display:flex;
+  align-items:center;
+  gap:2.4cqw;
+  width:auto;
+  height:auto;
+  padding:0;
+  margin:0;
+  overflow:visible;
+  clip:auto;
+  white-space:normal;
+}
+.pl-home .pl-ripple-native .pl-ripple-link b { font:400 3cqw/1 Inter,Arial,sans-serif; }
+.ripple-page .ripple-series-showcase {
+  width:100%;
+  max-width:560px;
+  padding:clamp(18px,2.2vw,32px);
+  background:linear-gradient(#040505b8,#03040426 48%,#030404d9),url("assets/poker-life-ripple-backdrop-v2.webp") center/cover no-repeat;
+}
+.ripple-series-caption { text-align:center; margin:0 0 24px; }
+.ripple-series-caption strong {
+  display:block;
+  color:#f3e9d3;
+  font:400 clamp(30px,3.6vw,52px)/1.1 Georgia,'Times New Roman',serif;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.ripple-series-caption span {
+  display:block;
+  max-width:32ch;
+  margin:12px auto 0;
+  color:#dcc598;
+  font:500 9px/1.6 Inter,Arial,sans-serif;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.ripple-series-gallery {
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:18px 12px;
+  padding:0;
+  margin:0;
+  list-style:none;
+}
+.ripple-series-gallery li { grid-column:span 2; min-width:0; }
+.ripple-series-gallery li:nth-child(4) { grid-column:2/span 2; }
+.ripple-series-gallery li:nth-child(5) { grid-column:4/span 2; }
+.ripple-series-gallery img {
+  width:100%;
+  height:auto;
+  aspect-ratio:2/3;
+  object-fit:contain;
+  border:1px solid #b6904c77;
+  box-shadow:3px 8px 15px #000b;
+}
+.ripple-series-gallery-note {
+  margin:22px 0 0;
+  color:#e4d5bc;
+  text-align:center;
+  font:400 12px/1.7 Inter,Arial,sans-serif;
+}
+.ripple-series-gallery-note span {
+  display:block;
+  margin-top:5px;
+  color:#edc36e;
+  font-size:10px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.ripple-page .ripple-pink-art { width:min(100%,390px); }
+.ripple-page .ripple-pink-art img { width:100%; height:auto; }
+
+@media(min-width:701px) {
+  .pl-home .pl-books-native .pl-book-backdrop {
+    inset:0 0 0 auto;
+    width:69.090909%;
+    height:100%;
+  }
+  .pl-home .pl-books-native .pl-book-slide {
+    left:35.06%;
+    top:9.5%;
+    width:58.7%;
+    height:80%;
+    gap:2%;
+  }
+  .pl-home .pl-books-native .pl-featured-book { height:100%; width:32%; }
+  .pl-home .pl-books-native .pl-carousel-arrow { width:3.1%; padding:.35cqw; }
+  .pl-home .pl-books-native .pl-prev { left:30.65%; }
+  .pl-home .pl-books-native .pl-next { right:1.3%; }
+}
+@media(max-width:700px) {
+  .pl-home .pl-books-native .pl-book-showcase {
+    padding-top:14px;
+    background:linear-gradient(#03050500,#03050533),url("assets/poker-life-books-backdrop-v3.webp") center/cover no-repeat;
+  }
+  .pl-home .pl-ripple-native { padding:28px 20px 30px; }
+  .pl-home .pl-ripple-native .pl-ripple-title { font-size:clamp(48px,12vw,78px); margin-bottom:16px; }
+  .pl-home .pl-ripple-native .pl-ripple-title > span { font-size:18px; margin-bottom:5px; }
+  .pl-home .pl-ripple-native .pl-eyebrow { font-size:9px; margin-bottom:12px; }
+  .pl-home .pl-ripple-native .pl-ripple-tagline { max-width:32ch; margin:auto; font-size:14px; line-height:1.5; }
+  .pl-ripple-cover-row {
+    grid-template-columns:repeat(6,minmax(0,1fr));
+    gap:14px 10px;
+    max-width:540px;
+    margin:22px 0;
+  }
+  .pl-ripple-cover-row a { grid-column:span 2; }
+  .pl-ripple-cover-row a:nth-child(4) { grid-column:2/span 2; }
+  .pl-ripple-cover-row a:nth-child(5) { grid-column:4/span 2; }
+  .pl-home .pl-ripple-native .pl-ripple-description p { font-size:13px; line-height:1.65; }
+  .pl-home .pl-ripple-native .pl-ripple-description br { display:none; }
+  .pl-home .pl-ripple-native .pl-ripple-link { min-width:238px; min-height:48px; margin-top:18px; padding:12px 20px; font-size:12px; }
+  .pl-home .pl-ripple-native .pl-ripple-link > span { gap:20px; }
+  .pl-home .pl-ripple-native .pl-ripple-link b { font-size:24px; }
+  .ripple-series-gallery { gap:14px 10px; }
+  .ripple-series-caption strong { font-size:37px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .pl-ripple-cover-row a { transition:none; }
+}

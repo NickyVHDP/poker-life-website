@@ -275,7 +275,10 @@ async function checkCopy(page, name) {
     const paragraphs = (await page.locator('.ripple-pink-hook, .ripple-pink-intro > p:not(.ripple-kicker):not(.ripple-pink-hook), #pink-synopsis .ripple-prose > p, #pink-synopsis .ripple-prose > blockquote').allTextContents()).map(normalize);
     assert.deepEqual(paragraphs, synopsis, 'Pink synopsis was shortened or changed');
     assert.doesNotMatch(await page.locator('#pink-synopsis').textContent(), /little girl named Emily|walls of a house/);
-    assert.equal(await page.locator('.ripple-hero-art img').getAttribute('src'), 'assets/ripple-series-suspense-promo.png');
+    assert.deepEqual(await page.locator('.ripple-series-gallery img').evaluateAll(images => images.map(image => image.getAttribute('src'))),
+      ['pink', 'blue', 'red', 'yellow', 'black'].map(volume => `assets/covers/approved-november/ripple-${volume}.png`),
+      'Series hero must display all five approved individual covers in sequence');
+    assert.equal(await page.locator('.ripple-pink-art img').getAttribute('src'), 'assets/covers/approved-november/ripple-pink.png', 'Pink feature must match the supplied Pink cover');
     assert.match(await page.locator('.ripple-offer-pink .ripple-price').textContent(), /\$25\b/);
     assert.ok(await page.locator('.ripple-series-coming-soon').isVisible());
     assert.match(await page.locator('.ripple-series-coming-soon').textContent(), /coming soon/i);

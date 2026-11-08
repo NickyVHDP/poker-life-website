@@ -30,7 +30,7 @@
     'behind-the-felt': {
       eyebrow: 'From the Poker Life collection',
       title: 'Behind the Felt',
-      content: '<p>Real stories from inside the poker world.</p><p>This title appears in the new collection artwork but is not currently available to purchase on the site. Explore the available, personally signed paperbacks in the book library.</p><a class="pl-dialog-link" href="books.html">Browse available books →</a>'
+      content: '<p>True stories, hard lessons, and the reality of life in a poker room.</p><p>Preview the new cover for this upcoming title. Behind the Felt is not currently available to purchase on the site. Explore the available, personally signed paperbacks in the book library.</p><a class="pl-dialog-link" href="books.html">Browse available books →</a>'
 
     }
   };

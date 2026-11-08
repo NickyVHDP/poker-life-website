@@ -31,6 +31,9 @@ try {
     }));
     layout.push(measure);
     assert.ok(measure.scroll <= width, 'Homepage overflows at ' + width + ': ' + measure.scroll);
+    assert.match(await page.locator('.pl-ripple-description').textContent(), /Five players\./);
+    assert.equal(await page.locator('.pl-ripple-cover-row img').count(), 5, 'All five approved Ripple covers must be displayed');
+    assert.equal(await page.locator('[data-book-slide="0"] img').count(), 3, 'Featured books require independent exact cover images');
     if (width > 700) {
       for (const s of measure.sections) assert.ok(s.copyBottom <= s.bottom + 2, s.id + ' copy clipped at ' + width);
     }

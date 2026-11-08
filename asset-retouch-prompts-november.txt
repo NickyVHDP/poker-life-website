@@ -1,0 +1,44 @@
+Poker Life artwork correction — November 7, 2026
+Mode: built-in image generation/editing tool; no CLI/API fallback.
+
+Final project assets (relative to the website repository):
+assets/covers/approved-november/ripple-pink.png
+assets/covers/approved-november/ripple-blue.png
+assets/covers/approved-november/ripple-red.png
+assets/covers/approved-november/ripple-yellow.png
+assets/covers/approved-november/ripple-black.png
+assets/covers/approved-november/behind-the-felt.png
+assets/covers/approved-november/pros-dont-want-you-to-know.png
+assets/covers/approved-november/f-ked-on-the-river.png
+assets/poker-life-coins-photo-v3.png (+ WebP delivery copy)
+assets/poker-life-hero-photo-v2.png
+assets/poker-life-books-backdrop-v3.png (+ WebP delivery copy)
+assets/poker-life-ripple-backdrop-v2.png (+ WebP delivery copy)
+
+All eight supplied originals are preserved under assets/covers/approved-november/originals/.
+provenance.json records source/final SHA256 checksums and whether a card-detail retouch was applied.
+Black, Behind the Felt, Pros Don't Want You to Know, and F#@KED on the River remain byte-identical to the supplied originals.
+The existing approved Patient Poker Player paperback originals remain in assets/covers/print-sharp/.
+
+Prompt set used:
+
+COINS — precise-object-edit
+Change ONLY the two tiny engraved playing-card faces in the lying coin on the right. They must be an accurate conventional English-indexed Ace of Spades and King of Spades, not invented alphabet letters or extra ranks. Left black card: gold A with small gold spade beneath upper-left and the same A/spade rotated 180 degrees in the opposite lower-right corner, one large gold spade centered; no other rank, no 6, 9 or K. Right ivory card: black K/small spade upper-left, matching rotated K/spade lower-right, traditional symmetric engraved King of Spades court illustration, no extra letters. Maintain perspective and embossed metal. Preserve the two-coin composition, PL logo, rim lettering POKER LIFE / EST. 2026 / More Than Just a Game / It’s a Lifestyle, background, gold/blue/black materials, and wide canvas.
+
+BOOKS BACKDROP — precise-object-edit
+Remove all three standing books and their shadows/text completely from the existing books display scene. Reconstruct the empty continuous dark felt table and warm blurred casino/poker-room background. No books, book-shaped shadows, text, cards, logos or people. Keep camera angle, table surface, gold edge, blue felt, bokeh and dark photographic atmosphere. A clean backdrop for real cover files rendered separately in HTML.
+
+RIPPLE BACKDROP — precise-object-edit
+From the reference's middle Ripple banner, reconstruct only the atmospheric poker-room/table background as one wide landscape photograph. Remove all books, typography, buttons, playing cards and the card fan. Keep dark poker felt, small black/gold/pink/blue chip stacks at bottom edges, warm casino bokeh with blue/red accents, and empty center space for real cover images. No text, people, cards or books. Natural materials and consistent perspective.
+
+PINK / BLUE / RED / YELLOW COVERS — precise-object-edit (one invocation per cover)
+Surgical production retouch ONLY to playing-card faces on the poker table and exposed hole cards. Preserve the exact cover design, title typography/reflections/color, author lettering, people/identity/faces/hands, skyline, chips, drinks, lighting and 1024x1536 composition. Replace malformed ranks/suit marks with accurate standard 52-card English-indexed poker cards. Table board: 2 of clubs, 3 of diamonds, 4 of hearts, 5 of spades, Ace of spades. Matching rank/suit in upper-left and rotated 180 at lower-right, correct traditional pip count, clean printing. Clubs/spades black; hearts/diamonds red. No invented lettering or duplicate physical cards. Preserve existing card positions, perspective, card stock and shadows. Exposed held faces: accurate Ace of clubs and Ace of diamonds, not mislabeled court cards. Do not modify non-card text or redesign the scene. Preserve each volume's exact title THE RIPPLE PINK / BLUE / RED / YELLOW and LARRY McCRACKEN.
+Review note: in Blue/Yellow the fifth low card is rendered as a valid 5 of clubs rather than the requested spades; it is still a conventional, nonduplicated card. No fabricated glyphs remain.
+
+YELLOW FOLLOW-UP — precise-object-edit
+Only correct the woman's two hole cards at bottom-right, which duplicated the other player's aces. Her left card: 2 of diamonds, conventional red indices and exactly two pips. Her right card: 3 of clubs, conventional black indices and exactly three pips. Keep the man's Ace of clubs/Ace of diamonds, the community cards and all other art/text unchanged.
+
+HERO — precise-object-edit
+Only retouch the two large black/gold cards at the extreme right edge. Keep positions, faces, gold edges, perspective and reflections. Back/left: conventional English A/spade. Front/right: conventional English K/spade with recognizable traditional double-headed King of Spades engraving, no invented marks or nonsensical micro-writing. Keep wide framing; preserve Larry's facial identity, natural skin, smile, eyes, hair, hands/tattoos, hoodie, empty blue center, chips, table, bokeh and lighting. Do not retouch Larry or add logos/text.
+
+Implementation: actual cover images and native browser text replace old baked composites. Existing layout, commerce prices, standard Pink shipping, consent, author prose and unavailable-product gates are retained. No real payment sessions or charges are used during QA.

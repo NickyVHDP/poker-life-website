@@ -24,11 +24,11 @@ const covers = {
   'I Just Ran Bad and Other Lies Poker Players Tell Themselves': 'assets/covers/clean/i-just-ran-bad.jpg',
   'Final Table Secrets': 'assets/covers/clean/final-table-secrets.jpg',
   'Poker Tricks, Traps, and Mind Games': 'assets/covers/print-sharp/poker-tricks-traps-and-mind-games.jpg',
-  'Poker: What the Pros Don’t Want You to Know': 'assets/covers/clean/poker-what-the-pros-dont-want-you-to-know.jpg?v=20260909',
+  'Poker: What the Pros Don’t Want You to Know': 'assets/covers/approved-november/pros-dont-want-you-to-know.png',
   'Poker Life: The Complete Guide to Poker Culture': 'assets/covers/print-sharp/poker-life-culture.jpg',
   'The Only Poker Book You’ll Ever Need': 'assets/covers/clean/the-only-poker-book.jpg?v=20260909',
   'The Patient Poker Player: Win More by Playing Less': 'assets/covers/print-sharp/patient-poker-player-win-more.jpg',
-  'F#@KED on the River': 'assets/covers/clean/f-ked-on-the-river.jpg'
+  'F#@KED on the River': 'assets/covers/approved-november/f-ked-on-the-river.png'
 };
 
 // Apparel will join this exact cart once its real products, prices, and images

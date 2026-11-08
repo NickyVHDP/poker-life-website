@@ -1,0 +1,13 @@
+{
+  "updated": "2026-11-07",
+  "covers": [
+    {"file":"ripple-pink.png","title":"The Ripple: Pink","original":"originals/ripple-pink.png","originalSha256":"5958ff86b35e2cf4ecf50c61ece328a611358e142df17f23f5ca8c5e7d277a77","sha256":"784e583f6e18fec2f8f30e07d68d381accb24f9a7fe3283ce8dab2e10bae7357","treatment":"card-detail-repair"},
+    {"file":"ripple-blue.png","title":"The Ripple: Blue","original":"originals/ripple-blue.png","originalSha256":"0f3b76bf9f8b58c742bdcd13f02069c2a9b2c1719e901cd394252b391e610148","sha256":"f43d11468205c326553d0ffac86c06c401d3f137238e3bf264162cd718653d9f","treatment":"card-detail-repair"},
+    {"file":"ripple-red.png","title":"The Ripple: Red","original":"originals/ripple-red.png","originalSha256":"5ffb5a26b19f310d092422263d496c78680ba4da3b31529f659553f00d5e6970","sha256":"665d9f8793823f525620a1f4c1041e419b594c9bafc253af1c5a6fe6fa0c79b2","treatment":"card-detail-repair"},
+    {"file":"ripple-yellow.png","title":"The Ripple: Yellow","original":"originals/ripple-yellow.png","originalSha256":"5674106631fa5a22455e8e6ed0edac6d32be37386ad271ecd50e3e9f7b6b537a","sha256":"90e60c904b0fb9830a9a25eca78022dbd5835999a413624ac6fc804c20b3a70a","treatment":"card-detail-repair"},
+    {"file":"ripple-black.png","title":"The Ripple: Black","original":"originals/ripple-black.png","originalSha256":"c887202d303af696438516092e1cd25859a0d5f65927dad79e781b724ad0cd21","sha256":"c887202d303af696438516092e1cd25859a0d5f65927dad79e781b724ad0cd21","treatment":"original"},
+    {"file":"behind-the-felt.png","title":"Behind the Felt","original":"originals/behind-the-felt.png","originalSha256":"c10524c6443987b57a7e4b02e5bc8e368f28b2007a581f952b1009813a303bb5","sha256":"c10524c6443987b57a7e4b02e5bc8e368f28b2007a581f952b1009813a303bb5","treatment":"original"},
+    {"file":"pros-dont-want-you-to-know.png","title":"Poker: What the Pros Don’t Want You to Know","original":"originals/pros-dont-want-you-to-know.png","originalSha256":"bd1bc443c8e1048422587e13abf3294fd8a2d3f3ee1f2656df414c9e5432ae9d","sha256":"bd1bc443c8e1048422587e13abf3294fd8a2d3f3ee1f2656df414c9e5432ae9d","treatment":"original"},
+    {"file":"f-ked-on-the-river.png","title":"F#@KED on the River","original":"originals/f-ked-on-the-river.png","originalSha256":"6134a5053eca2e7b2e3bc0207a58a27f4386c4d736968323b6d25c62aab5be08","sha256":"6134a5053eca2e7b2e3bc0207a58a27f4386c4d736968323b6d25c62aab5be08","treatment":"original"}
+  ]
+}
