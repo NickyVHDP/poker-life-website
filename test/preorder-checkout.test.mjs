@@ -59,11 +59,11 @@ test('approved Pink month-based preorder opens independently while the bundle st
   assert.equal(ripplePreorderConfig.pink.amount, 2500);
   assert.equal(ripplePreorderConfig.pink.regularAmount, 2999);
   assert.equal(ripplePreorderConfig.bundle.amount, 10000);
-  assert.equal(ripplePreorderConfig.termsVersion, 'ripple-preorder-v5');
+  assert.equal(ripplePreorderConfig.termsVersion, 'ripple-preorder-v6');
   assert.equal(ripplePreorderConfig.pink.releaseWindow, 'December 2026');
   assert.equal(ripplePreorderConfig.pink.estimatedShipMonth, '2026-12');
-  assert.equal(ripplePreorderConfig.pink.shippingPolicy, 'standard-book');
-  assert.equal(ripplePreorderConfig.pink.shippingAmount, null);
+  assert.equal(ripplePreorderConfig.pink.shippingPolicy, 'fixed');
+  assert.equal(ripplePreorderConfig.pink.shippingAmount, 0);
   assert.equal(ripplePreorderConfig.bundle.shippingAmount, 0);
   assert.equal(Object.hasOwn(ripplePreorderConfig.bundle, 'shirtSizes'), false);
   assert.equal(ripplePreorderConfig.pink.releaseDate, null);
@@ -76,51 +76,64 @@ test('approved Pink month-based preorder opens independently while the bundle st
   assert.equal(result.status, 200);
   assert.equal(result.calls, 1);
   assert.equal(result.form.get('line_items[0][price_data][unit_amount]'), '2500');
-  assert.equal(result.form.get('shipping_options[0][shipping_rate]'), env.STRIPE_SHIPPING_RATE_ID_ONE_BOOK);
-  assert.equal(result.form.has('shipping_options[0][shipping_rate_data][fixed_amount][amount]'), false);
-  assert.equal(result.form.get('metadata[preorder_shipping_policy]'), 'standard-book');
-  assert.equal(result.form.get('metadata[preorder_shipping_rate]'), env.STRIPE_SHIPPING_RATE_ID_ONE_BOOK);
-  assert.equal(result.form.has('metadata[preorder_shipping_amount]'), false);
-  assert.equal(result.form.get('payment_intent_data[metadata][preorder_shipping_policy]'), 'standard-book');
-  assert.equal(result.form.get('payment_intent_data[metadata][preorder_shipping_rate]'), env.STRIPE_SHIPPING_RATE_ID_ONE_BOOK);
-  assert.equal(result.form.has('payment_intent_data[metadata][preorder_shipping_amount]'), false);
+  assert.equal(result.form.has('shipping_options[0][shipping_rate]'), false);
+  assert.equal(result.form.get('shipping_options[0][shipping_rate_data][fixed_amount][amount]'), '0');
+  assert.equal(result.form.get('shipping_options[0][shipping_rate_data][fixed_amount][currency]'), 'usd');
+  assert.equal(result.form.get('metadata[preorder_shipping_policy]'), 'fixed');
+  assert.equal(result.form.has('metadata[preorder_shipping_rate]'), false);
+  assert.equal(result.form.get('metadata[preorder_shipping_amount]'), '0');
+  assert.equal(result.form.get('payment_intent_data[metadata][preorder_shipping_policy]'), 'fixed');
+  assert.equal(result.form.has('payment_intent_data[metadata][preorder_shipping_rate]'), false);
+  assert.equal(result.form.get('payment_intent_data[metadata][preorder_shipping_amount]'), '0');
   assert.equal(result.form.get('shipping_address_collection[allowed_countries][0]'), 'US');
   assert.equal(result.form.has('shipping_address_collection[allowed_countries][1]'), false);
   assert.deepEqual(JSON.parse(result.form.get('metadata[preorder_schedule]')), [{ volume: 'Pink', estimatedShipMonth: '2026-12' }]);
   assert.match(result.form.get('custom_text[submit][message]'), /Estimated shipping: December 2026/);
   assert.match(result.form.get('custom_text[submit][message]'), /charged now/);
-  assert.match(result.form.get('custom_text[submit][message]'), /standard.*shipping|shipping.*checkout/i);
-  assert.doesNotMatch(result.form.get('custom_text[submit][message]'), /free\s+(?:U\.?S\.?\s+)?shipping/i);
+  assert.match(result.form.get('custom_text[submit][message]'), /free U\.S\. shipping/i);
+  assert.doesNotMatch(result.form.get('custom_text[submit][message]'), /plus standard|shipping.*added at checkout/i);
   assert.equal(result.form.get('metadata[preorder_purchase_cutoff_at]'), '2027-01-01T00:00:00.000Z');
   const closedBundle = await checkout(payload(ripplePreorderConfig.bundle.slug), { preorderConfig: ripplePreorderConfig, now: () => new Date('2026-10-08T12:00:00Z') });
   assert.equal(closedBundle.status, 503);
   assert.equal(closedBundle.calls, 0);
 });
 
-test('standard Pink shipping rejects missing or malformed configured rates before Stripe', async () => {
+test('current free Pink shipping ignores missing, malformed or old paid rate IDs', async () => {
   for (const shippingRate of [undefined, '', 'price_wrongType', 'shr_', 'shr_bad rate', 'shr_bad&injection=true']) {
     const result = await checkout(payload(), {
       preorderConfig: ripplePreorderConfig,
       now: () => new Date('2026-10-08T12:00:00Z'),
       env: { ...env, STRIPE_SHIPPING_RATE_ID_ONE_BOOK: shippingRate }
     });
+    assert.equal(result.status, 200, String(shippingRate));
+    assert.equal(result.calls, 1, String(shippingRate));
+    assert.equal(result.form.get('shipping_options[0][shipping_rate_data][fixed_amount][amount]'), '0');
+    assert.equal(result.form.has('shipping_options[0][shipping_rate]'), false);
+  }
+});
+
+test('explicit legacy standard-book configuration still validates its shipping rates', async () => {
+  const config = configured();
+  Object.assign(config.pink, { shippingPolicy: 'standard-book', shippingAmount: null });
+  for (const shippingRate of [undefined, '', 'price_wrongType', 'shr_', 'shr_bad rate']) {
+    const result = await checkout(payload(), { preorderConfig: config, env: { ...env, STRIPE_SHIPPING_RATE_ID_ONE_BOOK: shippingRate } });
     assert.equal(result.status, 503, String(shippingRate));
     assert.equal(result.calls, 0, String(shippingRate));
   }
 });
 
-test('client shipping fields cannot replace the standard Pink shipping rate or make shipping free', async () => {
+test('client shipping fields cannot replace free Pink shipping or expand eligibility', async () => {
   const body = payload();
-  Object.assign(body.preorder, { shippingPolicy: 'fixed', shippingAmount: 0, shippingRate: 'shr_attackerFree', countries: ['CA'] });
-  body.metadata = { preorder_shipping_policy: 'fixed', preorder_shipping_amount: '0', preorder_shipping_rate: 'shr_attackerFree' };
+  Object.assign(body.preorder, { shippingPolicy: 'standard-book', shippingAmount: 700, shippingRate: 'shr_attackerPaid', countries: ['CA'] });
+  body.metadata = { preorder_shipping_policy: 'standard-book', preorder_shipping_amount: '700', preorder_shipping_rate: 'shr_attackerPaid' };
   const result = await checkout(body, { preorderConfig: ripplePreorderConfig, now: () => new Date('2026-10-08T12:00:00Z') });
   assert.equal(result.status, 200);
   assert.equal(result.form.get('line_items[0][price_data][unit_amount]'), '2500');
-  assert.equal(result.form.get('shipping_options[0][shipping_rate]'), env.STRIPE_SHIPPING_RATE_ID_ONE_BOOK);
-  assert.equal(result.form.has('shipping_options[0][shipping_rate_data][fixed_amount][amount]'), false);
-  assert.equal(result.form.get('metadata[preorder_shipping_policy]'), 'standard-book');
-  assert.equal(result.form.get('metadata[preorder_shipping_rate]'), env.STRIPE_SHIPPING_RATE_ID_ONE_BOOK);
-  assert.equal(result.form.has('metadata[preorder_shipping_amount]'), false);
+  assert.equal(result.form.has('shipping_options[0][shipping_rate]'), false);
+  assert.equal(result.form.get('shipping_options[0][shipping_rate_data][fixed_amount][amount]'), '0');
+  assert.equal(result.form.get('metadata[preorder_shipping_policy]'), 'fixed');
+  assert.equal(result.form.has('metadata[preorder_shipping_rate]'), false);
+  assert.equal(result.form.get('metadata[preorder_shipping_amount]'), '0');
   assert.equal(result.form.get('shipping_address_collection[allowed_countries][0]'), 'US');
   assert.equal(result.form.has('shipping_address_collection[allowed_countries][1]'), false);
 });
@@ -247,7 +260,7 @@ test('one preorder offer must be isolated from other offers and normal cart item
 });
 
 test('current affirmative preorder terms acceptance is required', async () => {
-  for (const consent of [undefined, {}, { accepted: 'true', termsVersion: ripplePreorderConfig.termsVersion }, { accepted: false, termsVersion: ripplePreorderConfig.termsVersion }, { accepted: true, termsVersion: 'ripple-preorder-v1' }, { accepted: true, termsVersion: 'ripple-preorder-v4' }, { accepted: true, termsVersion: 'old' }]) {
+  for (const consent of [undefined, {}, { accepted: 'true', termsVersion: ripplePreorderConfig.termsVersion }, { accepted: false, termsVersion: ripplePreorderConfig.termsVersion }, { accepted: true, termsVersion: 'ripple-preorder-v1' }, { accepted: true, termsVersion: 'ripple-preorder-v4' }, { accepted: true, termsVersion: 'ripple-preorder-v5' }, { accepted: true, termsVersion: 'old' }]) {
     const result = await checkout({ items: payload().items, preorder: consent });
     assert.equal(result.status, 400);
     assert.equal(result.calls, 0);
@@ -334,13 +347,13 @@ test('oversized composed Stripe disclosure fails closed instead of truncating te
   assert.equal(result.calls, 0);
 });
 
-test('legacy fixed-shipping fixtures do not require or grant regular-cart shipping tiers', async () => {
+test('fixed-shipping fixtures and regular carts do not require legacy shipping tiers', async () => {
   const pink = await checkout(payload(), { env: { STRIPE_SECRET_KEY: 'sk_test_fixture' } });
   assert.equal(pink.status, 200);
-  const normal = await checkout({ items: [{ slug: 'poker-math-made-easy', quantity: 1 }] });
+  const normal = await checkout({ items: [{ slug: 'poker-math-made-easy', quantity: 1 }] }, { env: { STRIPE_SECRET_KEY: 'sk_test_fixture' } });
   assert.equal(normal.status, 200);
-  assert.equal(normal.form.get('shipping_options[0][shipping_rate]'), 'shr_oneBook');
-  assert.equal(normal.form.has('shipping_options[0][shipping_rate_data][fixed_amount][amount]'), false);
+  assert.equal(normal.form.has('shipping_options[0][shipping_rate]'), false);
+  assert.equal(normal.form.get('shipping_options[0][shipping_rate_data][fixed_amount][amount]'), '0');
   assert.equal(normal.form.has('metadata[order_type]'), false);
   const forged = await checkout({ items: [{ slug: 'poker-math-made-easy', quantity: 1 }], preorder: payload().preorder });
   assert.equal(forged.status, 400);
@@ -401,7 +414,7 @@ test('historical paid orders retain their originally agreed T-shirt fulfillment'
   assert.deepEqual(record.preorder.schedule, configured().bundle.schedule);
 });
 
-test('historical v4 Pink orders retain agreed free shipping despite the current paid policy', async () => {
+test('historical v4 Pink orders retain their captured free shipping', async () => {
   const metadata = {
     site: 'pokerlifeusa.com', order_id: 'f93493db-8852-4792-b3d5-29482b38f579', order_type: 'preorder',
     preorder_slug: 'ripple-pink-preorder', preorder_title: 'Ripple: Pink — Autographed Preorder',
@@ -444,13 +457,40 @@ test('standard-shipping paid orders use verified Stripe shipping totals without 
   assert.equal(unrelated.preorder.shippingAmount, null, 'Stripe totals are a shipping snapshot only for the recorded standard-book policy');
 });
 
-test('paid Pink confirmation and private fulfillment retain the approved month estimate and actual standard shipping', async () => {
+test('historical v5 paid Pink confirmation retains its paid shipping and original terms under v6', async () => {
+  const metadata = {
+    site: 'pokerlifeusa.com', order_id: 'a93493db-8852-4792-b3d5-29482b38f579', order_type: 'preorder',
+    preorder_slug: 'ripple-pink-preorder', preorder_title: 'Ripple: Pink — Autographed Preorder',
+    preorder_terms_version: 'ripple-preorder-v5',
+    preorder_terms_text: 'Original agreed terms: signed Pink preorder for $25 plus standard one-book shipping.',
+    preorder_shipping_policy: 'standard-book', preorder_shipping_rate: 'shr_historicalPaid',
+    preorder_countries: 'US', preorder_autographed: 'true',
+    preorder_schedule: JSON.stringify([{ volume: 'Pink', estimatedShipMonth: '2026-12' }])
+  };
+  const session = {
+    id: 'cs_test_pinkhistoricalpaid', object: 'checkout.session', metadata,
+    client_reference_id: `pokerlife_${metadata.order_id}`, payment_status: 'paid', amount_total: 3200,
+    total_details: { amount_shipping: 700 }, currency: 'usd'
+  };
+  const record = orderRecord(session, 'stripe-webhook');
+  assert.equal(record.preorder.shippingAmount, 700);
+  assert.equal(record.preorder.termsVersion, 'ripple-preorder-v5');
+  assert.equal(record.preorder.termsText, metadata.preorder_terms_text);
+  const handler = createOrderStatusHandler({ env, storeFactory: () => ({ async setJSON() {} }), fetchImpl: async () => Response.json(session) });
+  const summary = await (await handler(new Request(`https://pokerlifeusa.com/.netlify/functions/order-status?session_id=${session.id}`))).json();
+  assert.equal(summary.status, 'paid');
+  assert.equal(summary.preorder.shippingAmount, 700);
+  assert.equal(summary.preorder.termsVersion, 'ripple-preorder-v5');
+  assert.equal(summary.preorder.termsText, metadata.preorder_terms_text);
+});
+
+test('paid v6 Pink confirmation and fulfillment retain the month estimate and free shipping', async () => {
   const { form } = await checkout(payload(), { preorderConfig: ripplePreorderConfig, now: () => new Date('2026-10-08T12:00:00Z') });
   const metadata = Object.fromEntries([...form].filter(([key]) => key.startsWith('metadata[')).map(([key, value]) => [key.slice(9, -1), value]));
   const session = {
     id: 'cs_test_pinkmonth', object: 'checkout.session', metadata,
     client_reference_id: form.get('client_reference_id'), payment_status: 'paid',
-    amount_total: 3200, total_details: { amount_shipping: 700 }, currency: 'usd', payment_intent: 'pi_pinkmonth',
+    amount_total: 2500, total_details: { amount_shipping: 0 }, currency: 'usd', payment_intent: 'pi_pinkmonth',
     customer_details: { email: 'buyer@example.invalid' },
     collected_information: { shipping_details: { name: 'Private Buyer', address: { country: 'US' } } }
   };
@@ -462,13 +502,14 @@ test('paid Pink confirmation and private fulfillment retain the approved month e
   assert.equal(summary.recorded, true);
   assert.deepEqual(summary.preorder.schedule, [{ volume: 'Pink', estimatedShipMonth: '2026-12' }]);
   assert.equal(summary.preorder.termsText, ripplePreorderConfig.pink.termsText);
-  assert.equal(summary.preorder.shippingAmount, 700);
+  assert.equal(summary.preorder.shippingAmount, 0);
+  assert.equal(summary.preorder.termsVersion, 'ripple-preorder-v6');
   assert.doesNotMatch(JSON.stringify(summary), /Private Buyer|buyer@example/);
   const record = records.get(`paid/${session.id}`);
   assert.deepEqual(record.preorder.schedule, summary.preorder.schedule);
   assert.equal(record.preorder.autographed, true);
   assert.equal(record.preorder.purchaseCutoffAt, '2027-01-01T00:00:00.000Z');
-  assert.equal(record.preorder.shippingAmount, 700);
+  assert.equal(record.preorder.shippingAmount, 0);
   assert.equal(record.preorder.customerEmail, 'buyer@example.invalid');
   session.metadata.preorder_schedule = JSON.stringify([{ volume: 'Pink', estimatedShipMonth: '2026-99', privateEmail: 'secret@example.invalid' }]);
   const malformed = await (await handler(new Request(`https://pokerlifeusa.com/.netlify/functions/order-status?session_id=${session.id}`))).json();

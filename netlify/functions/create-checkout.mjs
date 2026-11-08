@@ -35,26 +35,38 @@ const shippingRateVariables = {
   freeOverOneHundred: 'STRIPE_SHIPPING_RATE_ID_FREE_OVER_100'
 };
 
-// Each rate must identify an active Shipping Rate in the same Stripe mode and
-// account as STRIPE_SECRET_KEY. Countries are comma-separated ISO alpha-2
-// codes in STRIPE_SHIPPING_COUNTRIES and default to US-only delivery.
-function shippingConfiguration(env) {
-  const rates = Object.fromEntries(Object.entries(shippingRateVariables).map(([tier, variable]) => [tier, env[variable]?.trim()]));
-  if (Object.values(rates).some((rateId) => !rateId || !/^shr_[A-Za-z0-9]+$/.test(rateId))) return null;
-
+// Free shipping changes the charge, not delivery eligibility. Countries remain
+// server-controlled comma-separated ISO alpha-2 codes and default to US-only.
+function shippingCountries(env) {
   const countries = (env.STRIPE_SHIPPING_COUNTRIES || 'US')
     .split(',')
     .map((country) => country.trim().toUpperCase())
     .filter(Boolean);
   if (!countries.length || countries.some((country) => !/^[A-Z]{2}$/.test(country))) return null;
 
-  return { rates, countries: [...new Set(countries)] };
+  return { countries: [...new Set(countries)] };
+}
+
+// Retained for explicitly configured legacy standard-book preorder fixtures.
+// Current regular orders and the v6 Pink offer never use these paid rate IDs.
+function legacyShippingConfiguration(env) {
+  const rates = Object.fromEntries(Object.entries(shippingRateVariables).map(([tier, variable]) => [tier, env[variable]?.trim()]));
+  if (Object.values(rates).some((rateId) => !rateId || !/^shr_[A-Za-z0-9]+$/.test(rateId))) return null;
+  const shipping = shippingCountries(env);
+  return shipping ? { ...shipping, rates } : null;
 }
 
 function shippingRateForOrder(rates, quantity, subtotal) {
   if (subtotal > 10000) return rates.freeOverOneHundred;
   if (quantity === 1) return rates.oneBook;
   return rates.multipleBooks;
+}
+
+function setFixedShipping(form, amount, displayName) {
+  form.set('shipping_options[0][shipping_rate_data][type]', 'fixed_amount');
+  form.set('shipping_options[0][shipping_rate_data][display_name]', displayName);
+  form.set('shipping_options[0][shipping_rate_data][fixed_amount][amount]', String(amount));
+  form.set('shipping_options[0][shipping_rate_data][fixed_amount][currency]', 'usd');
 }
 
 const preorderSlugs = new Set(['ripple-pink-preorder', 'ripple-series-preorder']);
@@ -184,9 +196,11 @@ export function createCheckoutHandler({ env = process.env, fetchImpl = fetch, pr
     } else if (body.preorder !== undefined) {
       return response({ error: 'Preorder terms cannot be used for regular cart purchases.' }, 400);
     }
-    const shipping = preorder && !preorder.standardShipping ? { countries: preorder.countries } : shippingConfiguration(env);
+    const shipping = preorder
+      ? preorder.standardShipping ? legacyShippingConfiguration(env) : { countries: preorder.countries }
+      : shippingCountries(env);
     if (!shipping) return response({ error: 'Secure shipping is still being configured. Please try again shortly.' }, 503);
-    // Pink keeps its U.S.-only offer eligibility while sharing regular-book rates.
+    // Pink keeps its U.S.-only offer eligibility independently of regular carts.
     if (preorder) shipping.countries = preorder.countries;
     const orderCatalog = preorder ? { [preorder.offer.slug]: { name: preorder.offer.title, amount: preorder.offer.amount } } : catalog;
 
@@ -236,13 +250,12 @@ export function createCheckoutHandler({ env = process.env, fetchImpl = fetch, pr
       if (preorder.standardShipping) {
         form.set('shipping_options[0][shipping_rate]', shippingRateForOrder(shipping.rates, totalQuantity, subtotal));
       } else {
-        form.set('shipping_options[0][shipping_rate_data][type]', 'fixed_amount');
-        form.set('shipping_options[0][shipping_rate_data][display_name]', offer.shippingAmount === 0 ? 'Free preorder shipping' : 'Preorder shipping');
-        form.set('shipping_options[0][shipping_rate_data][fixed_amount][amount]', String(offer.shippingAmount));
-        form.set('shipping_options[0][shipping_rate_data][fixed_amount][currency]', 'usd');
+        setFixedShipping(form, offer.shippingAmount, offer.shippingAmount === 0 ? 'Free shipping' : 'Preorder shipping');
       }
     } else {
-      form.set('shipping_options[0][shipping_rate]', shippingRateForOrder(shipping.rates, totalQuantity, subtotal));
+      // Server-owned inline pricing ensures every current cart has $0 shipping,
+      // regardless of quantity, subtotal, old Netlify rate IDs or browser input.
+      setFixedShipping(form, 0, 'Free shipping');
     }
     shipping.countries.forEach((country, index) => {
       form.set(`shipping_address_collection[allowed_countries][${index}]`, country);

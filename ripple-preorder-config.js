@@ -2,7 +2,7 @@
 // Each offer opens independently after its delivery terms are confirmed.
 export const ripplePreorderConfig = {
   enabled: true,
-  termsVersion: 'ripple-preorder-v5',
+  termsVersion: 'ripple-preorder-v6',
   countries: ['US'],
   pink: {
     enabled: true,
@@ -17,10 +17,10 @@ export const ripplePreorderConfig = {
     shipDate: null,
     // Optional explicit closing time. Otherwise the estimate expires at month-end.
     purchaseCutoffAt: null,
-    // Use the same server-configured Stripe rate as any other single book.
-    shippingPolicy: 'standard-book',
-    shippingAmount: null,
-    termsText: 'Paid preorder: one autographed copy of The Ripple: Pink for $25 plus standard one-book shipping, charged now. Shipping is shown in Stripe before payment. Estimated shipping: December 2026, not immediate delivery. Cancel before shipment for a full refund. If shipping is delayed, we will contact you to agree to the delay or receive a refund. For help, email larrymccrackenjr@gmail.com. These terms do not limit your statutory rights.'
+    // Shipping is free; address collection and U.S.-only eligibility still apply.
+    shippingPolicy: 'fixed',
+    shippingAmount: 0,
+    termsText: 'Paid preorder: one autographed copy of The Ripple: Pink for $25 with free U.S. shipping, charged now. Estimated shipping: December 2026, not immediate delivery. Cancel before shipment for a full refund. If shipping is delayed, we will contact you to agree to the delay or receive a refund. For help, email larrymccrackenjr@gmail.com. These terms do not limit your statutory rights.'
   },
   bundle: {
     enabled: false,

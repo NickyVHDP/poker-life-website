@@ -51,10 +51,17 @@ carousel, cart persistence, and the mobile menu without initiating a payment.
 
 ## Payment configuration
 
-Set these Netlify environment variables for Functions: `STRIPE_SECRET_KEY`,
-`STRIPE_SHIPPING_RATE_ID_ONE_BOOK`, `STRIPE_SHIPPING_RATE_ID_MULTIPLE_BOOKS`,
-`STRIPE_SHIPPING_RATE_ID_FREE_OVER_100`, and `STRIPE_WEBHOOK_SECRET`.
+Set these Netlify environment variables for Functions: `STRIPE_SECRET_KEY`
+and `STRIPE_WEBHOOK_SECRET`.
 `SITE_URL` and `STRIPE_SHIPPING_COUNTRIES` are optional.
+
+Regular book orders and the current Pink preorder include free shipping, with
+no quantity or subtotal threshold. The server sends Stripe an inline USD $0.00
+shipping option and still collects a delivery address. Regular-cart eligible
+countries remain controlled by `STRIPE_SHIPPING_COUNTRIES` (default: `US`);
+Pink is U.S.-only as set in `ripple-preorder-config.js`. Legacy paid shipping-rate
+environment variables are not required or used by these current offers. Existing
+paid orders retain the terms and shipping totals captured when purchased.
 
 Create a Stripe webhook destination for
 `https://pokerlifeusa.com/.netlify/functions/stripe-webhook` in live mode.

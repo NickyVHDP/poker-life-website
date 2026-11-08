@@ -16,25 +16,25 @@ test('the full Ripple series is coming soon, without a public preorder price or 
   }
 });
 
-test('Pink remains a $25 preorder with standard book shipping while the series stays closed', () => {
+test('Pink remains a $25 preorder with free U.S. shipping while the series stays closed', () => {
   assert.equal(ripplePreorderConfig.enabled, true);
-  assert.equal(ripplePreorderConfig.termsVersion, 'ripple-preorder-v5');
+  assert.equal(ripplePreorderConfig.termsVersion, 'ripple-preorder-v6');
   assert.equal(ripplePreorderConfig.pink.enabled, true);
   assert.equal(ripplePreorderConfig.pink.amount, 2500);
   assert.equal(ripplePreorderConfig.pink.estimatedShipMonth, '2026-12');
-  assert.equal(ripplePreorderConfig.pink.shippingPolicy, 'standard-book');
-  assert.equal(ripplePreorderConfig.pink.shippingAmount, null);
-  assert.match(ripplePreorderConfig.pink.termsText, /standard.*shipping|shipping.*checkout/i);
-  assert.doesNotMatch(ripplePreorderConfig.pink.termsText, /free\s+(?:U\.?S\.?\s+)?shipping/i);
+  assert.equal(ripplePreorderConfig.pink.shippingPolicy, 'fixed');
+  assert.equal(ripplePreorderConfig.pink.shippingAmount, 0);
+  assert.match(ripplePreorderConfig.pink.termsText, /free\s+(?:U\.?S\.?\s+)?shipping/i);
+  assert.doesNotMatch(ripplePreorderConfig.pink.termsText, /plus standard|shipping.*added at checkout/i);
   assert.deepEqual(ripplePreorderConfig.countries, ['US']);
   assert.equal(ripplePreorderConfig.bundle.enabled, false);
 });
 
-test('public Pink marketing does not promise free shipping', async () => {
+test('public Pink marketing consistently promises free U.S. shipping', async () => {
   for (const name of ['ripple.html', 'books.html', 'ripple-page.js']) {
     const source = await read(name);
-    assert.doesNotMatch(source, /free\s+(?:U\.?S\.?\s+)?shipping|Pink preorder includes free/i, name);
-    assert.match(source, /standard.*shipping|shipping.*checkout/i, name);
+    assert.match(source, /free\s+(?:U\.?S\.?\s+)?shipping/i, name);
+    assert.doesNotMatch(source, /plus standard one-book shipping|Standard one-book shipping added at checkout/i, name);
   }
 });
 

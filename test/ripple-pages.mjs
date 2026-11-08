@@ -219,6 +219,17 @@ async function checkImages(context, page, label) {
 async function checkShell(page, name) {
   const theme = await page.evaluate(() => ({ gold: getComputedStyle(document.documentElement).getPropertyValue('--pl-gold').trim(), header: getComputedStyle(document.querySelector('.pl-site-header')).display, footer: getComputedStyle(document.querySelector('.pl-footer')).display }));
   assert.deepEqual(theme, { gold: '#d9b35d', header: 'flex', footer: 'grid' }, name + ': shared theme did not apply');
+  const shippingBanner = page.locator('.pl-shipping-banner');
+  assert.equal(await shippingBanner.count(), 1, name + ': exactly one shipping announcement is required');
+  assert.ok(await shippingBanner.isVisible(), name + ': shipping announcement must be visible');
+  assert.match(await shippingBanner.textContent(), /Free U\.S\. shipping.*Every order\. No minimum\./);
+  const shippingLayout = await shippingBanner.evaluate(element => {
+    const rect = element.getBoundingClientRect();
+    const header = document.querySelector('.pl-site-header').getBoundingClientRect();
+    const main = document.querySelector('main').getBoundingClientRect();
+    return { bottom: rect.bottom, top: rect.top, left: rect.left, right: rect.right, headerBottom: header.bottom, mainTop: main.top, viewport: innerWidth };
+  });
+  assert.ok(shippingLayout.top >= shippingLayout.headerBottom - 1 && shippingLayout.bottom <= shippingLayout.mainTop + 1 && shippingLayout.left >= 0 && shippingLayout.right <= shippingLayout.viewport, name + ': shipping announcement overlaps the header or main content: ' + JSON.stringify(shippingLayout));
   const links = await page.locator('.pl-nav a').evaluateAll(items => items.map(link => ({ href: link.href, current: link.getAttribute('aria-current') })));
   assert.deepEqual(links.map(link => pageName(link.href)), navPages, name + ': incorrect main navigation');
   assert.deepEqual(links.filter(link => link.current === 'page').map(link => pageName(link.href)), [name], name + ': incorrect active navigation');
@@ -260,8 +271,8 @@ async function checkCopy(page, name) {
     assert.doesNotMatch(await page.locator('main').textContent(), /\$100|one week before|seven days before|preorder the (?:full|complete) series|five early deliveries/i, name + ': removed full-series preorder offer remains');
     assert.equal(await page.locator('[data-preorder-offer="bundle"]').count(), 0, name + ': removed bundle checkout control remains');
     const pinkCopy = await page.locator(name === 'books' ? '.pl-ripple-book-banner' : 'main').textContent();
-    assert.doesNotMatch(pinkCopy, /free\s+(?:U\.?S\.?\s+)?shipping/i, name + ': Pink must not promise free shipping');
-    assert.match(pinkCopy, /standard.*shipping|shipping.*checkout/i, name + ': Pink standard shipping disclosure missing');
+    assert.match(pinkCopy, /free\s+(?:U\.?S\.?\s+)?shipping/i, name + ': Pink free U.S. shipping disclosure missing');
+    assert.doesNotMatch(pinkCopy, /plus standard one-book shipping|shipping.*added at checkout/i, name + ': superseded Pink shipping charge remains');
   }
   if (name === 'about') {
     const paragraphs = await page.locator('.pl-author-intro, .pl-author-chapter p').allTextContents();
@@ -306,9 +317,8 @@ async function checkProductionPreorders(page, width, originalCart) {
     assert.equal(await page.locator('[data-preorder-consent]').isVisible(), offer === 'pink', 'Only Pink should accept payment consent');
     assert.doesNotMatch(await page.locator('[data-preorder-terms]').textContent(), /shirt/i, 'Closed offer still advertises the removed shirt');
     assert.match(await page.locator('[data-preorder-terms]').textContent(), /December/);
-    assert.match(await page.locator('[data-preorder-terms]').textContent(), /standard.*shipping|shipping.*checkout/i);
-    assert.doesNotMatch(await page.locator('[data-preorder-terms]').textContent(), /free\s+(?:U\.?S\.?\s+)?shipping/i);
-    assert.match(await page.locator('[data-preorder-terms]').textContent(), /shown before payment|shown in Stripe before payment/i);
+    assert.match(await page.locator('[data-preorder-terms]').textContent(), /free\s+(?:U\.?S\.?\s+)?shipping/i);
+    assert.doesNotMatch(await page.locator('[data-preorder-terms]').textContent(), /plus standard one-book shipping|shipping.*added at checkout/i);
     const bounds = await dialog.evaluate(element => ({ width: element.getBoundingClientRect().width, left: element.getBoundingClientRect().left, right: element.getBoundingClientRect().right, scrollWidth: element.scrollWidth, clientWidth: element.clientWidth, height: element.getBoundingClientRect().height, viewport: innerWidth, viewportHeight: innerHeight }));
     assert.ok(bounds.left >= 0 && bounds.right <= bounds.viewport && bounds.scrollWidth <= bounds.clientWidth && bounds.height <= bounds.viewportHeight, 'Dialog overflows: ' + JSON.stringify(bounds));
     const before = checkoutRequests.filter(request => request.label === 'default').length;
@@ -322,7 +332,7 @@ async function checkProductionPreorders(page, width, originalCart) {
       await page.locator('[data-preorder-checkout]').click();
       await page.locator('[data-preorder-error]').filter({ hasText: 'QA fixture:' }).waitFor();
       assert.equal(checkoutRequests.filter(request => request.label === 'default').length, before + 1);
-      assert.deepEqual(checkoutRequests.at(-1).body, { items: [{ slug: 'ripple-pink-preorder', quantity: 1 }], preorder: { accepted: true, termsVersion: 'ripple-preorder-v5' } });
+      assert.deepEqual(checkoutRequests.at(-1).body, { items: [{ slug: 'ripple-pink-preorder', quantity: 1 }], preorder: { accepted: true, termsVersion: 'ripple-preorder-v6' } });
     }
     await page.screenshot({ path: out + '/dialog-' + offer + '-' + width + '.png', fullPage: false });
     if (offer === 'pink') await page.keyboard.press('Escape');
@@ -540,11 +550,11 @@ try {
     assert.equal(await confirmation.page.evaluate(key => localStorage.getItem(key), cartKey), originalCart);
     assert.ok(await confirmation.page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
   }
-  // New Pink orders show the shipping amount actually captured by Stripe,
-  // rather than the earlier free-shipping promise or a guessed flat price.
+  // Historical v5 Pink orders retain their captured shipping charges and terms,
+  // even though new v6 orders include free shipping.
   confirmedPreorder = {
     slug: 'ripple-pink-preorder', title: 'Ripple: Pink — Autographed Preorder', termsVersion: 'ripple-preorder-v5',
-    termsText: ripplePreorderConfig.pink.termsText, shippingAmount: 700,
+    termsText: 'Captured v5 terms: signed Pink preorder for $25 plus standard one-book shipping. Estimated shipping December 2026.', shippingAmount: 700,
     schedule: [{ volume: 'Pink', estimatedShipMonth: '2026-12' }]
   };
   for (const width of [320, 1440]) {
@@ -557,6 +567,21 @@ try {
     assert.equal(await confirmation.page.evaluate(key => localStorage.getItem(key), cartKey), originalCart);
     assert.ok(await confirmation.page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
     await confirmation.page.screenshot({ path: out + '/confirmation-standard-shipping-' + width + '.png', fullPage: true });
+  }
+  confirmedPreorder = {
+    slug: 'ripple-pink-preorder', title: 'Ripple: Pink — Autographed Preorder', termsVersion: 'ripple-preorder-v6',
+    termsText: ripplePreorderConfig.pink.termsText, shippingAmount: 0,
+    schedule: [{ volume: 'Pink', estimatedShipMonth: '2026-12' }]
+  };
+  for (const width of [320, 1440]) {
+    await confirmation.page.setViewportSize({ width, height: 950 });
+    await gotoUrl(confirmation.page, base + '/order-confirmed.html?session_id=cs_freeshipping_v6_ui_fixture');
+    assert.equal(await confirmation.page.locator('[data-confirmed-preorder-terms]').textContent(), confirmedPreorder.termsText);
+    assert.equal(await confirmation.page.locator('[data-confirmed-preorder-shipping]').textContent(), 'Your preorder includes free shipping.');
+    assert.match(await confirmation.page.locator('[data-confirmed-preorder-terms]').textContent(), /free U\.S\. shipping/i);
+    assert.equal(await confirmation.page.evaluate(key => localStorage.getItem(key), cartKey), originalCart);
+    assert.ok(await confirmation.page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+    await confirmation.page.screenshot({ path: out + '/confirmation-free-shipping-v6-' + width + '.png', fullPage: true });
   }
   // Historical paid orders must still show their captured terms, even if the
   // current offer no longer includes the original shirt bonus.
@@ -602,7 +627,7 @@ try {
   assert.deepEqual(failedRequests, [], 'Failed site requests');
   assert.deepEqual(unexpectedWrites, [], 'Unexpected mutation attempts');
   assert.deepEqual(layoutIssues, [], 'Page layout/content issues');
-  console.log('PASS: 20 responsive page checks, complete biography/synopsis, original 14-book cart, Pink-only paid checkout with v5 consent and standard shipping disclosures, series coming soon without a sales offer, expired-window protection, focus restoration, intercepted exact-date checkout fixtures, reopened-Pink stale-response protection, current paid shipping confirmation, and historical free preorder shipping.');
+  console.log('PASS: 20 responsive page checks, complete biography/synopsis, original 14-book cart, Pink-only paid checkout with v6 consent and free U.S. shipping, series coming soon without a sales offer, expired-window protection, focus restoration, intercepted exact-date checkout fixtures, reopened-Pink stale-response protection, current free-shipping confirmation, and historical paid/free preorder shipping.');
 } finally {
   console.log(JSON.stringify({ errors, missing, failedRequests, recoveredNetworkRetries, unexpectedWrites, layoutIssues, measurements, checkoutRequests, screenshots: out }, null, 2));
   await browser.close();

@@ -8,6 +8,12 @@ button, a { -webkit-tap-highlight-color: transparent; }
 :is(a, button, input, select, textarea, summary):focus-visible { outline: 2px solid #f3d991; outline-offset: 4px; }
 .pl-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .pl-site-header { position: relative; z-index: 30; display: flex; align-items: center; gap: clamp(16px, 2.8vw, 43px); min-height: clamp(58px, 7.53vw, 116px); width: min(100%, 1540px); margin: 0 auto; padding: 0 3.2%; background: #020202; border-bottom: 1px solid var(--pl-line); }
+.pl-shipping-banner { display: flex; align-items: center; justify-content: center; gap: 12px; width: min(100%, 1540px); margin: 0 auto; padding: 10px 20px; color: #161005; border-bottom: 1px solid #e4bc62; background: linear-gradient(110deg, #b9822d, #f6d780 35%, #f7dda0 60%, #bf8a32); text-align: center; }
+.pl-shipping-banner > svg { flex: 0 0 24px; width: 24px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.pl-shipping-banner p { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: 3px 14px; margin: 0; color: inherit; font: 500 12px/1.4 Inter, Arial, sans-serif; }
+.pl-shipping-banner strong { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.pl-shipping-banner span { white-space: nowrap; }
+@media (max-width: 480px) { .pl-shipping-banner { gap: 10px; padding: 9px 16px; } .pl-shipping-banner p { display: block; font-size: 11px; line-height: 1.45; } .pl-shipping-banner strong, .pl-shipping-banner span { display: block; } .pl-shipping-banner strong { font-size: 11px; } }
 .pl-brand { display: flex; align-items: center; gap: 3.5%; flex: 0 0 clamp(180px, 25.3vw, 390px); aspect-ratio: 195 / 56; line-height: 0; }
 .pl-brand-mark { display: block; flex: 0 0 24%; width: 24%; height: auto; object-fit: contain; }
 .pl-brand-wordmark { display: block; flex: 0 0 72.5%; width: 72.5%; min-width: 0; height: auto; object-fit: contain; }

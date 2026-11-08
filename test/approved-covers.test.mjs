@@ -80,17 +80,18 @@ test('all supplied originals are preserved and literal cover replacements remain
   }
 });
 
-test('November artwork and wording edits do not change the approved checkout implementation', async () => {
-  // This visual-only release must not silently change payment, shipping or consent.
+test('the approved free-shipping checkout baseline remains locked during artwork edits', async () => {
+  // Updated for the owner's November 8 request: free shipping on all orders.
+  // Future artwork releases must not silently change payment, shipping or consent.
   // Update these snapshots only alongside an explicitly approved checkout change.
   const checkoutSnapshots = {
-    'ripple-preorder-config.js': '2c6b5c4f85947439d645d3d99e4c5b858642dc80332ea021f418e5091bd955b9',
-    'ripple-page.js': '886d9adbae16855605dce6feb7bb8db2008c55836cd6c267d2f2640b404792ad',
-    'netlify/functions/create-checkout.mjs': '2b74fb48dc472d816ef65ba607872c00a17bc7583d4b3eea9270ddf437044ff6',
+    'ripple-preorder-config.js': 'fab785e9013f49a9dba625a1b1f1b3929cd97dbc44727fa34a1d3917a34d5624',
+    'ripple-page.js': '0ab3da26ec52da96386568f4a351bdc32c58adc3c5beb6ffb943f3f33fbfa4a5',
+    'netlify/functions/create-checkout.mjs': '554b9223241676d4d36c316d0cf84660995d0dfbb5e8d6db312fc3e062471c49',
     'netlify/functions/order-status.mjs': '478aa336ea9a97e6446a74042dabfff5abc3a1026049165c01f4466a69a57d9e',
     'netlify/functions/stripe-webhook.mjs': '9ccfef16e1b68253ff37c97b494820f462f0ee24e344a3157cf134578541045e'
   };
   for (const [file, expected] of Object.entries(checkoutSnapshots)) {
-    assert.equal(hash(await readFile(new URL('../' + file, import.meta.url))), expected, file + ': visual-only release changed checkout logic');
+    assert.equal(hash(await readFile(new URL('../' + file, import.meta.url))), expected, file + ': checkout baseline changed without updating its approved snapshot');
   }
 });
